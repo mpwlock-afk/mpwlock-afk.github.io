@@ -1,0 +1,56 @@
+---
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = "Ready to experience holography done right?",
+  text = "Book a personal demo and discover how our holographic solutions add value for your company. Is your audience ready for next-level immersive experiences?",
+} = Astro.props;
+---
+
+<section class="section section--dark cta">
+  <div class="container cta-inner anim anim-up">
+    <div class="cta-glow" aria-hidden="true"></div>
+    <p class="eyebrow">Book a demo</p>
+    <h2 class="section-title">{title}</h2>
+    <p class="lead measure center">{text}</p>
+    <div class="cta-actions">
+      <a href="/demo" class="magnetic btn btn--gold">Book a demo</a>
+      <a href="/products/holobox" class="magnetic btn btn--ghost">Explore the Holobox</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-inner {
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .cta-glow {
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    max-width: 120vw;
+    background: radial-gradient(circle, rgba(200, 120, 0, 0.22), transparent 60%);
+    pointer-events: none;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>

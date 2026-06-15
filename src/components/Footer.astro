@@ -1,0 +1,152 @@
+---
+import { site, products, sectors } from "../data/site";
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">holoconnects</span>
+        </a>
+        <p class="footer-tagline">
+          Innovation with a human touch. Holographic technology that brings real
+          people and real connections wherever they matter.
+        </p>
+        <div class="rating">
+          <span class="rating-stars" aria-hidden="true">★★★★★</span>
+          <span>{site.rating}</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Products</h4>
+        {products.map((p) => <a href={`/products/${p.slug}`}>{p.name}</a>)}
+      </div>
+
+      <div class="footer-col">
+        <h4>Sectors</h4>
+        {sectors.slice(0, 5).map((s) => <a href="/sectors">{s.name}</a>)}
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="/about">About</a>
+        <a href="/cases">Cases</a>
+        <a href="/contact">Contact</a>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {new Date().getFullYear()} Holoconnects. All rights reserved.</p>
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="YouTube">YouTube</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--black);
+    color: #b6b6be;
+    padding-block: clamp(3.5rem, 7vw, 6rem) 2.5rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+  }
+  .brand-mark {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--grad-gold);
+  }
+  .footer-tagline {
+    margin: 1.25rem 0 1.5rem;
+    max-width: 34ch;
+    line-height: 1.6;
+    color: #8f8f97;
+  }
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: #cfcfd6;
+  }
+  .rating-stars {
+    color: var(--gold-bright);
+    letter-spacing: 2px;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .footer-col h4 {
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .footer-col a {
+    color: #9a9aa2;
+    font-size: 0.95rem;
+    transition: color 0.25s;
+  }
+  .footer-col a:hover {
+    color: var(--gold-bright);
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 2rem;
+    font-size: 0.85rem;
+    color: #76767e;
+  }
+  .socials {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .socials a:hover {
+    color: var(--gold-bright);
+  }
+  @media (max-width: 800px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 480px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
