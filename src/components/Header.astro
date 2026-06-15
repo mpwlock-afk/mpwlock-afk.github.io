@@ -8,7 +8,7 @@ const isActive = (href: string) =>
 <header class="site-header" id="site-header" data-transparent>
   <div class="header-inner">
     <a href="/" class="brand" aria-label="Holoconnects home">
-      <span class="brand-mark" aria-hidden="true"></span>
+      <img class="brand-mark" src="/images/logo-mark.png" alt="" width="28" height="28" />
       <span class="brand-name">holoconnects</span>
     </a>
 
@@ -109,11 +109,9 @@ const isActive = (href: string) =>
     letter-spacing: -0.02em;
   }
   .brand-mark {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--grad-gold);
-    box-shadow: 0 0 0 3px rgba(200, 120, 0, 0.18);
+    width: auto;
+    height: 28px;
+    display: block;
   }
 
   .primary-nav {

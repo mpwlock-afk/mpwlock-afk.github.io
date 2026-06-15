@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.holoconnects.com/sitemap-index.xml

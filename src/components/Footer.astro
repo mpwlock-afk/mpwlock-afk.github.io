@@ -6,8 +6,8 @@ import { site, products, sectors } from "../data/site";
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="brand">
-          <span class="brand-mark" aria-hidden="true"></span>
+        <a href="/" class="brand" aria-label="Holoconnects home">
+          <img class="brand-mark" src="/images/logo-mark.png" alt="" width="30" height="30" />
           <span class="brand-name">holoconnects</span>
         </a>
         <p class="footer-tagline">
@@ -74,10 +74,9 @@ import { site, products, sectors } from "../data/site";
     font-size: 1.3rem;
   }
   .brand-mark {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--grad-gold);
+    width: auto;
+    height: 30px;
+    display: block;
   }
   .footer-tagline {
     margin: 1.25rem 0 1.5rem;

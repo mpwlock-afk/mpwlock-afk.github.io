@@ -11,9 +11,32 @@ const marqueeItems = [
   "Education",
   "Advertising",
 ];
+
+const productListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Holoconnects hologram display range",
+  description:
+    "Interactive, life-size holographic displays from Holoconnects, including the Holobox, Holobox Mini, The 43, Hologrid and AI Hologram.",
+  itemListElement: products.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "Product",
+      name: p.name,
+      description: p.summary,
+      url: `https://www.holoconnects.com/products/${p.slug}`,
+      image: new URL(p.image, "https://www.holoconnects.com").href,
+      brand: { "@type": "Brand", name: "Holoconnects" },
+    },
+  })),
+};
 ---
 
-<Base>
+<Base
+  title="Holoconnects | Interactive Life-Size Hologram Displays"
+  description="Holoconnects builds interactive, life-size holographic displays. Meet the Holobox and our hologram range, bringing a real human presence anywhere, 24/7."
+>
   <!-- ============ HERO ============ -->
   <section class="hero">
     <canvas id="holo-canvas" class="hero-canvas" aria-hidden="true"></canvas>
@@ -82,7 +105,7 @@ const marqueeItems = [
   <!-- ============ HOSPITALITY SHOWCASE ============ -->
   <section class="hospo">
     <div class="hospo__media">
-      <img src="/images/sector-hospitality.jpg" alt="Holographic concierge in hospitality" data-parallax="0.12" />
+      <img src="/images/sector-hospitality.jpg" alt="Life-size holographic concierge welcoming a guest in a hotel lobby" data-parallax="0.12" />
     </div>
     <div class="hospo__veil"></div>
     <div class="container hospo__content">
@@ -111,7 +134,7 @@ const marqueeItems = [
       </div>
       <div class="hpin__track">
         <div class="hpin__intro">
-          <p class="lead">One platform powers every display — from a life-size 86&quot; Holobox to a desktop Mini, modular walls and AI-driven holograms.</p>
+          <p class="lead">One platform powers every display, from a life-size 86&quot; Holobox to a desktop Mini, modular walls and AI-driven holograms.</p>
           <span class="hpin__hint">Keep scrolling →</span>
         </div>
         {
@@ -120,7 +143,7 @@ const marqueeItems = [
               <span class="hcard__index">{String(i + 1).padStart(2, "0")}</span>
               <div class="hcard__media">
                 <div class="hcard__glow"></div>
-                <img src={p.image} alt={p.name} loading="lazy" />
+                <img src={p.image} alt={`${p.name} interactive hologram display by Holoconnects`} loading="lazy" />
               </div>
               <div class="hcard__body">
                 <h3>{p.name}</h3>
@@ -149,7 +172,7 @@ const marqueeItems = [
         <div class="value-block anim anim-up" data-tilt="4">
           <span class="value-no">01</span>
           <h3>A human touch</h3>
-          <p>Technology that deepens human connection — never replaces it.</p>
+          <p>Technology that deepens human connection instead of replacing it.</p>
         </div>
         <div class="value-block anim anim-up" style="--d:120ms" data-tilt="4">
           <span class="value-no">02</span>
@@ -159,7 +182,7 @@ const marqueeItems = [
         <div class="value-block anim anim-up" style="--d:240ms" data-tilt="4">
           <span class="value-no">03</span>
           <h3>Sustainable reach</h3>
-          <p>Broader reach, lower footprint — inclusive by design.</p>
+          <p>Broader reach with a lower footprint, inclusive by design.</p>
         </div>
       </div>
     </div>
@@ -170,14 +193,14 @@ const marqueeItems = [
     <div class="container">
       <div class="sectors-head">
         <h2 class="section-title anim anim-up">Built for the moments<br />that matter.</h2>
-        <p class="lead anim anim-up" style="--d:120ms">From guest experiences in hospitality to virtual care in telehealth — lifelike presence where it counts.</p>
+        <p class="lead anim anim-up" style="--d:120ms">From guest experiences in hospitality to virtual care in telehealth, we deliver lifelike presence where it counts.</p>
       </div>
       <div class="sectors-stack">
         {
           sectors.map((s, i) => (
             <a href="/sectors" class="sec-tile hoverable anim anim-scale" style={`--d:${(i % 3) * 90}ms`}>
               <div class="sec-tile__img">
-                <img src={s.image} alt={s.name} data-parallax="0.08" loading="lazy" />
+                <img src={s.image} alt={`Holoconnects holographic displays for ${s.name}`} data-parallax="0.08" loading="lazy" />
               </div>
               <div class="sec-tile__veil"></div>
               <div class="sec-tile__txt">
@@ -213,6 +236,8 @@ const marqueeItems = [
   </section>
 
   <CtaSection />
+
+  <script type="application/ld+json" set:html={JSON.stringify(productListSchema)} />
 </Base>
 
 <style>
@@ -223,6 +248,8 @@ const marqueeItems = [
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-top: clamp(7rem, 14vh, 10rem);
+    padding-bottom: clamp(4rem, 8vh, 6rem);
     background: #050507;
     color: #fff;
     overflow: hidden;
@@ -538,6 +565,7 @@ const marqueeItems = [
   /* ============ PINNED HORIZONTAL ============ */
   .hpin {
     position: relative;
+    overflow: hidden;
   }
   .hpin__sticky {
     position: sticky;
@@ -545,6 +573,7 @@ const marqueeItems = [
     height: 100vh;
     height: 100svh;
     overflow: hidden;
+    clip-path: inset(0 0 0 0); /* force-clip GPU-composited translate3d children */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -612,10 +641,14 @@ const marqueeItems = [
   }
   .hcard__media {
     position: relative;
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0; /* allow the media to shrink so the body text never clips */
     display: grid;
     place-items: center;
     margin: 0.5rem 0 1rem;
+  }
+  .hcard__body {
+    flex: 0 0 auto; /* body keeps its full height; title, tagline & link always visible */
   }
   .hcard__glow {
     position: absolute;

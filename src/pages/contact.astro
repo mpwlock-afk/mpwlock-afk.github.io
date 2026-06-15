@@ -11,14 +11,61 @@ const sources = [
   "ChatGPT or other AI Search Engine",
   "Through our Partner network",
 ];
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Holoconnects",
+  url: "https://www.holoconnects.com",
+  location: [
+    {
+      "@type": "Place",
+      name: "Europe Head Office",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Randweg 1",
+        addressLocality: "Culemborg",
+        addressCountry: "NL",
+      },
+    },
+    {
+      "@type": "Place",
+      name: "North America",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "801 Travis Street, Suite 1818",
+        addressLocality: "Houston",
+        addressRegion: "TX",
+        postalCode: "77002",
+        addressCountry: "US",
+      },
+    },
+  ],
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "Europe Head Office",
+      telephone: "+31 (0)85 303 10 01",
+      email: "info@holoconnects.com",
+      areaServed: "EU",
+    },
+    {
+      "@type": "ContactPoint",
+      contactType: "North America",
+      telephone: "+1 832 301 0701",
+      email: "us@holoconnects.com",
+      areaServed: "US",
+    },
+  ],
+};
 ---
 
-<Base title="Contact — Holoconnects" description="Get in touch with Holoconnects. Book a demo or reach our offices in the Netherlands and the United States.">
+<Base title="Contact Holoconnects | Book a Hologram Demo" description="Get in touch with Holoconnects to book a live hologram demo or talk through your project. Reach our offices in the Netherlands and the United States.">
   <section class="page-hero section--dark">
     <div class="container">
       <p class="eyebrow anim anim-up">Contact</p>
       <h1 class="display anim anim-up" style="--d:80ms">Let's bring your<br /><span class="holo-text">idea to life.</span></h1>
-      <p class="lead measure anim anim-up" style="--d:160ms">Book a personal demo or get in touch.</p>
+      <p class="lead measure anim anim-up" style="--d:160ms">Book a personal demo or simply say hello. We would love to hear what you are working on.</p>
     </div>
   </section>
 
@@ -74,7 +121,7 @@ const sources = [
           <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;" />
           <button type="submit" class="magnetic btn btn--gold">Send message</button>
           <p id="form-error" class="form-error" hidden>Please fill in all required fields.</p>
-          <p id="form-ok" class="form-ok" hidden>Thank you — we'll be in touch shortly.</p>
+          <p id="form-ok" class="form-ok" hidden>Thank you. We will be in touch shortly.</p>
         </form>
 
         <div class="newsletter">
@@ -90,7 +137,7 @@ const sources = [
       <aside class="contact-side">
         <div class="contact-card anim anim-up" style="--d:120ms" data-tilt>
           <h3>Book a live demo</h3>
-          <p class="text-muted" style="margin:0 0 1rem">Pick a slot directly in our calendar — 30 minutes, life-size.</p>
+          <p class="text-muted" style="margin:0 0 1rem">Pick a slot directly in our calendar. It takes 30 minutes and you will see a hologram at life size.</p>
           <a href="/demo" class="btn btn--gold" style="width:100%;justify-content:center;">Schedule demo</a>
         </div>
 
@@ -124,11 +171,13 @@ const sources = [
       </aside>
     </div>
   </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(contactSchema)} />
 </Base>
 
 <script>
   // Submissions are delivered by FormSubmit (no backend needed).
-  // NOTE: the inbox address is set here — swap for the FormSubmit
+  // NOTE: the inbox address is set here. Swap for the FormSubmit
   // random alias after activation if you want it out of the source.
   const INBOX = "mpw.lock@gmail.com";
   const ENDPOINT = `https://formsubmit.co/ajax/${INBOX}`;
@@ -175,7 +224,7 @@ const sources = [
           ok.hidden = false;
           form.reset();
         } else {
-          err.textContent = "Something went wrong — please email info@holoconnects.com directly.";
+          err.textContent = "Something went wrong. Please email info@holoconnects.com directly.";
           err.hidden = false;
         }
       });
