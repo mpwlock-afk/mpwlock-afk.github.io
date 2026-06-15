@@ -574,7 +574,8 @@ const productListSchema = {
   /* ============ PINNED HORIZONTAL ============ */
   .hpin {
     position: relative;
-    overflow: hidden;
+    /* no overflow here: it would make .hpin a scroll container and break the
+       sticky pin. The horizontal track is clipped by .hpin__sticky instead. */
   }
   .hpin__sticky {
     position: sticky;
