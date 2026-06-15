@@ -216,22 +216,31 @@ const productListSchema = {
   </section>
 
   <!-- ============ TESTIMONIAL ============ -->
-  <section class="section quote-sec">
+  <section class="section testi-sec">
     <div class="container">
-      <div class="quote-rail" data-parallax="0.05">
-        <span class="quote-mark holo-text">&ldquo;</span>
+      <div class="testi-head">
+        <p class="eyebrow anim anim-up">Trusted worldwide</p>
+        <h2 class="section-title anim anim-up" style="--d:80ms">What our clients say.</h2>
       </div>
-      {
-        testimonials.map((t, i) => (
-          <figure class="big-quote anim anim-up" style={`--d:${i * 60}ms`}>
-            <blockquote>{t.quote}</blockquote>
-            <figcaption>
-              <img src={t.image} alt="" loading="lazy" />
-              <span><strong>{t.name}</strong>{t.role}</span>
-            </figcaption>
-          </figure>
-        ))
-      }
+      <div class="testi-grid">
+        {
+          testimonials.map((t, i) => (
+            <figure class="testi-card anim anim-up" style={`--d:${i * 90}ms`} data-tilt="3">
+              <div class="testi-media">
+                <img src={t.image} alt={`Holoconnects hologram in use, project by ${t.name}`} loading="lazy" />
+              </div>
+              <div class="testi-body">
+                <span class="testi-mark holo-text" aria-hidden="true">&ldquo;</span>
+                <blockquote>{t.quote}</blockquote>
+                <figcaption>
+                  <strong>{t.name}</strong>
+                  <span>{t.role}</span>
+                </figcaption>
+              </div>
+            </figure>
+          ))
+        }
+      </div>
     </div>
   </section>
 
@@ -794,53 +803,88 @@ const productListSchema = {
     .sec-tile:nth-child(n) { grid-column: auto; min-height: 320px; }
   }
 
-  /* ============ QUOTES ============ */
-  .quote-sec { position: relative; }
-  .quote-rail {
-    position: absolute;
-    top: 0;
-    left: var(--gutter);
-    font-size: 18rem;
-    line-height: 0.6;
-    z-index: 0;
-    pointer-events: none;
+  /* ============ TESTIMONIALS ============ */
+  .testi-head {
+    text-align: center;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
-  .quote-mark { font-family: var(--font-display); }
-  .big-quote {
-    position: relative;
-    z-index: 1;
-    max-width: 60ch;
-    margin: 0 0 clamp(2.5rem, 5vw, 4rem) auto;
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.2rem, 2.5vw, 2rem);
   }
-  .big-quote:last-of-type { margin-bottom: 0; }
-  .big-quote blockquote {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(1.4rem, 3vw, 2.4rem);
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    margin: 0 0 1.4rem;
-  }
-  .big-quote figcaption {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-  }
-  .big-quote figcaption img {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  .big-quote figcaption span {
+  .testi-card {
     display: flex;
     flex-direction: column;
-    font-size: 0.95rem;
-    color: var(--grey);
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.45s var(--ease), border-color 0.45s var(--ease),
+      box-shadow 0.45s var(--ease);
   }
-  .big-quote figcaption strong {
+  .testi-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(234, 153, 20, 0.4);
+    box-shadow: 0 34px 70px -34px rgba(0, 0, 0, 0.28);
+  }
+  .testi-media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .testi-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+  .testi-card:hover .testi-media img {
+    transform: scale(1.05);
+  }
+  .testi-body {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.4rem, 2vw, 2rem);
+  }
+  .testi-mark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 3.4rem;
+    line-height: 0.5;
+    margin-bottom: 0.7rem;
+  }
+  .testi-body blockquote {
+    margin: 0 0 1.5rem;
+    flex: 1;
+    font-size: 1.02rem;
+    line-height: 1.6;
     color: var(--ink);
-    font-family: var(--font-body);
+  }
+  .testi-body figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+  }
+  .testi-body figcaption strong {
+    color: var(--ink);
+    font-size: 0.98rem;
+  }
+  .testi-body figcaption span {
+    color: var(--grey);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 860px) {
+    .testi-grid {
+      grid-template-columns: 1fr;
+      max-width: 460px;
+      margin-inline: auto;
+    }
   }
 </style>
 
