@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import CtaSection from "../components/CtaSection.astro";
 import { products, sectors, stats, testimonials } from "../data/site";
 import SizeRange from "../components/SizeRange.astro";
+import Support from "../components/Support.astro";
 
 // Brands Holoconnects has worked with, shown as a white monochrome "Trusted by"
 // wall. A logo file in /images/logos/ renders as an <img> forced to white by CSS;
@@ -241,6 +242,8 @@ const clients = [
       </div>
     </div>
   </section>
+
+  <Support />
 
   <CtaSection />
 </Base>
