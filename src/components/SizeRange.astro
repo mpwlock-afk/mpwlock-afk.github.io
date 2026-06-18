@@ -1,13 +1,17 @@
 ---
-// Holobox size-range lineup. Heights are true real-world ratios vs the 86".
+// Holobox size-range lineup. `ratio` = real full-cabinet height ÷ the 86" (206cm):
+//   22" Mini 61.6cm → 0.299 · 43" 108cm → 0.524 · 75" 180cm → 0.874 · 86" 206cm → 1.0
+// Width is NOT set here — each render keeps its own aspect ratio (height-scaled,
+// width auto), so the 75"'s slightly narrower speaker-sides show correctly once
+// the real render lands.
 // `img.black` / `img.white` hold the uniform renders; once BOTH colours exist
 // for every size, the colour switch turns on automatically.
 // NOTE: 75" currently reuses the 86" render as a stand-in until the real
 // 75" render is supplied (see CLAUDE.md). 22" uses the black-bg mini jpg.
 const sizes = [
-  { label: '22"', ratio: 0.3, solid: true, img: { black: "/images/holobox-mini.jpg", white: "" } },
-  { label: '43"', ratio: 0.52, solid: false, img: { black: "/images/holobox-43.png", white: "" } },
-  { label: '75"', ratio: 0.87, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
+  { label: '22"', ratio: 0.299, solid: true, img: { black: "/images/holobox-mini.jpg", white: "" } },
+  { label: '43"', ratio: 0.524, solid: false, img: { black: "/images/holobox-43.png", white: "" } },
+  { label: '75"', ratio: 0.874, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
   { label: '86"', ratio: 1.0, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
 ];
 const hasSwitch = sizes.every((s) => s.img.white) && sizes.every((s) => s.img.black);
