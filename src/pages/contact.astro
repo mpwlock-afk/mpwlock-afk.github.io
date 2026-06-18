@@ -11,9 +11,36 @@ const sources = [
   "ChatGPT or other AI Search Engine",
   "Through our Partner network",
 ];
+
+const siteUrl = Astro.site ?? new URL("https://www.holoconnects.com");
+const localBusinessLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Holoconnects",
+  image: new URL("/images/og-default.jpg", siteUrl).href,
+  url: new URL("/contact", siteUrl).href,
+  telephone: "+31853031001",
+  email: "info@holoconnects.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Randweg 1",
+    addressLocality: "Culemborg",
+    addressCountry: "NL",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "9.5",
+    bestRating: "10",
+    ratingCount: "346",
+  },
+};
 ---
 
-<Base title="Contact — Holoconnects" description="Get in touch with Holoconnects. Book a demo or reach our offices in the Netherlands and the United States.">
+<Base
+  title="Contact Holoconnects — Book a Hologram Demo"
+  description="Book a personal hologram demo. Offices in Culemborg (NL) and Houston (TX). Rated 9.5/10 by 346 customers."
+  jsonLd={localBusinessLd}
+>
   <section class="page-hero section--dark">
     <div class="container">
       <p class="eyebrow anim anim-up">Contact</p>

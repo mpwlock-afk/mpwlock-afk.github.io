@@ -20,7 +20,7 @@ import { products } from "../../data/site";
           products.map((p, i) => (
             <article class="prow" data-reveal>
               <div class={`prow-media ${i % 2 === 1 ? "is-right" : ""}`}>
-                <img src={p.image} alt={p.name} loading="lazy" />
+                <img src={p.image} alt={`${p.name} holographic display by Holoconnects`} loading="lazy" />
               </div>
               <div class="prow-body">
                 <p class="pill">{p.tagline}</p>

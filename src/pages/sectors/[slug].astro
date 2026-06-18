@@ -1,0 +1,240 @@
+---
+import Base from "../../layouts/Base.astro";
+import CtaSection from "../../components/CtaSection.astro";
+import { sectors } from "../../data/site";
+
+export function getStaticPaths() {
+  return sectors.map((s) => ({
+    params: { slug: s.slug },
+    props: { sector: s },
+  }));
+}
+
+const { sector } = Astro.props;
+const others = sectors.filter((s) => s.slug !== sector.slug);
+
+const site = Astro.site ?? new URL("https://www.holoconnects.com");
+const canonical = new URL(`/sectors/${sector.slug}`, site).href;
+
+// Unique, keyword-rich SEO copy per sector.
+const sectorSeo: Record<string, { title: string; description: string; intro: string }> = {
+  hospitality: {
+    title: "Hologram Solutions for Hospitality & Travel | Holoconnects",
+    description:
+      "A 24/7 holographic concierge that welcomes every guest with a human touch. Life-size interactive holograms for hotels, travel and hospitality.",
+    intro:
+      "From check-in to concierge, a life-size hologram greets every guest with a genuine human presence — around the clock, in any language, in any lobby.",
+  },
+  telehealth: {
+    title: "Telehealth Holograms — Life-Size Virtual Care | Holoconnects",
+    description:
+      "Life-size, lifelike holographic consultations that bring specialist care closer to patients, wherever the specialist is based.",
+    intro:
+      "Bring the specialist into the room. Life-size holographic consultations make remote care feel personal, present and reassuring.",
+  },
+  retail: {
+    title: "Holographic Retail Displays — Windows & Showrooms | Holoconnects",
+    description:
+      "Turn windows and showrooms into holographic stages that stop shoppers in their tracks with life-size, interactive 3D product displays.",
+    intro:
+      "Turn any window or showroom into a holographic stage. Products float in vivid 3D and invite shoppers to interact, not just look.",
+  },
+  events: {
+    title: "Event Holograms — Beam Speakers & Brands on Stage | Holoconnects",
+    description:
+      "Beam speakers, presenters and brands onto any stage in striking, large-format 3D holograms for events and live experiences.",
+    intro:
+      "Put a speaker, performer or product on any stage in striking large-format 3D — no travel required, all the impact of being there.",
+  },
+  education: {
+    title: "Holograms for Education — Lessons in 3D | Holoconnects",
+    description:
+      "Bring lessons, guest lecturers and complex ideas to life in three dimensions with life-size, interactive education holograms.",
+    intro:
+      "Make the abstract tangible. Guest lecturers, demonstrations and complex ideas come to life at human scale, in three dimensions.",
+  },
+  advertising: {
+    title: "Holographic Advertising — Premium 3D Out-of-Home | Holoconnects",
+    description:
+      "Premium holographic out-of-home advertising that commands attention in 4K 3D. Life-size hologram displays that brands can't ignore.",
+    intro:
+      "Premium holographic out-of-home that commands attention in 4K 3D — campaigns that audiences stop for, photograph and remember.",
+  },
+};
+
+const seo = sectorSeo[sector.slug] ?? {
+  title: `Hologram Solutions for ${sector.name} | Holoconnects`,
+  description: sector.blurb,
+  intro: sector.blurb,
+};
+
+const serviceLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: `Hologram solutions for ${sector.name}`,
+  description: seo.description,
+  serviceType: "Holographic display",
+  provider: { "@type": "Organization", name: "Holoconnects", url: site.href },
+  areaServed: "Worldwide",
+  url: canonical,
+};
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: site.href },
+    { "@type": "ListItem", position: 2, name: "Sectors", item: new URL("/sectors", site).href },
+    { "@type": "ListItem", position: 3, name: sector.name, item: canonical },
+  ],
+};
+---
+
+<Base
+  title={seo.title}
+  description={seo.description}
+  image={sector.image}
+  canonical={canonical}
+  jsonLd={[serviceLd, breadcrumbLd]}
+>
+  <section class="sector-hero section--dark">
+    <div class="sector-hero__media">
+      <img src={sector.image} alt={`Hologram for ${sector.name} — Holoconnects`} data-parallax="0.12" />
+    </div>
+    <div class="sector-hero__veil" aria-hidden="true"></div>
+    <div class="container sector-hero__content">
+      <p class="eyebrow anim anim-up">Sectors · {sector.name}</p>
+      <h1 class="display anim anim-up" style="--d:80ms">
+        Holograms for<br /><span class="holo-text">{sector.name.toLowerCase()}.</span>
+      </h1>
+      <p class="lead measure anim anim-up" style="--d:160ms">{seo.intro}</p>
+      <div class="sector-hero__actions anim anim-up" style="--d:240ms">
+        <a href="/contact" class="magnetic btn btn--gold">Book a demo</a>
+        <a href="/sectors" class="magnetic btn btn--ghost-light">All sectors</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container sector-body">
+      <div class="sector-copy anim anim-up">
+        <p class="eyebrow">Why holograms here</p>
+        <h2 class="section-title">{sector.blurb}</h2>
+        <p class="text-muted">
+          Holoconnects delivers life-size, interactive holographic displays used in 30+
+          countries. For {sector.name.toLowerCase()}, that means a real human presence —
+          engaging, lifelike and always on brand.
+        </p>
+        <a href="/contact" class="arrow-link">Talk to us about {sector.name.toLowerCase()}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="block-head" data-reveal>
+        <p class="eyebrow">Keep exploring</p>
+        <h2 class="section-title">More sectors.</h2>
+      </div>
+      <div class="grid cols-3 other-sectors">
+        {
+          others.map((s, i) => (
+            <a href={`/sectors/${s.slug}`} class="mini-card" data-tilt="6" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <div class="mini-media">
+                <img src={s.image} alt={`Hologram for ${s.name} — Holoconnects`} loading="lazy" />
+              </div>
+              <div class="mini-body">
+                <h3>{s.name}</h3>
+                <p class="text-muted">{s.blurb}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaSection title={`Bring holograms to ${sector.name.toLowerCase()}`} />
+</Base>
+
+<style>
+  .sector-hero {
+    position: relative;
+    min-height: 70svh;
+    display: flex;
+    align-items: flex-end;
+    padding-top: clamp(8rem, 14vw, 12rem);
+    padding-bottom: clamp(3rem, 7vw, 6rem);
+    overflow: hidden;
+    color: #fff;
+  }
+  .sector-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .sector-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sector-hero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(90deg, rgba(5, 5, 7, 0.92) 18%, rgba(5, 5, 7, 0.5) 55%, rgba(5, 5, 7, 0.2) 100%),
+      linear-gradient(0deg, rgba(5, 5, 7, 0.85) 0%, transparent 60%);
+  }
+  .sector-hero__content {
+    position: relative;
+    z-index: 2;
+  }
+  .sector-hero__content .lead {
+    margin-top: 1.4rem;
+    color: #d7d7de;
+  }
+  .sector-hero__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .sector-body {
+    max-width: 760px;
+  }
+  .sector-copy h2 {
+    margin: 0.6rem 0 1.2rem;
+  }
+  .sector-copy .text-muted {
+    margin-bottom: 1.6rem;
+    line-height: 1.7;
+  }
+
+  .block-head {
+    max-width: 760px;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .mini-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.4s var(--ease);
+  }
+  .mini-card:hover { transform: translateY(-5px); }
+  .mini-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .mini-media img { width: 100%; height: 100%; object-fit: cover; }
+  .mini-body { padding: 1.4rem; }
+  .mini-body h3 { font-size: 1.3rem; margin-bottom: 0.3rem; }
+
+  @media (max-width: 760px) {
+    .sector-hero { min-height: 60svh; }
+  }
+</style>

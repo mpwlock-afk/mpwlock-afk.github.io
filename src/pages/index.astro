@@ -13,7 +13,10 @@ const marqueeItems = [
 ];
 ---
 
-<Base>
+<Base
+  title="Holoconnects — Life-Size Interactive Holograms | Europe's Leading Hologram Company"
+  description="Interactive life-size holographic displays for hospitality, retail, healthcare and events. 470+ projects in 30+ countries. Book a demo."
+>
   <!-- ============ HERO ============ -->
   <section class="hero">
     <canvas id="holo-canvas" class="hero-canvas" aria-hidden="true"></canvas>
@@ -120,7 +123,7 @@ const marqueeItems = [
               <span class="hcard__index">{String(i + 1).padStart(2, "0")}</span>
               <div class="hcard__media">
                 <div class="hcard__glow"></div>
-                <img src={p.image} alt={p.name} loading="lazy" />
+                <img src={p.image} alt={`${p.name} holographic display by Holoconnects`} loading="lazy" />
               </div>
               <div class="hcard__body">
                 <h3>{p.name}</h3>
@@ -175,9 +178,9 @@ const marqueeItems = [
       <div class="sectors-stack">
         {
           sectors.map((s, i) => (
-            <a href="/sectors" class="sec-tile hoverable anim anim-scale" style={`--d:${(i % 3) * 90}ms`}>
+            <a href={`/sectors/${s.slug}`} class="sec-tile hoverable anim anim-scale" style={`--d:${(i % 3) * 90}ms`}>
               <div class="sec-tile__img">
-                <img src={s.image} alt={s.name} data-parallax="0.08" loading="lazy" />
+                <img src={s.image} alt={`Hologram for ${s.name} — Holoconnects`} data-parallax="0.08" loading="lazy" />
               </div>
               <div class="sec-tile__veil"></div>
               <div class="sec-tile__txt">

@@ -4,7 +4,10 @@ import CtaSection from "../components/CtaSection.astro";
 import { sectors } from "../data/site";
 ---
 
-<Base title="Sectors — Holoconnects" description="Holoconnects holographic technology in hospitality, telehealth, retail, events, education and advertising.">
+<Base
+  title="Hologram Solutions — Hospitality, Retail, Healthcare & Events | Holoconnects"
+  description="Holoconnects holographic displays for hospitality, telehealth, retail, events, education and advertising. Life-size interactive holograms for every industry."
+>
   <section class="page-hero section--dark">
     <div class="container">
       <p class="eyebrow anim anim-up">Sectors</p>
@@ -20,13 +23,13 @@ import { sectors } from "../data/site";
           sectors.map((s, i) => (
             <article class="srow" data-reveal>
               <div class={`srow-media ${i % 2 === 1 ? "is-right" : ""}`}>
-                <img src={s.image} alt={s.name} loading="lazy" />
+                <img src={s.image} alt={`Hologram for ${s.name} — Holoconnects`} loading="lazy" />
               </div>
               <div class="srow-body">
                 <span class="srow-index">{String(i + 1).padStart(2, "0")}</span>
                 <h2>{s.name}</h2>
                 <p class="lead">{s.blurb}</p>
-                <a href="/contact" class="arrow-link">Talk to us about {s.name.toLowerCase()}
+                <a href={`/sectors/${s.slug}`} class="arrow-link">Explore {s.name.toLowerCase()}
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
               </div>
