@@ -8,8 +8,8 @@ const isActive = (href: string) =>
 <header class="site-header" id="site-header" data-transparent>
   <div class="header-inner">
     <a href="/" class="brand" aria-label="Holoconnects home">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-name">holoconnects</span>
+      <img src="/images/logo.png" alt="Holoconnects" class="brand-logo brand-logo--light" width="190" height="30" />
+      <img src="/images/logo-dark.png" alt="" aria-hidden="true" class="brand-logo brand-logo--dark" width="190" height="30" />
     </a>
 
     <nav class="primary-nav" aria-label="Primary">
@@ -100,20 +100,30 @@ const isActive = (href: string) =>
   }
 
   .brand {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
   }
-  .brand-mark {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--grad-gold);
-    box-shadow: 0 0 0 3px rgba(200, 120, 0, 0.18);
+  .brand-logo {
+    height: 28px;
+    width: auto;
+    display: block;
+    transition: height 0.4s var(--ease);
+  }
+  .scrolled .brand-logo {
+    height: 26px;
+  }
+  /* White wordmark over the transparent (dark) header, dark wordmark once
+     the header turns solid/light on scroll or when the mobile menu opens. */
+  .brand-logo--dark {
+    display: none;
+  }
+  .scrolled .brand-logo--light,
+  :global(.menu-open) .brand-logo--light {
+    display: none;
+  }
+  .scrolled .brand-logo--dark,
+  :global(.menu-open) .brand-logo--dark {
+    display: block;
   }
 
   .primary-nav {
@@ -280,18 +290,39 @@ const isActive = (href: string) =>
 </style>
 
 <script>
-  const header = document.getElementById("site-header");
-  const toggle = document.getElementById("menu-toggle");
+  // Re-query the header on every scroll so it keeps working after Astro
+  // view transitions swap the element (the old listener would otherwise
+  // keep toggling a detached node, leaving the new header transparent and
+  // its white text unreadable over light sections).
+  function applyHeaderState() {
+    const header = document.getElementById("site-header");
+    if (!header) return;
+    const y =
+      (window as any).lenis?.scroll ?? window.scrollY ?? window.pageYOffset ?? 0;
+    header.classList.toggle("scrolled", y > 40);
+  }
 
-  const onScroll = () => {
-    if (window.scrollY > 40) header?.classList.add("scrolled");
-    else header?.classList.remove("scrolled");
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  function wireMenuToggle() {
+    const toggle = document.getElementById("menu-toggle");
+    if (!toggle || (toggle as HTMLElement).dataset.wired) return;
+    (toggle as HTMLElement).dataset.wired = "1";
+    toggle.addEventListener("click", () => {
+      const open = document.body.classList.toggle("menu-open");
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+  }
 
-  toggle?.addEventListener("click", () => {
-    const open = document.body.classList.toggle("menu-open");
-    toggle.setAttribute("aria-expanded", String(open));
-  });
+  if (!(window as any).__hcHeaderInit) {
+    (window as any).__hcHeaderInit = true;
+    window.addEventListener("scroll", applyHeaderState, { passive: true });
+    document.addEventListener("astro:after-swap", applyHeaderState);
+    document.addEventListener("astro:page-load", () => {
+      document.body.classList.remove("menu-open");
+      wireMenuToggle();
+      applyHeaderState();
+    });
+  }
+
+  wireMenuToggle();
+  applyHeaderState();
 </script>

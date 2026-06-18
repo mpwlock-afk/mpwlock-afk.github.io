@@ -18,7 +18,7 @@ const productUrl = new URL(`/products/${product.slug}`, site).href;
 const productLd = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: `${product.name} — Holographic Display`,
+  name: `${product.name} Holographic Display`,
   description: product.summary,
   image: new URL(product.image, site).href,
   brand: { "@type": "Brand", name: "Holoconnects" },

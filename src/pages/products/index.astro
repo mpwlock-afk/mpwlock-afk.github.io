@@ -2,14 +2,67 @@
 import Base from "../../layouts/Base.astro";
 import CtaSection from "../../components/CtaSection.astro";
 import { products } from "../../data/site";
+
+// Size-range lineup. Heights are true real-world ratios vs the 86" flagship.
+// `img.black` / `img.white` get filled with the uniform renders; once both
+// colours exist for every size, the colour switch turns on automatically.
+const sizes = [
+  { label: '22"', name: "Mini", ratio: 0.3, solid: true, img: { black: "/images/holobox-mini.jpg", white: "" } },
+  { label: '43"', name: "The 43", ratio: 0.52, solid: false, img: { black: "/images/holobox-43.png", white: "" } },
+  { label: '75"', name: "The 75", ratio: 0.87, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
+  { label: '86"', name: "Flagship", ratio: 1.0, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
+];
+const hasWhite = sizes.every((s) => s.img.white);
+const hasBlack = sizes.every((s) => s.img.black);
 ---
 
-<Base title="Products — Holoconnects" description="Explore the Holoconnects holographic display range: Holobox, Holobox Mini, The 43, Hologrid and AI Hologram.">
+<Base title="Products — Holoconnects" description="Explore the Holoconnects holographic display range: Holobox, Holobox Mini, The 43 and Hologrid. Life-size holographic displays from 22 to 86 inch.">
   <section class="page-hero section--dark">
     <div class="container">
       <p class="eyebrow anim anim-up">Our products</p>
       <h1 class="display anim anim-up" style="--d:80ms">The hologram<br /><span class="holo-text">product range.</span></h1>
-      <p class="lead measure anim anim-up" style="--d:160ms">One platform. Every display — from the 86&quot; Holobox to AI-driven holograms.</p>
+      <p class="lead measure anim anim-up" style="--d:160ms">One platform for every display, from a 22&quot; tabletop to the 86&quot; life-size Holobox.</p>
+    </div>
+  </section>
+
+  <section class="section section--dark sizerange">
+    <div class="container">
+      <div class="block-head center" data-reveal>
+        <p class="eyebrow">The range</p>
+        <h2 class="section-title">One Holobox.<br /><span class="holo-text">Four sizes.</span></h2>
+        <p class="lead measure center">From a 22&quot; tabletop to an 86&quot; life-size flagship, the same holographic magic scaled to your space.</p>
+      </div>
+
+      {(hasWhite && hasBlack) && (
+        <div class="colorswitch" role="tablist" aria-label="Holobox colour">
+          <button class="colorswitch__btn is-active" data-color="black" role="tab">Midnight Black</button>
+          <button class="colorswitch__btn" data-color="white" role="tab">Starlight White</button>
+        </div>
+      )}
+
+      <div class="sizeline" data-reveal>
+        {
+          sizes.map((s) => (
+            <div class="sizeunit" style={`--h:${s.ratio}`}>
+              <div class={`sizeunit__box ${s.solid ? "is-solid" : ""}`}>
+                {s.img.black || s.img.white ? (
+                  <img
+                    src={s.img.black || s.img.white}
+                    data-black={s.img.black}
+                    data-white={s.img.white}
+                    alt={`Holobox ${s.label} holographic display`}
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="sizeunit__ph"><span>{s.label}</span><small>render coming</small></div>
+                )}
+              </div>
+              <span class="sizeunit__label">{s.label}</span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="sizeline__foot">Heights shown to scale · 21.5&quot; · 43&quot; · 75&quot; · 86&quot;</p>
     </div>
   </section>
 
@@ -95,4 +148,136 @@ import { products } from "../../data/site";
       order: 0;
     }
   }
+
+  /* ===== Size range ===== */
+  .sizerange .block-head { margin-inline: auto; margin-bottom: clamp(2rem, 4vw, 3rem); }
+
+  .colorswitch {
+    display: flex;
+    gap: 0.3rem;
+    width: max-content;
+    margin: 0 auto 2.5rem;
+    padding: 0.3rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .colorswitch__btn {
+    border: 0;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #b4b4bd;
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    background: transparent;
+    transition: color 0.3s var(--ease), background 0.3s var(--ease);
+  }
+  .colorswitch__btn.is-active {
+    color: #0a0a0a;
+    background: #fff;
+  }
+
+  .sizeline {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(1rem, 4vw, 3.5rem);
+    height: clamp(280px, 44vh, 460px);
+    padding-bottom: 1.5rem;
+    position: relative;
+  }
+  .sizeline::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
+    width: min(92%, 980px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(234, 153, 20, 0.5), transparent);
+  }
+  .sizeunit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
+  .sizeunit__box {
+    height: calc(var(--h) * 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .sizeunit__box img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    object-position: bottom center;
+    -webkit-box-reflect: below 2px linear-gradient(transparent 62%, rgba(255, 255, 255, 0.12));
+  }
+  .sizeunit__box.is-solid img {
+    -webkit-box-reflect: none;
+    border-radius: 4px;
+  }
+  .sizeunit__ph {
+    height: 100%;
+    aspect-ratio: 2 / 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    border: 1.5px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.45);
+  }
+  .sizeunit__ph span { font-family: var(--font-display); font-size: 1.4rem; color: #fff; }
+  .sizeunit__ph small { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  .sizeunit__label {
+    margin-top: 1.1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #0a0a0a;
+    background: var(--grad-gold);
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+  }
+  .sizeline__foot {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: #76767e;
+  }
+  @media (max-width: 560px) {
+    .sizeline { gap: 0.6rem; height: 300px; }
+    .sizeunit__label { font-size: 0.62rem; padding: 0.25rem 0.55rem; }
+  }
 </style>
+
+<script>
+  function wireColorSwitch() {
+    const sw = document.querySelector(".colorswitch");
+    if (!sw || (sw as HTMLElement).dataset.wired) return;
+    (sw as HTMLElement).dataset.wired = "1";
+    const imgs = Array.from(document.querySelectorAll<HTMLImageElement>(".sizeunit__box img"));
+    sw.querySelectorAll<HTMLButtonElement>(".colorswitch__btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sw.querySelectorAll(".colorswitch__btn").forEach((b) => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+        const color = btn.dataset.color;
+        imgs.forEach((img) => {
+          const next = color === "white" ? img.dataset.white : img.dataset.black;
+          if (next) img.src = next;
+        });
+      });
+    });
+  }
+  wireColorSwitch();
+  document.addEventListener("astro:page-load", wireColorSwitch);
+</script>

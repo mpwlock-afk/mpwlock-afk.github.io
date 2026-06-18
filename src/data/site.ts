@@ -19,7 +19,7 @@ export const stats = [
 
 export const offices = [
   {
-    region: "Europe — Head Office",
+    region: "Europe Head Office",
     address: "Randweg 1, Culemborg, Netherlands",
     phone: "+31 (0)85 303 10 01",
     email: "info@holoconnects.com",
@@ -74,7 +74,6 @@ export const nav = [
       { label: "Holobox Mini", href: "/products/holobox-mini" },
       { label: "The 43", href: "/products/the-43" },
       { label: "Hologrid", href: "/products/hologrid" },
-      { label: "AI Hologram", href: "/products/ai-hologram" },
     ],
   },
   { label: "Sectors", href: "/sectors" },
@@ -99,7 +98,7 @@ export const products: Product[] = [
     name: "Holobox",
     tagline: "Life-size 3D holograms that feel real.",
     summary:
-      "An 86\" transparent LCD screen brings people, products and presenters to life at human scale — interactive, vivid and unforgettable.",
+      "An 86\" transparent LCD screen brings people, products and presenters to life at human scale. Interactive, vivid and unforgettable.",
     image: "/images/holobox-black.jpg",
     specs: [
       { label: "Display", value: "86\" transparent LCD" },
@@ -130,7 +129,7 @@ export const products: Product[] = [
     features: [
       { title: "Countertop scale", body: "Bring products to life on a desk, counter or showroom table where space is limited." },
       { title: "Eye-catching depth", body: "The same floating, three-dimensional holographic effect that stops people in their tracks." },
-      { title: "Plug & present", body: "Easy to place and manage — ideal for retail displays, expos and demos." },
+      { title: "Plug & present", body: "Easy to place and manage, ideal for retail displays, expos and demos." },
     ],
   },
   {
@@ -149,27 +148,14 @@ export const products: Product[] = [
   {
     slug: "hologrid",
     name: "Hologrid",
-    tagline: "Scale your holograms to wall-size.",
+    tagline: "Five Holobox units. One modular wall.",
     summary:
-      "Combine multiple holographic panels into one seamless large-format canvas for events, lobbies and flagship spaces.",
-    image: "/images/case-bmw.jpg",
+      "Place up to five Holobox units side by side to build a modular holographic wall for events, lobbies and flagship spaces.",
+    image: "/images/holobox-black.png",
     features: [
-      { title: "Modular canvas", body: "Tile panels together to create dramatic, large-format holographic walls." },
+      { title: "Modular by design", body: "Line up multiple Holobox units to create a dramatic, large-format holographic wall." },
       { title: "Built for events", body: "Command attention at expos, launches and live experiences." },
-      { title: "Centrally managed", body: "Drive all panels together through one Holocontrol dashboard." },
-    ],
-  },
-  {
-    slug: "ai-hologram",
-    name: "AI Hologram",
-    tagline: "An intelligent presence that never sleeps.",
-    summary:
-      "Pair the Holobox with conversational AI to create a 24/7 holographic host, guide or assistant that answers questions in real time.",
-    image: "/images/case-host.jpg",
-    features: [
-      { title: "Always available", body: "An AI-driven holographic host welcomes and assists visitors around the clock." },
-      { title: "Conversational", body: "Natural, real-time interaction answers questions and guides people on the spot." },
-      { title: "On brand", body: "Designed to represent your brand with a consistent, lifelike presence." },
+      { title: "Centrally managed", body: "Drive every unit together through one Holocontrol dashboard." },
     ],
   },
 ];
