@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import CtaSection from "../components/CtaSection.astro";
 import { products, sectors, stats, testimonials } from "../data/site";
+import SizeRange from "../components/SizeRange.astro";
 
 const marqueeItems = [
   "Hospitality",
@@ -104,6 +105,9 @@ const marqueeItems = [
       <div class="hospo__stat anim anim-up" style="--d:180ms"><span>30+</span><small>Hotels live</small></div>
     </div>
   </section>
+
+  <!-- ============ SIZE RANGE ============ -->
+  <SizeRange />
 
   <!-- ============ PINNED HORIZONTAL PRODUCTS ============ -->
   <section class="hpin section--dark" data-hscroll>
