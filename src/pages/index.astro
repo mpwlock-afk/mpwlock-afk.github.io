@@ -4,17 +4,18 @@ import CtaSection from "../components/CtaSection.astro";
 import { products, sectors, stats, testimonials } from "../data/site";
 import SizeRange from "../components/SizeRange.astro";
 
-// Brands Holoconnects has worked with — shown as a white monochrome "Trusted by"
-// wall. Swap a name for <img class="trusted__logo" src="…" /> when a logo file is
-// available; the CSS forces any logo to solid white via filter.
+// Brands Holoconnects has worked with, shown as a white monochrome "Trusted by"
+// wall. A logo file in /images/logos/ renders as an <img> forced to white by CSS;
+// a brand without a logo yet falls back to its name in white text. Drop official
+// logos (svg/png, any colour, transparent background) in to complete the set.
 const clients = [
-  "Best Western",
-  "UNICEF",
-  "Deloitte",
-  "Vodafone",
-  "BMW",
-  "ING",
-  "Visit Britain",
+  { name: "Best Western", logo: "" },
+  { name: "UNICEF", logo: "" },
+  { name: "Deloitte", logo: "" },
+  { name: "Vodafone", logo: "/images/logos/vodafone.svg" },
+  { name: "BMW", logo: "/images/logos/bmw.svg" },
+  { name: "ING", logo: "" },
+  { name: "Visit Britain", logo: "" },
 ];
 ---
 
@@ -63,7 +64,20 @@ const clients = [
       <div class="trusted__row">
         {
           clients.map((c, i) => (
-            <span class="trusted__logo anim anim-up" style={`--d:${i * 60}ms`}>{c}</span>
+            <div class="trusted__item anim anim-up" style={`--d:${i * 60}ms`}>
+              {c.logo ? (
+                <img
+                  class="trusted__logo"
+                  src={c.logo}
+                  alt={`${c.name} logo`}
+                  loading="lazy"
+                  width="120"
+                  height="34"
+                />
+              ) : (
+                <span class="trusted__logo">{c.name}</span>
+              )}
+            </div>
           ))
         }
       </div>
@@ -452,6 +466,10 @@ const clients = [
     align-items: center;
     gap: clamp(1.5rem, 5vw, 3.5rem);
   }
+  .trusted__item {
+    display: inline-flex;
+    align-items: center;
+  }
   .trusted__logo {
     font-family: var(--font-display);
     font-weight: 600;
@@ -461,8 +479,10 @@ const clients = [
     letter-spacing: 0.01em;
     transition: opacity 0.3s var(--ease);
   }
-  .trusted__logo:hover { opacity: 1; }
-  /* When real logo images are dropped in, force them to monochrome white */
+  .trusted__item:hover .trusted__logo { opacity: 1; }
+  /* Logo images render monochrome white so any brand colour matches the wall.
+     The white filter sits on the image (not the animated wrapper) so the
+     entrance animation can't override it. */
   img.trusted__logo {
     height: clamp(22px, 3vw, 34px);
     width: auto;
