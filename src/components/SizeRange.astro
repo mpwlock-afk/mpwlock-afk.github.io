@@ -7,9 +7,10 @@
 // `img.black` / `img.white` hold the uniform renders; once BOTH colours exist
 // for every size, the colour switch turns on automatically.
 // NOTE: 75" currently reuses the 86" render as a stand-in until the real
-// 75" render is supplied (see CLAUDE.md). 22" uses the black-bg mini jpg.
+// 75" render is supplied (see CLAUDE.md). 22" uses the cut-out mini render
+// (flipped so its glass front faces the same way as the other boxes).
 const sizes = [
-  { label: '22"', ratio: 0.299, solid: true, img: { black: "/images/holobox-mini.jpg", white: "" } },
+  { label: '22"', ratio: 0.299, solid: false, img: { black: "/images/holobox-mini-flip.png", white: "" } },
   { label: '43"', ratio: 0.524, solid: false, img: { black: "/images/holobox-43.png", white: "" } },
   { label: '75"', ratio: 0.874, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
   { label: '86"', ratio: 1.0, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
