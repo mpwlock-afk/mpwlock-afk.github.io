@@ -76,7 +76,7 @@ body {
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: clip; /* clip horizontal overflow without breaking position: sticky */
+  overflow-x: hidden;
 }
 
 img {

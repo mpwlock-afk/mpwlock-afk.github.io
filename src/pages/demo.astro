@@ -2,47 +2,51 @@
 import Base from "../layouts/Base.astro";
 import { site } from "../data/site";
 
-// Cal.com booking. Handle plus event type slug (Cal uses lowercase handles in the URL).
-// Update if your live booking link or event slug differs.
-const calLink = "marnixholoconnects/demo";
+const calendly =
+  "https://calendly.com/andre-holoconnects/30min?hide_gdpr_banner=1&background_color=0a0a0a&text_color=ffffff&primary_color=ea9914";
 ---
 
-<Base title="Book a Demo | See a Holoconnects Hologram Live" description="Book a live 30-minute Holobox demo with our team and see a life-size hologram in real time. Pick a slot in our calendar and experience it for yourself.">
+<Base title="Book a demo — Holoconnects" description="Schedule a live 30-minute Holobox demo directly in our calendar.">
   <section class="page-hero section--dark">
     <div class="container">
       <p class="eyebrow anim anim-up">Book a demo</p>
       <h1 class="display anim anim-up" style="--d:80ms">See it <span class="holo-text">life-size.</span></h1>
       <p class="lead measure anim anim-up" style="--d:160ms">
-        Pick a slot that suits you and spend 30 minutes with our team, live on a Holobox. Seeing it in person is the moment it all clicks.
+        Pick a slot — 30 minutes with our team, live on a Holobox.
       </p>
     </div>
   </section>
 
   <section class="section section--dark demo-sec">
     <div class="container demo-grid">
-      <div class="demo-cal anim anim-scale" style="--d:120ms" data-lenis-prevent>
-        <div id="cal-inline" data-cal-link={calLink}></div>
+      <div class="demo-cal anim anim-scale" style="--d:120ms">
+        <iframe
+          src={calendly}
+          title="Schedule a Holoconnects demo"
+          loading="lazy"
+          data-lenis-prevent
+        ></iframe>
       </div>
       <aside class="demo-side">
         <div class="demo-point anim anim-up" style="--d:200ms">
           <span class="demo-num holo-text">01</span>
           <div>
             <h3>Live, not a video</h3>
-            <p>We broadcast in real time, so you feel the presence for yourself rather than watching a clip.</p>
+            <p>We broadcast in real time, so you experience the presence first-hand.</p>
           </div>
         </div>
         <div class="demo-point anim anim-up" style="--d:280ms">
           <span class="demo-num holo-text">02</span>
           <div>
             <h3>Tailored to your sector</h3>
-            <p>Whether you work in hospitality, retail, events or telehealth, we build the demo around your use case.</p>
+            <p>Hospitality, retail, events, telehealth — we demo your use case.</p>
           </div>
         </div>
         <div class="demo-point anim anim-up" style="--d:360ms">
           <span class="demo-num holo-text">03</span>
           <div>
             <h3>Honest advice</h3>
-            <p>Buy, rent or lease, we will talk you through what actually fits your goals and share real numbers.</p>
+            <p>Buy, rent or lease — we'll tell you what fits, with real numbers.</p>
           </div>
         </div>
         <div class="demo-alt anim anim-up" style="--d:440ms">
@@ -53,21 +57,6 @@ const calLink = "marnixholoconnects/demo";
       </aside>
     </div>
   </section>
-
-  <script is:inline>
-    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; typeof namespace === "string" ? (cal.ns[namespace] = cal.ns[namespace] || api) && p(cal.ns[namespace], ar) && p(cal, ["initNamespace", namespace]) : p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
-
-    function initHoloCal() {
-      const el = document.getElementById("cal-inline");
-      if (!el || el.dataset.calBooted || !window.Cal) return;
-      el.dataset.calBooted = "1";
-      Cal("init", { origin: "https://cal.com" });
-      Cal("inline", { elementOrSelector: "#cal-inline", calLink: el.dataset.calLink, config: { theme: "dark" } });
-      Cal("ui", { theme: "dark", hideEventTypeDetails: false, styles: { branding: { brandColor: "#ea9914" } } });
-    }
-    initHoloCal();
-    document.addEventListener("astro:page-load", initHoloCal);
-  </script>
 </Base>
 
 <style>
@@ -91,13 +80,10 @@ const calLink = "marnixholoconnects/demo";
     background: #0a0a0a;
     box-shadow: 0 40px 90px -40px rgba(200, 120, 0, 0.25);
   }
-  #cal-inline {
-    width: 100%;
-    min-height: 760px;
-  }
-  .demo-cal :global(iframe) {
+  .demo-cal iframe {
     display: block;
     width: 100%;
+    height: 760px;
     border: 0;
   }
   .demo-side {
@@ -151,6 +137,6 @@ const calLink = "marnixholoconnects/demo";
   @media (max-width: 860px) {
     .demo-grid { grid-template-columns: 1fr; }
     .demo-side { position: static; }
-    #cal-inline { min-height: 640px; }
+    .demo-cal iframe { height: 640px; }
   }
 </style>

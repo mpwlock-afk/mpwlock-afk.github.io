@@ -2,29 +2,14 @@
 import Base from "../../layouts/Base.astro";
 import CtaSection from "../../components/CtaSection.astro";
 import { products } from "../../data/site";
-
-const itemList = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Holoconnects holographic display range",
-  itemListElement: products.map((p, i) => ({
-    "@type": "ListItem",
-    position: i + 1,
-    name: p.name,
-    url: `https://www.holoconnects.com/products/${p.slug}`,
-  })),
-};
 ---
 
-<Base
-  title="Hologram Displays & Holobox Range | Holoconnects"
-  description="Discover the Holoconnects holographic display range: the Holobox, Holobox Mini, the 43 inch hologram box, Hologrid wall and AI hologram host. Book a demo today."
->
+<Base title="Products — Holoconnects" description="Explore the Holoconnects holographic display range: Holobox, Holobox Mini, The 43, Hologrid and AI Hologram.">
   <section class="page-hero section--dark">
     <div class="container">
       <p class="eyebrow anim anim-up">Our products</p>
       <h1 class="display anim anim-up" style="--d:80ms">The hologram<br /><span class="holo-text">product range.</span></h1>
-      <p class="lead measure anim anim-up" style="--d:160ms">One platform for every display, from the 86&quot; Holobox to AI-driven holograms.</p>
+      <p class="lead measure anim anim-up" style="--d:160ms">One platform. Every display — from the 86&quot; Holobox to AI-driven holograms.</p>
     </div>
   </section>
 
@@ -35,13 +20,13 @@ const itemList = {
           products.map((p, i) => (
             <article class="prow" data-reveal>
               <div class={`prow-media ${i % 2 === 1 ? "is-right" : ""}`}>
-                <img src={p.image} alt={`${p.name} holographic display`} loading="lazy" />
+                <img src={p.image} alt={p.name} loading="lazy" />
               </div>
               <div class="prow-body">
                 <p class="pill">{p.tagline}</p>
                 <h2>{p.name}</h2>
                 <p class="text-muted">{p.summary}</p>
-                <a href={`/products/${p.slug}`} class="btn btn--primary">Explore the {p.name}</a>
+                <a href={`/products/${p.slug}`} class="btn btn--primary">Explore {p.name}</a>
               </div>
             </article>
           ))
@@ -51,8 +36,6 @@ const itemList = {
   </section>
 
   <CtaSection />
-
-  <script type="application/ld+json" set:html={JSON.stringify(itemList)} />
 </Base>
 
 <style>

@@ -2,29 +2,14 @@
 import Base from "../layouts/Base.astro";
 import CtaSection from "../components/CtaSection.astro";
 import { sectors } from "../data/site";
-
-const sectorItemList = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Hologram solutions by sector",
-  itemListElement: sectors.map((s, i) => ({
-    "@type": "ListItem",
-    position: i + 1,
-    name: s.name,
-    description: s.blurb,
-  })),
-};
 ---
 
-<Base
-  title="Hologram Solutions by Sector | Holoconnects"
-  description="See how Holoconnects holograms work across hospitality, healthcare and telehealth, retail, events and education, with life-size 3D displays built for each industry."
->
+<Base title="Sectors — Holoconnects" description="Holoconnects holographic technology in hospitality, telehealth, retail, events, education and advertising.">
   <section class="page-hero section--dark">
     <div class="container">
       <p class="eyebrow anim anim-up">Sectors</p>
       <h1 class="display anim anim-up" style="--d:80ms">Where holograms<br /><span class="holo-text">make the difference.</span></h1>
-      <p class="lead measure anim anim-up" style="--d:160ms">We lead with hospitality and feel right at home in telehealth, retail, events, education and advertising.</p>
+      <p class="lead measure anim anim-up" style="--d:160ms">Leading with hospitality — and at home in telehealth, retail, events, education and advertising.</p>
     </div>
   </section>
 
@@ -35,7 +20,7 @@ const sectorItemList = {
           sectors.map((s, i) => (
             <article class="srow" data-reveal>
               <div class={`srow-media ${i % 2 === 1 ? "is-right" : ""}`}>
-                <img src={s.image} alt={`Holoconnects hologram display in use for ${s.name.toLowerCase()}`} loading="lazy" />
+                <img src={s.image} alt={s.name} loading="lazy" />
               </div>
               <div class="srow-body">
                 <span class="srow-index">{String(i + 1).padStart(2, "0")}</span>
@@ -53,8 +38,6 @@ const sectorItemList = {
   </section>
 
   <CtaSection />
-
-  <script type="application/ld+json" set:html={JSON.stringify(sectorItemList)} />
 </Base>
 
 <style>

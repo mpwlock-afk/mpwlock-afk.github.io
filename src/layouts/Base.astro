@@ -7,50 +7,12 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
-  image?: string;
-  type?: string;
-  noindex?: boolean;
-  canonicalPath?: string;
 }
 
 const {
-  title = "Holoconnects | Europe's leading hologram company",
+  title = "Holoconnects — Europe's leading hologram company",
   description = "Holoconnects builds interactive, life-size holographic displays used worldwide in hospitality, healthcare, retail, education and live events.",
-  image = "/images/og-default.jpg",
-  type = "website",
-  noindex = false,
-  canonicalPath,
 } = Astro.props;
-
-const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site).href;
-const imageURL = new URL(image, Astro.site).href;
-const logoURL = new URL("/images/logo-mark.png", Astro.site).href;
-const robots = noindex ? "noindex, nofollow" : "index, follow";
-
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Holoconnects",
-  url: "https://www.holoconnects.com",
-  logo: logoURL,
-  description,
-  contactPoint: [
-    {
-      "@type": "ContactPoint",
-      telephone: "+31853031001",
-      contactType: "sales",
-      email: "info@holoconnects.com",
-      areaServed: ["EU", "US"],
-    },
-  ],
-};
-
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Holoconnects",
-  url: "https://www.holoconnects.com",
-};
 ---
 
 <!doctype html>
@@ -58,27 +20,12 @@ const websiteSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0b0b0d" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
-    <meta name="robots" content={robots} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content={type} />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:image" content={imageURL} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:site_name" content="Holoconnects" />
-    <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={imageURL} />
-    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
-    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link
       rel="stylesheet"

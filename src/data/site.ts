@@ -19,7 +19,7 @@ export const stats = [
 
 export const offices = [
   {
-    region: "Europe, Head Office",
+    region: "Europe — Head Office",
     address: "Randweg 1, Culemborg, Netherlands",
     phone: "+31 (0)85 303 10 01",
     email: "info@holoconnects.com",
@@ -97,10 +97,10 @@ export const products: Product[] = [
   {
     slug: "holobox",
     name: "Holobox",
-    tagline: "A life-size hologram that feels like the real thing.",
+    tagline: "Life-size 3D holograms that feel real.",
     summary:
-      "An 86\" transparent LCD brings people, products and presenters to life at human scale. The holographic display is interactive, vivid and hard to forget.",
-    image: "/images/holobox-black.png",
+      "An 86\" transparent LCD screen brings people, products and presenters to life at human scale — interactive, vivid and unforgettable.",
+    image: "/images/holobox-black.jpg",
     specs: [
       { label: "Display", value: "86\" transparent LCD" },
       { label: "Touch", value: "20-point IR touch" },
@@ -117,10 +117,10 @@ export const products: Product[] = [
   {
     slug: "holobox-mini",
     name: "Holobox Mini",
-    tagline: "A desktop hologram that puts products in the spotlight.",
+    tagline: "The desktop hologram for products in the spotlight.",
     summary:
-      "A compact tabletop holographic display built for product placement and close-up detail, with the same striking three-dimensional depth as the full-size Holobox.",
-    image: "/images/holobox-mini.png",
+      "A compact table model designed for product placement and showcasing smaller features with the same striking holographic depth.",
+    image: "/images/holobox-mini.jpg",
     specs: [
       { label: "Format", value: "Table model" },
       { label: "Use", value: "Product placement" },
@@ -130,16 +130,16 @@ export const products: Product[] = [
     features: [
       { title: "Countertop scale", body: "Bring products to life on a desk, counter or showroom table where space is limited." },
       { title: "Eye-catching depth", body: "The same floating, three-dimensional holographic effect that stops people in their tracks." },
-      { title: "Plug & present", body: "Easy to place and manage, ideal for retail displays, expos and demos." },
+      { title: "Plug & present", body: "Easy to place and manage — ideal for retail displays, expos and demos." },
     ],
   },
   {
     slug: "the-43",
     name: "The 43",
-    tagline: "Big holographic impact in a small footprint.",
+    tagline: "Compact holographic impact for any space.",
     summary:
-      "A 43\" holographic display that delivers Holobox-quality presence in a smaller, more flexible package, ready for spaces where the full-size unit won't fit.",
-    image: "/images/holobox-43.png",
+      "A 43\" holographic display that delivers Holobox-quality presence in a smaller, more flexible footprint.",
+    image: "/images/holobox-white.jpg",
     features: [
       { title: "Flexible footprint", body: "A smaller display that fits lobbies, booths and tighter retail environments." },
       { title: "Holographic clarity", body: "Sharp, lifelike holographic imagery in a more accessible size." },
@@ -149,10 +149,10 @@ export const products: Product[] = [
   {
     slug: "hologrid",
     name: "Hologrid",
-    tagline: "Scale your holograms up to wall size.",
+    tagline: "Scale your holograms to wall-size.",
     summary:
-      "Tile multiple holographic panels into one seamless, large-format canvas built for events, lobbies and flagship spaces.",
-    image: "/images/holobox-black-flip.png",
+      "Combine multiple holographic panels into one seamless large-format canvas for events, lobbies and flagship spaces.",
+    image: "/images/case-bmw.jpg",
     features: [
       { title: "Modular canvas", body: "Tile panels together to create dramatic, large-format holographic walls." },
       { title: "Built for events", body: "Command attention at expos, launches and live experiences." },
@@ -162,10 +162,10 @@ export const products: Product[] = [
   {
     slug: "ai-hologram",
     name: "AI Hologram",
-    tagline: "A smart presence that never clocks out.",
+    tagline: "An intelligent presence that never sleeps.",
     summary:
-      "Pair the Holobox with conversational AI for a 24/7 holographic host, guide or assistant that answers questions in real time.",
-    image: "/images/holobox-mini-flip.png",
+      "Pair the Holobox with conversational AI to create a 24/7 holographic host, guide or assistant that answers questions in real time.",
+    image: "/images/case-host.jpg",
     features: [
       { title: "Always available", body: "An AI-driven holographic host welcomes and assists visitors around the clock." },
       { title: "Conversational", body: "Natural, real-time interaction answers questions and guides people on the spot." },
@@ -182,12 +182,12 @@ export type Sector = {
 };
 
 export const sectors: Sector[] = [
-  { slug: "hospitality", name: "Hospitality & Travel", blurb: "A virtual concierge that greets every guest with a human touch, day or night.", image: "/images/sector-hospitality.jpg" },
-  { slug: "telehealth", name: "Telehealth", blurb: "Life-size telehealth consultations that bring care closer, wherever the specialist happens to be.", image: "/images/sector-telehealth.jpg" },
-  { slug: "retail", name: "Retail Displays", blurb: "Turn windows and showrooms into holographic stages that stop shoppers in their tracks.", image: "/images/sector-retail.jpg" },
-  { slug: "events", name: "Events", blurb: "Put speakers and brands on any stage as striking, large-format 3D holograms.", image: "/images/sector-events.jpg" },
+  { slug: "hospitality", name: "Hospitality & Travel", blurb: "A 24/7 virtual concierge and reception that welcomes every guest with a human touch.", image: "/images/sector-hospitality.jpg" },
+  { slug: "telehealth", name: "Telehealth", blurb: "Life-size, lifelike consultations that bring care closer, wherever the specialist is.", image: "/images/sector-telehealth.jpg" },
+  { slug: "retail", name: "Retail Displays", blurb: "Turn windows and showrooms into holographic stages that stop people in their tracks.", image: "/images/sector-retail.jpg" },
+  { slug: "events", name: "Events", blurb: "Beam speakers and brands onto any stage in striking, large-format 3D.", image: "/images/sector-events.jpg" },
   { slug: "education", name: "Education", blurb: "Bring lessons, guest lecturers and complex ideas to life in three dimensions.", image: "/images/sector-education.jpg" },
-  { slug: "advertising", name: "Advertising", blurb: "Premium holographic out-of-home advertising that commands attention in 4K 3D.", image: "/images/case-liege.jpg" },
+  { slug: "advertising", name: "Advertising", blurb: "Premium holographic out-of-home that commands attention in 4K 3D.", image: "/images/case-liege.jpg" },
 ];
 
 export type Case = {

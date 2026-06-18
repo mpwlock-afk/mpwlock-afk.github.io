@@ -26,7 +26,7 @@ npm run build   # productieversie in dist/
 
 ## Formulieren
 
-- **/contact** — spiegelt het live Gravity Forms-formulier (zelfde velden + opties). Verzendingen gaan via **FormSubmit** naar `mpw.lock@gmail.com` (zie `INBOX` in `src/pages/contact.astro`). Eenmalig de activatielink in de FormSubmit-mail aanklikken; daarna komt alles binnen. Ander adres? Pas `INBOX` aan.
+- **/contact** — spiegelt het live Gravity Forms-formulier (zelfde velden + opties). Verzendingen gaan via **FormSubmit** naar het adres in `PUBLIC_CONTACT_INBOX` (lokaal in `.env`, op GitHub via de repo-secret `CONTACT_INBOX`). Eenmalig de activatielink in de FormSubmit-mail aanklikken; daarna komt alles binnen. Ander adres? Pas de env-variabele / secret aan.
 - **/demo** — Calendly-embed (calendly.com/andre-holoconnects/30min), zelfde als live site.
 
 ## Hosting

@@ -4,15 +4,12 @@ import CtaSection from "../components/CtaSection.astro";
 import { cases, testimonials } from "../data/site";
 ---
 
-<Base
-  title="Hologram Case Studies & Customer Stories | Holoconnects"
-  description="Explore real hologram case studies and customer stories from Holoconnects, with projects for brands like BMW and ING across corporate, government, events and retail."
->
+<Base title="Cases — Holoconnects" description="They already chose Holoconnects. Discover holographic projects with BMW, ING, Visit Britain and more.">
   <section class="page-hero section--dark">
     <div class="container">
       <p class="eyebrow anim anim-up">Cases</p>
       <h1 class="display anim anim-up" style="--d:80ms">They already chose<br /><span class="holo-text">Holoconnects.</span></h1>
-      <p class="lead measure anim anim-up" style="--d:160ms">From global brands to government missions, see where our holograms are already at work.</p>
+      <p class="lead measure anim anim-up" style="--d:160ms">From global brands to government missions.</p>
     </div>
   </section>
 
@@ -22,7 +19,7 @@ import { cases, testimonials } from "../data/site";
         {
           cases.map((c, i) => (
             <article class={`case ${i === 0 ? "case--wide" : ""}`} data-tilt="4" data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
-              <img src={c.image} alt={`Holoconnects hologram project: ${c.title}, ${c.sector.toLowerCase()} sector`} loading="lazy" />
+              <img src={c.image} alt={c.title} loading="lazy" />
               <div class="case-overlay"></div>
               <div class="case-text">
                 <span class="case-sector">{c.sector}</span>

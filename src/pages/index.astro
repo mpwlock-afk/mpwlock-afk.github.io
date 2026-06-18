@@ -11,32 +11,9 @@ const marqueeItems = [
   "Education",
   "Advertising",
 ];
-
-const productListSchema = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Holoconnects hologram display range",
-  description:
-    "Interactive, life-size holographic displays from Holoconnects, including the Holobox, Holobox Mini, The 43, Hologrid and AI Hologram.",
-  itemListElement: products.map((p, i) => ({
-    "@type": "ListItem",
-    position: i + 1,
-    item: {
-      "@type": "Product",
-      name: p.name,
-      description: p.summary,
-      url: `https://www.holoconnects.com/products/${p.slug}`,
-      image: new URL(p.image, "https://www.holoconnects.com").href,
-      brand: { "@type": "Brand", name: "Holoconnects" },
-    },
-  })),
-};
 ---
 
-<Base
-  title="Holoconnects | Interactive Life-Size Hologram Displays"
-  description="Holoconnects builds interactive, life-size holographic displays. Meet the Holobox and our hologram range, bringing a real human presence anywhere, 24/7."
->
+<Base>
   <!-- ============ HERO ============ -->
   <section class="hero">
     <canvas id="holo-canvas" class="hero-canvas" aria-hidden="true"></canvas>
@@ -105,7 +82,7 @@ const productListSchema = {
   <!-- ============ HOSPITALITY SHOWCASE ============ -->
   <section class="hospo">
     <div class="hospo__media">
-      <img src="/images/sector-hospitality.jpg" alt="Life-size holographic concierge welcoming a guest in a hotel lobby" data-parallax="0.12" />
+      <img src="/images/sector-hospitality.jpg" alt="Holographic concierge in hospitality" data-parallax="0.12" />
     </div>
     <div class="hospo__veil"></div>
     <div class="container hospo__content">
@@ -134,7 +111,7 @@ const productListSchema = {
       </div>
       <div class="hpin__track">
         <div class="hpin__intro">
-          <p class="lead">One platform powers every display, from a life-size 86&quot; Holobox to a desktop Mini, modular walls and AI-driven holograms.</p>
+          <p class="lead">One platform powers every display — from a life-size 86&quot; Holobox to a desktop Mini, modular walls and AI-driven holograms.</p>
           <span class="hpin__hint">Keep scrolling →</span>
         </div>
         {
@@ -143,7 +120,7 @@ const productListSchema = {
               <span class="hcard__index">{String(i + 1).padStart(2, "0")}</span>
               <div class="hcard__media">
                 <div class="hcard__glow"></div>
-                <img src={p.image} alt={`${p.name} interactive hologram display by Holoconnects`} loading="lazy" />
+                <img src={p.image} alt={p.name} loading="lazy" />
               </div>
               <div class="hcard__body">
                 <h3>{p.name}</h3>
@@ -172,7 +149,7 @@ const productListSchema = {
         <div class="value-block anim anim-up" data-tilt="4">
           <span class="value-no">01</span>
           <h3>A human touch</h3>
-          <p>Technology that deepens human connection instead of replacing it.</p>
+          <p>Technology that deepens human connection — never replaces it.</p>
         </div>
         <div class="value-block anim anim-up" style="--d:120ms" data-tilt="4">
           <span class="value-no">02</span>
@@ -182,7 +159,7 @@ const productListSchema = {
         <div class="value-block anim anim-up" style="--d:240ms" data-tilt="4">
           <span class="value-no">03</span>
           <h3>Sustainable reach</h3>
-          <p>Broader reach with a lower footprint, inclusive by design.</p>
+          <p>Broader reach, lower footprint — inclusive by design.</p>
         </div>
       </div>
     </div>
@@ -193,14 +170,14 @@ const productListSchema = {
     <div class="container">
       <div class="sectors-head">
         <h2 class="section-title anim anim-up">Built for the moments<br />that matter.</h2>
-        <p class="lead anim anim-up" style="--d:120ms">From guest experiences in hospitality to virtual care in telehealth, we deliver lifelike presence where it counts.</p>
+        <p class="lead anim anim-up" style="--d:120ms">From guest experiences in hospitality to virtual care in telehealth — lifelike presence where it counts.</p>
       </div>
       <div class="sectors-stack">
         {
           sectors.map((s, i) => (
             <a href="/sectors" class="sec-tile hoverable anim anim-scale" style={`--d:${(i % 3) * 90}ms`}>
               <div class="sec-tile__img">
-                <img src={s.image} alt={`Holoconnects holographic displays for ${s.name}`} data-parallax="0.08" loading="lazy" />
+                <img src={s.image} alt={s.name} data-parallax="0.08" loading="lazy" />
               </div>
               <div class="sec-tile__veil"></div>
               <div class="sec-tile__txt">
@@ -216,37 +193,26 @@ const productListSchema = {
   </section>
 
   <!-- ============ TESTIMONIAL ============ -->
-  <section class="section testi-sec">
+  <section class="section quote-sec">
     <div class="container">
-      <div class="testi-head">
-        <p class="eyebrow anim anim-up">Trusted worldwide</p>
-        <h2 class="section-title anim anim-up" style="--d:80ms">What our clients say.</h2>
+      <div class="quote-rail" data-parallax="0.05">
+        <span class="quote-mark holo-text">&ldquo;</span>
       </div>
-      <div class="testi-grid">
-        {
-          testimonials.map((t, i) => (
-            <figure class="testi-card anim anim-up" style={`--d:${i * 90}ms`} data-tilt="3">
-              <div class="testi-media">
-                <img src={t.image} alt={`Holoconnects hologram in use, project by ${t.name}`} loading="lazy" />
-              </div>
-              <div class="testi-body">
-                <span class="testi-mark holo-text" aria-hidden="true">&ldquo;</span>
-                <blockquote>{t.quote}</blockquote>
-                <figcaption>
-                  <strong>{t.name}</strong>
-                  <span>{t.role}</span>
-                </figcaption>
-              </div>
-            </figure>
-          ))
-        }
-      </div>
+      {
+        testimonials.map((t, i) => (
+          <figure class="big-quote anim anim-up" style={`--d:${i * 60}ms`}>
+            <blockquote>{t.quote}</blockquote>
+            <figcaption>
+              <img src={t.image} alt="" loading="lazy" />
+              <span><strong>{t.name}</strong>{t.role}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
     </div>
   </section>
 
   <CtaSection />
-
-  <script type="application/ld+json" set:html={JSON.stringify(productListSchema)} />
 </Base>
 
 <style>
@@ -257,8 +223,6 @@ const productListSchema = {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-top: clamp(7rem, 14vh, 10rem);
-    padding-bottom: clamp(4rem, 8vh, 6rem);
     background: #050507;
     color: #fff;
     overflow: hidden;
@@ -574,8 +538,6 @@ const productListSchema = {
   /* ============ PINNED HORIZONTAL ============ */
   .hpin {
     position: relative;
-    /* no overflow here: it would make .hpin a scroll container and break the
-       sticky pin. The horizontal track is clipped by .hpin__sticky instead. */
   }
   .hpin__sticky {
     position: sticky;
@@ -583,7 +545,6 @@ const productListSchema = {
     height: 100vh;
     height: 100svh;
     overflow: hidden;
-    clip-path: inset(0 0 0 0); /* force-clip GPU-composited translate3d children */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -651,15 +612,10 @@ const productListSchema = {
   }
   .hcard__media {
     position: relative;
-    flex: 1 1 0; /* take the remaining space, never the image's intrinsic height */
-    min-height: 0;
-    overflow: hidden; /* keep the render inside the frame */
+    flex: 1;
     display: grid;
     place-items: center;
     margin: 0.5rem 0 1rem;
-  }
-  .hcard__body {
-    flex: 0 0 auto; /* body keeps its full height; title, tagline & link always visible */
   }
   .hcard__glow {
     position: absolute;
@@ -668,10 +624,9 @@ const productListSchema = {
     filter: blur(14px);
   }
   .hcard__media img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
     object-fit: contain;
     filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.5));
   }
@@ -804,88 +759,53 @@ const productListSchema = {
     .sec-tile:nth-child(n) { grid-column: auto; min-height: 320px; }
   }
 
-  /* ============ TESTIMONIALS ============ */
-  .testi-head {
-    text-align: center;
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  /* ============ QUOTES ============ */
+  .quote-sec { position: relative; }
+  .quote-rail {
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    font-size: 18rem;
+    line-height: 0.6;
+    z-index: 0;
+    pointer-events: none;
   }
-  .testi-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.2rem, 2.5vw, 2rem);
-  }
-  .testi-card {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: var(--surface);
-    box-shadow: var(--shadow-card);
-    transition: transform 0.45s var(--ease), border-color 0.45s var(--ease),
-      box-shadow 0.45s var(--ease);
-  }
-  .testi-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(234, 153, 20, 0.4);
-    box-shadow: 0 34px 70px -34px rgba(0, 0, 0, 0.28);
-  }
-  .testi-media {
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-  }
-  .testi-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s var(--ease);
-  }
-  .testi-card:hover .testi-media img {
-    transform: scale(1.05);
-  }
-  .testi-body {
+  .quote-mark { font-family: var(--font-display); }
+  .big-quote {
     position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: clamp(1.4rem, 2vw, 2rem);
+    z-index: 1;
+    max-width: 60ch;
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem) auto;
   }
-  .testi-mark {
+  .big-quote:last-of-type { margin-bottom: 0; }
+  .big-quote blockquote {
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 3.4rem;
-    line-height: 0.5;
-    margin-bottom: 0.7rem;
+    font-weight: 500;
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.4rem;
   }
-  .testi-body blockquote {
-    margin: 0 0 1.5rem;
-    flex: 1;
-    font-size: 1.02rem;
-    line-height: 1.6;
-    color: var(--ink);
+  .big-quote figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
   }
-  .testi-body figcaption {
+  .big-quote figcaption img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .big-quote figcaption span {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--line);
-  }
-  .testi-body figcaption strong {
-    color: var(--ink);
-    font-size: 0.98rem;
-  }
-  .testi-body figcaption span {
+    font-size: 0.95rem;
     color: var(--grey);
-    font-size: 0.85rem;
   }
-  @media (max-width: 860px) {
-    .testi-grid {
-      grid-template-columns: 1fr;
-      max-width: 460px;
-      margin-inline: auto;
-    }
+  .big-quote figcaption strong {
+    color: var(--ink);
+    font-family: var(--font-body);
   }
 </style>
 

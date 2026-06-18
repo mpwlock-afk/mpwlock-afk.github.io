@@ -11,4 +11,6 @@ npm-debug.log*
 .DS_Store
 # astro
 .astro/
-.gstack/
+
+# old prototype (pre-Astro)
+_old_static/
