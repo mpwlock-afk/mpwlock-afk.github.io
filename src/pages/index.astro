@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import CtaSection from "../components/CtaSection.astro";
 import { products, sectors, stats, testimonials } from "../data/site";
 import SizeRange from "../components/SizeRange.astro";
+import Configurator from "../components/Configurator.astro";
 import Support from "../components/Support.astro";
 
 // Brands Holoconnects has worked with, shown as a white monochrome "Trusted by"
@@ -126,6 +127,9 @@ const clients = [
 
   <!-- ============ SIZE RANGE ============ -->
   <SizeRange />
+
+  <!-- ============ CONFIGURATOR ============ -->
+  <Configurator />
 
   <!-- ============ PINNED HORIZONTAL PRODUCTS ============ -->
   <section class="hpin section--dark" data-hscroll>

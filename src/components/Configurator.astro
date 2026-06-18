@@ -1,0 +1,275 @@
+---
+// Interactive Holobox configurator (sits under the size-range on the homepage).
+// Model x finish x view. The 86" has the full matrix (black/white x front/left/
+// right, from the studio render set); the 22/43/75 currently only have a black
+// front render, so their finish/view options degrade gracefully (disabled) until
+// matching renders are supplied. New component — does not touch SizeRange.astro.
+const models = [
+  {
+    id: "86",
+    label: '86"',
+    name: "Holobox",
+    colors: {
+      black: {
+        front: "/images/config/holobox86-black-front.png",
+        left: "/images/config/holobox86-black-left.png",
+        right: "/images/config/holobox86-black-right.png",
+      },
+      white: {
+        front: "/images/config/holobox86-white-front.png",
+        left: "/images/config/holobox86-white-left.png",
+        right: "/images/config/holobox86-white-right.png",
+      },
+    },
+  },
+  { id: "75", label: '75"', name: "The 75", colors: { black: { front: "/images/holobox-75-black.png" } } },
+  { id: "43", label: '43"', name: "The 43", colors: { black: { front: "/images/holobox-43.png" } } },
+  { id: "22", label: '22"', name: "Mini", colors: { black: { front: "/images/holobox-mini-flip.png" } } },
+];
+
+const start = models[0].colors.black.front;
+---
+
+<section class="section configurator" id="configurator">
+  <div class="container">
+    <div class="cfg-head" data-reveal>
+      <p class="eyebrow">Configure</p>
+      <h2 class="cfg-title">Build your <span class="holo-text">Holobox.</span></h2>
+      <p class="cfg-lead">Pick a size, a finish and an angle. See it your way.</p>
+    </div>
+
+    <div class="cfg" data-cfg>
+      <div class="cfg__stage">
+        <div class="cfg__glow" aria-hidden="true"></div>
+        <img
+          class="cfg__img"
+          data-cfg-img
+          src={start}
+          alt="Holobox 86 inch, Midnight Black, front view"
+          width="811"
+          height="1300"
+        />
+      </div>
+
+      <div class="cfg__panel">
+        <div class="cfg__group">
+          <span class="cfg__label">Model</span>
+          <div class="cfg__opts" role="group" aria-label="Model">
+            {models.map((m) => (
+              <button type="button" class="cfg__chip" data-model={m.id}>{m.label}</button>
+            ))}
+          </div>
+        </div>
+
+        <div class="cfg__group">
+          <span class="cfg__label">Finish</span>
+          <div class="cfg__opts" role="group" aria-label="Finish">
+            <button type="button" class="cfg__chip" data-color="black"><span class="cfg__dot cfg__dot--black"></span>Midnight Black</button>
+            <button type="button" class="cfg__chip" data-color="white"><span class="cfg__dot cfg__dot--white"></span>Starlight White</button>
+          </div>
+        </div>
+
+        <div class="cfg__group">
+          <span class="cfg__label">View</span>
+          <div class="cfg__opts" role="group" aria-label="View">
+            <button type="button" class="cfg__chip" data-view="left">Left</button>
+            <button type="button" class="cfg__chip" data-view="front">Front</button>
+            <button type="button" class="cfg__chip" data-view="right">Right</button>
+          </div>
+        </div>
+
+        <p class="cfg__note" data-cfg-note hidden></p>
+
+        <a href="/demo" class="magnetic btn btn--gold cfg__cta">Book a demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .configurator { background: #f5f5f7; color: var(--ink); }
+  .cfg-head { max-width: 640px; margin: 0 auto clamp(2rem, 4vw, 3rem); text-align: center; }
+  .cfg-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .cfg-lead { margin-top: 0.9rem; color: var(--grey); }
+
+  .cfg {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    max-width: 1040px;
+    margin-inline: auto;
+  }
+  .cfg__stage {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg, 20px);
+    height: clamp(360px, 50vh, 520px);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .cfg__glow {
+    position: absolute;
+    inset: 12% 8% 6%;
+    background: radial-gradient(60% 60% at 55% 45%, rgba(234, 153, 20, 0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .cfg__img {
+    position: relative;
+    height: 88%;
+    width: auto;
+    max-width: 86%;
+    object-fit: contain;
+    opacity: 1;
+    transition: opacity 0.25s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .cfg__panel { display: flex; flex-direction: column; gap: 1.6rem; }
+  .cfg__group { display: flex; flex-direction: column; gap: 0.7rem; }
+  .cfg__label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-soft, #8a8a92);
+  }
+  .cfg__opts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .cfg__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--line-strong, #d7d7dc);
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.6rem 1rem;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s, opacity 0.2s;
+  }
+  .cfg__chip:hover { border-color: var(--gold); }
+  .cfg__chip.is-active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .cfg__chip.is-disabled,
+  .cfg__chip:disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+    border-style: dashed;
+  }
+  .cfg__chip.is-disabled:hover { border-color: var(--line-strong, #d7d7dc); }
+  .cfg__dot { width: 12px; height: 12px; border-radius: 50%; }
+  .cfg__dot--black { background: #111; }
+  .cfg__dot--white { background: #fff; border: 1px solid #c7c7cd; }
+  .cfg__note { font-size: 0.82rem; color: var(--grey); margin: 0; }
+  .cfg__cta { align-self: flex-start; margin-top: 0.4rem; }
+
+  @media (max-width: 820px) {
+    .cfg { grid-template-columns: 1fr; }
+    .cfg__stage { order: -1; height: clamp(320px, 44vh, 440px); }
+    .cfg__cta { align-self: stretch; text-align: center; }
+  }
+</style>
+
+<script define:vars={{ models }}>
+  function initConfigurator() {
+    document.querySelectorAll("[data-cfg]").forEach((root) => {
+      if (root.dataset.wired) return;
+      root.dataset.wired = "1";
+
+      const img = root.querySelector("[data-cfg-img]");
+      const note = root.querySelector("[data-cfg-note]");
+      const byId = Object.fromEntries(models.map((m) => [m.id, m]));
+      const state = { model: "86", color: "black", view: "front" };
+      const colorName = (c) => (c === "white" ? "Starlight White" : "Midnight Black");
+
+      function resolve() {
+        const m = byId[state.model];
+        const color = m.colors[state.color] ? state.color : Object.keys(m.colors)[0];
+        const views = m.colors[color];
+        const view = views[state.view] ? state.view : (views.front ? "front" : Object.keys(views)[0]);
+        return { m, color, view, src: views[view] };
+      }
+
+      function render() {
+        const { m, color, view, src } = resolve();
+        state.color = color;
+        state.view = view;
+
+        // Cross-fade + subtle slide toward the chosen side.
+        const shift = view === "left" ? "-6%" : view === "right" ? "6%" : "0%";
+        img.style.opacity = "0";
+        setTimeout(() => {
+          const onload = () => { img.style.opacity = "1"; };
+          img.addEventListener("load", onload, { once: true });
+          img.src = src;
+          img.alt = `${m.name} ${m.label}, ${colorName(color)}, ${view} view`;
+          img.style.transform = `translateX(${shift})`;
+          if (img.complete) { img.removeEventListener("load", onload); img.style.opacity = "1"; }
+        }, 160);
+
+        // Active + availability states.
+        root.querySelectorAll("[data-model]").forEach((b) => {
+          const on = b.dataset.model === state.model;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-pressed", String(on));
+        });
+        root.querySelectorAll("[data-color]").forEach((b) => {
+          const ok = !!m.colors[b.dataset.color];
+          b.disabled = !ok;
+          b.classList.toggle("is-disabled", !ok);
+          const on = ok && b.dataset.color === state.color;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-pressed", String(on));
+        });
+        root.querySelectorAll("[data-view]").forEach((b) => {
+          const ok = !!m.colors[color][b.dataset.view];
+          b.disabled = !ok;
+          b.classList.toggle("is-disabled", !ok);
+          const on = ok && b.dataset.view === state.view;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-pressed", String(on));
+        });
+
+        const onlyBlackFront = !m.colors.white && !m.colors.black.left && !m.colors.black.right;
+        if (onlyBlackFront) {
+          note.hidden = false;
+          note.textContent = `White finish and side views for the ${m.label} are coming soon.`;
+        } else {
+          note.hidden = true;
+        }
+      }
+
+      root.querySelectorAll("[data-model]").forEach((b) =>
+        b.addEventListener("click", () => { state.model = b.dataset.model; render(); })
+      );
+      root.querySelectorAll("[data-color]").forEach((b) =>
+        b.addEventListener("click", () => { if (!b.disabled) { state.color = b.dataset.color; render(); } })
+      );
+      root.querySelectorAll("[data-view]").forEach((b) =>
+        b.addEventListener("click", () => { if (!b.disabled) { state.view = b.dataset.view; render(); } })
+      );
+
+      render();
+    });
+  }
+
+  if (!window.__cfgInit) {
+    window.__cfgInit = true;
+    document.addEventListener("astro:page-load", initConfigurator);
+  }
+  initConfigurator();
+</script>
