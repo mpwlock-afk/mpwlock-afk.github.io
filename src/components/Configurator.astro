@@ -48,31 +48,14 @@ const cfgStrings = {
   }[lang],
 };
 
-// All renders are transparent cut-outs (AI background-removal of the studio
-// renders), so every box sits on the section background with no white card.
-// The 86" has the full matrix (black/white × front/left/right); the 22/43/75
-// have a single front render, so their finish/view options degrade gracefully.
+// Every model uses one clean transparent cut-out, all the same 3/4 left-facing
+// angle and shown whole (no rotation/translate that clipped the box, no mixed
+// straight-front vs angled views). 86/75/22 share the cabinet render; 43 its own.
 const models = [
-  {
-    id: "86",
-    label: '86"',
-    name: "Holobox",
-    colors: {
-      black: {
-        front: "/images/config/holobox86-black-front.png",
-        left: "/images/config/holobox86-black-left.png",
-        right: "/images/config/holobox86-black-right.png",
-      },
-      white: {
-        front: "/images/config/holobox86-white-front.png",
-        left: "/images/config/holobox86-white-left.png",
-        right: "/images/config/holobox86-white-right.png",
-      },
-    },
-  },
+  { id: "86", label: '86"', name: "Holobox", colors: { black: { front: "/images/holobox-black.png" } } },
   { id: "75", label: '75"', name: "The 75", colors: { black: { front: "/images/holobox-black.png" } } },
   { id: "43", label: '43"', name: "The 43", colors: { black: { front: "/images/holobox-43.png" } } },
-  { id: "22", label: '22"', name: "Mini", colors: { black: { front: "/images/holobox-mini-cut.png" } } },
+  { id: "22", label: '22"', name: "Mini", colors: { black: { front: "/images/holobox-black.png" } } },
 ];
 
 const start = models[0].colors.black.front;
@@ -94,8 +77,8 @@ const start = models[0].colors.black.front;
           data-cfg-img
           src={start}
           alt={`Holobox 86", ${cfgStrings.black}, ${cfgStrings.views.front}`}
-          width="520"
-          height="771"
+          width="1200"
+          height="1520"
         />
       </div>
 
