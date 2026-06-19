@@ -1,0 +1,172 @@
+---
+// Cases page — single source for both locales. Render via the thin route files
+// src/pages/cases.astro (en) and src/pages/nl/cases.astro (nl).
+import Base from "../../layouts/Base.astro";
+import CtaSection from "../CtaSection.astro";
+import { cases, testimonials } from "../../data/site";
+import { t, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+const copy = {
+  meta: {
+    title: { en: "Cases — Holoconnects", nl: "Cases — Holoconnects" },
+    description: {
+      en: "They already chose Holoconnects. Discover holographic projects with BMW, ING, Visit Britain and more.",
+      // TODO(native-review): marketing tone
+      nl: "Zij kozen al voor Holoconnects. Ontdek holografische projecten met BMW, ING, Visit Britain en meer.",
+    },
+  },
+  eyebrow: { en: "Cases", nl: "Cases" },
+  h1a: { en: "They already chose", nl: "Zij kozen al voor" },
+  h1b: { en: "Holoconnects.", nl: "Holoconnects." },
+  lead: {
+    en: "From global brands to government missions.",
+    // TODO(native-review): marketing tone
+    nl: "Van wereldmerken tot overheidsmissies.",
+  },
+  quotesEyebrow: { en: "In their words", nl: "In hun woorden" },
+  quotesTitle: { en: "What our clients say.", nl: "Wat onze klanten zeggen." },
+  ctaTitle: {
+    en: "Curious how our technology adds value for you?",
+    // TODO(native-review): marketing tone
+    nl: "Benieuwd hoe onze technologie waarde toevoegt voor u?",
+  },
+} as const;
+
+const tl = (v: { en: string; nl: string }) => t(v, lang);
+---
+
+<Base lang={lang} title={tl(copy.meta.title)} description={tl(copy.meta.description)}>
+  <section class="page-hero section--dark">
+    <div class="container">
+      <p class="eyebrow anim anim-up">{tl(copy.eyebrow)}</p>
+      <h1 class="display anim anim-up" style="--d:80ms">{tl(copy.h1a)}<br /><span class="holo-text">{tl(copy.h1b)}</span></h1>
+      <p class="lead measure anim anim-up" style="--d:160ms">{tl(copy.lead)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="case-grid">
+        {
+          cases.map((c, i) => (
+            <article class={`case ${i === 0 ? "case--wide" : ""}`} data-tilt="4" data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+              <img src={c.image} alt={c.title} loading="lazy" />
+              <div class="case-overlay"></div>
+              <div class="case-text">
+                <span class="case-sector">{t(c.sector, lang)}</span>
+                <h3>{c.title}</h3>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="block-head" data-reveal>
+        <p class="eyebrow">{tl(copy.quotesEyebrow)}</p>
+        <h2 class="section-title">{tl(copy.quotesTitle)}</h2>
+      </div>
+      <div class="grid cols-3">
+        {
+          testimonials.map((tm, i) => (
+            <figure class="quote-card" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <blockquote>&ldquo;{tm.quote}&rdquo;</blockquote>
+              <figcaption>
+                <img src={tm.image} alt="" loading="lazy" />
+                <span><strong>{tm.name}</strong><small>{t(tm.role, lang)}</small></span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaSection lang={lang} title={tl(copy.ctaTitle)} />
+</Base>
+
+<style>
+  .page-hero {
+    padding-top: clamp(8rem, 14vw, 12rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+  .page-hero .lead { margin-top: 1.4rem; }
+
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .case {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: flex-end;
+    isolation: isolate;
+  }
+  .case--wide { grid-column: span 2; }
+  .case img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    transition: transform 0.8s var(--ease);
+  }
+  .case:hover img { transform: scale(1.06); }
+  .case-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to top, rgba(8, 8, 10, 0.9), rgba(8, 8, 10, 0.1) 70%);
+  }
+  .case-text { padding: 1.6rem; color: #fff; }
+  .case-sector {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+  }
+  .case-text h3 { color: #fff; font-size: 1.4rem; margin-top: 0.3rem; }
+
+  .block-head { max-width: 760px; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+
+  .quote-card {
+    margin: 0;
+    padding: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-card);
+  }
+  .quote-card blockquote { margin: 0; font-size: 1.1rem; line-height: 1.55; font-weight: 500; }
+  .quote-card figcaption { display: flex; align-items: center; gap: 0.9rem; margin-top: auto; }
+  .quote-card figcaption img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+  .quote-card figcaption span { display: flex; flex-direction: column; }
+  .quote-card figcaption small { color: var(--grey); font-size: 0.85rem; }
+
+  @media (max-width: 760px) {
+    .case-grid { grid-template-columns: 1fr 1fr; }
+    .case--wide { grid-column: span 2; }
+  }
+  @media (max-width: 520px) {
+    .case-grid { grid-template-columns: 1fr; }
+    .case--wide { grid-column: auto; }
+  }
+</style>

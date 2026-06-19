@@ -1,0 +1,1106 @@
+---
+// Homepage body — single source for both locales. Render via the thin route files
+// src/pages/index.astro (en) and src/pages/nl/index.astro (nl).
+import Base from "../../layouts/Base.astro";
+import CtaSection from "../CtaSection.astro";
+import { products, sectors, stats, testimonials } from "../../data/site";
+import SizeRange from "../SizeRange.astro";
+import Configurator from "../Configurator.astro";
+import Support from "../Support.astro";
+import { t, localizePath, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const tl = (v: { en: string; nl: string }) => t(v, lang);
+
+// Brands Holoconnects has worked with, shown as a white monochrome "Trusted by"
+// wall. A logo file in /images/logos/ renders as an <img> forced to white by CSS;
+// a brand without a logo yet falls back to its name in white text. Drop official
+// logos (svg/png, any colour, transparent background) in to complete the set.
+// Brand names — kept as-is (not translated).
+const clients = [
+  { name: "Best Western", logo: "" },
+  { name: "UNICEF", logo: "" },
+  { name: "Deloitte", logo: "" },
+  { name: "Vodafone", logo: "/images/logos/vodafone.svg" },
+  { name: "BMW", logo: "/images/logos/bmw.svg" },
+  { name: "ING", logo: "" },
+  { name: "Visit Britain", logo: "" },
+];
+
+// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+const copy = {
+  meta: {
+    title: {
+      en: "Holoconnects — Life-Size Interactive Holograms | Europe's Leading Hologram Company",
+      // TODO(native-review): SEO title tone/keywords
+      nl: "Holoconnects — Levensgrote interactieve hologrammen | Europa's toonaangevende hologrambedrijf",
+    },
+    description: {
+      en: "Interactive life-size holographic displays for hospitality, retail, healthcare and events. 470+ projects in 30+ countries. Book a demo.",
+      // TODO(native-review): SEO description tone/keywords
+      nl: "Interactieve levensgrote holografische displays voor hospitality, retail, zorg en evenementen. 470+ projecten in 30+ landen. Boek een demo.",
+    },
+  },
+  heroTag: {
+    en: "Innovation with a human touch",
+    nl: "Innovatie met een menselijke touch",
+  },
+  heroTitleStart: { en: "Real people,", nl: "Echte mensen," },
+  heroRotator: [
+    { en: "real connections.", nl: "echte connecties." },
+    { en: "24/7 hospitality.", nl: "24/7 hospitality." },
+    { en: "life-size presence.", nl: "levensgrote aanwezigheid." },
+    { en: "global reach.", nl: "wereldwijd bereik." },
+  ],
+  heroSub: {
+    en: "Life-size, interactive holograms that bring a human presence anywhere.",
+    // TODO(native-review): marketing tone
+    nl: "Levensgrote, interactieve hologrammen die een menselijke aanwezigheid overal brengen.",
+  },
+  heroBookDemo: { en: "Book a demo", nl: "Boek een demo" },
+  heroDiscover: { en: "Discover the Holobox", nl: "Ontdek de Holobox" },
+  heroRating: {
+    en: "★ 9.5/10 · 346 reviews",
+    nl: "★ 9,5/10 · 346 reviews",
+  },
+  heroScrollCue: { en: "Scroll to explore", nl: "Scroll om te ontdekken" },
+
+  trustedLabel: {
+    en: "Trusted by leading organisations worldwide",
+    nl: "Vertrouwd door toonaangevende organisaties wereldwijd",
+  },
+
+  hospoEyebrow: { en: "Flagship · Hospitality", nl: "Flagship · Hospitality" },
+  hospoTitleA: { en: "The 24/7 holographic", nl: "De 24/7 holografische" },
+  hospoTitleB: { en: "concierge.", nl: "concierge." },
+  hospoLead: {
+    en: "One host. Every lobby. A welcome that never sleeps.",
+    // TODO(native-review): marketing tone
+    nl: "Eén host. Elke lobby. Een welkom dat nooit slaapt.",
+  },
+  hospoCta: { en: "Explore hospitality", nl: "Ontdek hospitality" },
+  hospoStat1: { en: "Front-desk costs", nl: "Receptiekosten" },
+  hospoStat2: { en: "Guest presence", nl: "Gastaanwezigheid" },
+  hospoStat3: { en: "Hotels live", nl: "Hotels live" },
+
+  hpinEyebrow: { en: "The ecosystem", nl: "Het ecosysteem" },
+  hpinTitleA: { en: "Scroll the", nl: "Scroll door het" },
+  hpinTitleB: { en: "hologram range.", nl: "hologramassortiment." },
+  hpinIntro: {
+    en: 'One platform powers every display, from a life-size 86" Holobox to a desktop Mini and modular walls.',
+    // TODO(native-review): marketing tone
+    nl: 'Eén platform stuurt elk display aan, van een levensgrote 86" Holobox tot een desktop Mini en modulaire wanden.',
+  },
+  hpinHint: { en: "Keep scrolling →", nl: "Blijf scrollen →" },
+  cardExplore: { en: "Explore", nl: "Ontdek" },
+
+  valuesEyebrow: { en: "Why Holoconnects", nl: "Waarom Holoconnects" },
+  valuesLine1: { en: "Technology that brings", nl: "Technologie die mensen" },
+  valuesLine2a: { en: "people ", nl: "dichter " },
+  valuesLine2b: { en: "closer", nl: "bij elkaar" },
+  valuesLine2c: { en: ", not", nl: " brengt, geen" },
+  valuesLine3: { en: "screens between them.", nl: "schermen ertussen." },
+  value1Title: { en: "A human touch", nl: "Een menselijke touch" },
+  value1Body: {
+    en: "Technology that deepens human connection instead of replacing it.",
+    nl: "Technologie die menselijke verbinding verdiept in plaats van vervangt.",
+  },
+  value2Title: { en: "Real presence", nl: "Echte aanwezigheid" },
+  value2Body: {
+    en: "A genuinely personal presence in any virtual space.",
+    nl: "Een echt persoonlijke aanwezigheid in elke virtuele ruimte.",
+  },
+  value3Title: { en: "Sustainable reach", nl: "Duurzaam bereik" },
+  value3Body: {
+    en: "Broader reach, lower footprint, inclusive by design.",
+    nl: "Breder bereik, kleinere voetafdruk, inclusief van opzet.",
+  },
+
+  sectorsTitleA: { en: "Built for the moments", nl: "Gebouwd voor de momenten" },
+  sectorsTitleB: { en: "that matter.", nl: "die ertoe doen." },
+  sectorsLead: {
+    en: "From guest experiences in hospitality to virtual care in telehealth, lifelike presence where it counts.",
+    // TODO(native-review): marketing tone
+    nl: "Van gastervaringen in hospitality tot virtuele zorg in telehealth, levensechte aanwezigheid waar het telt.",
+  },
+
+  quoteEyebrow: { en: "In their words", nl: "In hun woorden" },
+  quoteTitleA: { en: "Trusted by teams", nl: "Vertrouwd door teams" },
+  quoteTitleB: { en: "around the world.", nl: "over de hele wereld." },
+} as const;
+---
+
+<Base
+  lang={lang}
+  title={tl(copy.meta.title)}
+  description={tl(copy.meta.description)}
+>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <canvas id="holo-canvas" class="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-mesh" aria-hidden="true"></div>
+    <div class="hero-scan" aria-hidden="true"></div>
+
+    <div class="container hero-content" data-depth>
+      <span class="hero-tag">
+        <span class="hero-tag-dot"></span>{tl(copy.heroTag)}
+      </span>
+      <h1 class="hero-title">
+        <span class="kinetic" data-split>{tl(copy.heroTitleStart)}</span>
+        <span class="hero-rotator">
+          {copy.heroRotator.map((w) => (
+            <span class="holo-text">{tl(w)}</span>
+          ))}
+        </span>
+      </h1>
+      <p class="hero-sub anim anim-up" style="--d:500ms">
+        {tl(copy.heroSub)}
+      </p>
+      <div class="hero-actions anim anim-up" style="--d:640ms">
+        <a href={localizePath("/demo", lang)} class="magnetic btn btn--gold">{tl(copy.heroBookDemo)}</a>
+        <a href={localizePath("/products/holobox", lang)} class="magnetic btn btn--ghost-light">{tl(copy.heroDiscover)}</a>
+      </div>
+    </div>
+
+    <div class="hero-foot">
+      <span class="hero-foot-rating">{tl(copy.heroRating)}</span>
+      <span class="hero-scrollcue">{tl(copy.heroScrollCue)}<span class="hero-scrollcue-line"></span></span>
+    </div>
+  </section>
+
+  <!-- ============ TRUSTED BY ============ -->
+  <section class="trusted">
+    <div class="container">
+      <p class="trusted__label anim anim-up">{tl(copy.trustedLabel)}</p>
+      <div class="trusted__row">
+        {
+          clients.map((c, i) => (
+            <div class="trusted__item anim anim-up" style={`--d:${i * 60}ms`}>
+              {c.logo ? (
+                <img
+                  class="trusted__logo"
+                  src={c.logo}
+                  alt={`${c.name} logo`}
+                  loading="lazy"
+                  width="120"
+                  height="34"
+                />
+              ) : (
+                <span class="trusted__logo">{c.name}</span>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="section stats-sec">
+    <div class="container">
+      <div class="stats-row">
+        {
+          stats.map((s) => (
+            <div class="stat-cell anim anim-up">
+              <span class="stat-num" data-count={s.value}>{s.value}</span>
+              <span class="stat-cap">{tl(s.label)}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOSPITALITY SHOWCASE ============ -->
+  <section class="hospo">
+    <div class="hospo__media">
+      <img src="/images/sector-hospitality.jpg" alt="Holographic concierge in hospitality" data-parallax="0.12" />
+    </div>
+    <div class="hospo__veil"></div>
+    <div class="container hospo__content">
+      <span class="eyebrow anim anim-up">{tl(copy.hospoEyebrow)}</span>
+      <h2 class="hospo__title anim anim-up" style="--d:80ms">
+        {tl(copy.hospoTitleA)}<br /><span class="holo-text">{tl(copy.hospoTitleB)}</span>
+      </h2>
+      <p class="hospo__lead anim anim-up" style="--d:160ms">
+        {tl(copy.hospoLead)}
+      </p>
+      <a href={localizePath("/sectors", lang)} class="magnetic btn btn--gold anim anim-up" style="--d:240ms">{tl(copy.hospoCta)}</a>
+    </div>
+    <div class="hospo__stats">
+      <div class="hospo__stat anim anim-up"><span>-40%</span><small>{tl(copy.hospoStat1)}</small></div>
+      <div class="hospo__stat anim anim-up" style="--d:90ms"><span>24/7</span><small>{tl(copy.hospoStat2)}</small></div>
+      <div class="hospo__stat anim anim-up" style="--d:180ms"><span>30+</span><small>{tl(copy.hospoStat3)}</small></div>
+    </div>
+  </section>
+
+  <!-- ============ SIZE RANGE ============ -->
+  <SizeRange lang={lang} />
+
+  <!-- ============ CONFIGURATOR ============ -->
+  <Configurator lang={lang} />
+
+  <!-- ============ PINNED HORIZONTAL PRODUCTS ============ -->
+  <section class="hpin section--dark" data-hscroll>
+    <div class="hpin__sticky">
+      <div class="container hpin__head">
+        <span class="eyebrow">{tl(copy.hpinEyebrow)}</span>
+        <h2 class="hpin__title">{tl(copy.hpinTitleA)}<br /><span class="holo-text">{tl(copy.hpinTitleB)}</span></h2>
+      </div>
+      <div class="hpin__track">
+        <div class="hpin__intro">
+          <p class="lead">{tl(copy.hpinIntro)}</p>
+          <span class="hpin__hint">{tl(copy.hpinHint)}</span>
+        </div>
+        {
+          products.map((p, i) => (
+            <a href={localizePath(`/products/${p.slug}`, lang)} class="hcard hoverable" data-tilt="5">
+              <span class="hcard__index">{String(i + 1).padStart(2, "0")}</span>
+              <div class="hcard__media">
+                <div class="hcard__glow"></div>
+                <img src={p.image} alt={`${p.name} holographic display by Holoconnects`} loading="lazy" />
+              </div>
+              <div class="hcard__body">
+                <h3>{p.name}</h3>
+                <p>{tl(p.tagline)}</p>
+                <span class="arrow-link">{tl(copy.cardExplore)}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VALUES ============ -->
+  <section class="section values-sec">
+    <div class="container">
+      <p class="eyebrow anim anim-up">{tl(copy.valuesEyebrow)}</p>
+      <h2 class="big-statement reveal-lines">
+        <span class="line"><span style="--i:0">{tl(copy.valuesLine1)}</span></span>
+        <span class="line"><span style="--i:1">{tl(copy.valuesLine2a)}<em class="holo-text">{tl(copy.valuesLine2b)}</em>{tl(copy.valuesLine2c)}</span></span>
+        <span class="line"><span style="--i:2">{tl(copy.valuesLine3)}</span></span>
+      </h2>
+      <div class="values-grid">
+        <div class="value-block anim anim-up" data-tilt="4">
+          <span class="value-no">01</span>
+          <h3>{tl(copy.value1Title)}</h3>
+          <p>{tl(copy.value1Body)}</p>
+        </div>
+        <div class="value-block anim anim-up" style="--d:120ms" data-tilt="4">
+          <span class="value-no">02</span>
+          <h3>{tl(copy.value2Title)}</h3>
+          <p>{tl(copy.value2Body)}</p>
+        </div>
+        <div class="value-block anim anim-up" style="--d:240ms" data-tilt="4">
+          <span class="value-no">03</span>
+          <h3>{tl(copy.value3Title)}</h3>
+          <p>{tl(copy.value3Body)}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTORS (parallax) ============ -->
+  <section class="section section--dark sectors-sec">
+    <div class="container">
+      <div class="sectors-head">
+        <h2 class="section-title anim anim-up">{tl(copy.sectorsTitleA)}<br />{tl(copy.sectorsTitleB)}</h2>
+        <p class="lead anim anim-up" style="--d:120ms">{tl(copy.sectorsLead)}</p>
+      </div>
+      <div class="sectors-stack">
+        {
+          sectors.map((s, i) => (
+            <a href={localizePath(`/sectors/${s.slug}`, lang)} class="sec-tile hoverable anim anim-scale" style={`--d:${(i % 3) * 90}ms`}>
+              <div class="sec-tile__img">
+                <img src={s.image} alt={`Hologram for ${t(s.name, lang)} by Holoconnects`} data-parallax="0.08" loading="lazy" />
+              </div>
+              <div class="sec-tile__veil"></div>
+              <div class="sec-tile__txt">
+                <span class="sec-tile__no">0{i + 1}</span>
+                <h3>{tl(s.name)}</h3>
+                <p>{tl(s.blurb)}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="section quote-sec">
+    <div class="container">
+      <div class="quote-head" data-reveal>
+        <p class="eyebrow">{tl(copy.quoteEyebrow)}</p>
+        <h2 class="section-title">{tl(copy.quoteTitleA)}<br /><span class="holo-text">{tl(copy.quoteTitleB)}</span></h2>
+      </div>
+      <div class="quote-grid">
+        {
+          testimonials.map((tm, i) => (
+            <figure class="tcard anim anim-up" style={`--d:${i * 90}ms`} data-tilt="4">
+              <div class="tcard__media">
+                <img src={tm.image} alt={`Holoconnects hologram project, ${t(tm.role, lang)}`} loading="lazy" />
+              </div>
+              <blockquote>&ldquo;{tm.quote}&rdquo;</blockquote>
+              <figcaption>
+                <strong>{tm.name}</strong>
+                <small>{tl(tm.role)}</small>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Support lang={lang} />
+
+  <CtaSection lang={lang} />
+</Base>
+
+<style>
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #050507;
+    color: #fff;
+    overflow: hidden;
+  }
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  .hero-mesh {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(55% 65% at 82% 40%, rgba(234, 153, 20, 0.25), transparent 60%),
+      radial-gradient(45% 55% at 12% 85%, rgba(200, 120, 0, 0.14), transparent 60%),
+      linear-gradient(95deg, rgba(5, 5, 7, 0.92) 18%, rgba(5, 5, 7, 0.45) 46%, transparent 66%),
+      radial-gradient(120% 100% at 50% 0%, transparent 40%, rgba(5, 5, 7, 0.6) 100%);
+    animation: meshDrift 14s ease-in-out infinite alternate;
+  }
+  @keyframes meshDrift {
+    to { transform: translate3d(-3%, 2%, 0) scale(1.08); }
+  }
+  .hero-scan {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+    mix-blend-mode: overlay;
+    opacity: 0.5;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 1180px;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 0.55rem 1.05rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 100px;
+    margin-bottom: 1.8rem;
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    animation: fadeDown 0.9s var(--ease) 0.1s forwards;
+  }
+  .hero-tag-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--grad-gold);
+    box-shadow: 0 0 12px 2px rgba(234, 153, 20, 0.8);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 6vw, 5.4rem);
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin: 0 0 1.6rem;
+    color: #fff;
+    max-width: 66vw;
+    position: relative;
+    z-index: 4;
+  }
+  .hero-title .kinetic {
+    display: block;
+    white-space: nowrap;
+  }
+  @media (max-width: 900px) {
+    .hero-title { max-width: 100%; }
+  }
+  .hero-rotator {
+    display: inline-grid;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.12em;
+    white-space: nowrap;
+  }
+  .hero-rotator > span {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(0.7em) rotateX(-40deg);
+    animation: rotWord 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  .hero-rotator > span:nth-child(1) { animation-delay: 0.6s; }
+  .hero-rotator > span:nth-child(2) { animation-delay: 3.6s; }
+  .hero-rotator > span:nth-child(3) { animation-delay: 6.6s; }
+  .hero-rotator > span:nth-child(4) { animation-delay: 9.6s; }
+  @keyframes rotWord {
+    0% { opacity: 0; transform: translateY(0.7em) rotateX(-40deg); }
+    4%, 21% { opacity: 1; transform: none; }
+    25%, 100% { opacity: 0; transform: translateY(-0.7em) rotateX(40deg); }
+  }
+
+  .hero-sub {
+    max-width: 44ch;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    color: #c4c4cd;
+    line-height: 1.55;
+    margin-bottom: 2.2rem;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn--ghost-light {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+  .btn--ghost-light:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .hero-foot {
+    position: absolute;
+    bottom: 1.8rem;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding-inline: var(--gutter);
+    max-width: var(--maxw);
+    margin-inline: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .hero-foot-rating {
+    color: var(--gold-bright);
+  }
+  .hero-scrollcue {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-scrollcue-line {
+    width: 46px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-scrollcue-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--gold-bright);
+    animation: cueSlide 2s ease-in-out infinite;
+  }
+  @keyframes cueSlide {
+    0% { transform: translateX(-100%); }
+    60%, 100% { transform: translateX(100%); }
+  }
+  @media (max-width: 640px) {
+    .hero-foot-rating { display: none; }
+  }
+
+  /* ============ TRUSTED BY ============ */
+  .trusted {
+    background: var(--ink);
+    color: #fff;
+    text-align: center;
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    border-block: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .trusted__label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: clamp(1.5rem, 3vw, 2.4rem);
+  }
+  .trusted__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(1.5rem, 5vw, 3.5rem);
+  }
+  .trusted__item {
+    display: inline-flex;
+    align-items: center;
+  }
+  .trusted__logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.1rem, 2.4vw, 1.65rem);
+    color: #fff;
+    opacity: 0.6;
+    letter-spacing: 0.01em;
+    transition: opacity 0.3s var(--ease);
+  }
+  .trusted__item:hover .trusted__logo { opacity: 1; }
+  /* Logo images render monochrome white so any brand colour matches the wall.
+     The white filter sits on the image (not the animated wrapper) so the
+     entrance animation can't override it. */
+  img.trusted__logo {
+    height: clamp(22px, 3vw, 34px);
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  /* ============ STATS ============ */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .stat-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .stat-cap {
+    font-size: 0.9rem;
+    color: var(--grey);
+  }
+  @media (max-width: 620px) {
+    .stats-row { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  }
+
+  /* ============ HOSPITALITY ============ */
+  .hospo {
+    position: relative;
+    min-height: 92vh;
+    min-height: 92svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    color: #fff;
+    isolation: isolate;
+    padding-bottom: clamp(2rem, 5vw, 4rem);
+  }
+  .hospo__media {
+    position: absolute;
+    inset: -10% 0;
+    z-index: -2;
+  }
+  .hospo__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hospo__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(to top, rgba(5, 5, 7, 0.95) 4%, rgba(5, 5, 7, 0.3) 45%, rgba(5, 5, 7, 0.55) 100%),
+      radial-gradient(70% 60% at 20% 90%, rgba(200, 120, 0, 0.25), transparent 70%);
+  }
+  .hospo__content {
+    position: relative;
+    z-index: 1;
+  }
+  .hospo__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 7vw, 6rem);
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+    color: #fff;
+    margin: 0.8rem 0 1rem;
+  }
+  .hospo__lead {
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    color: #e0e0e6;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+  .hospo__stats {
+    position: relative;
+    z-index: 1;
+    max-width: var(--maxw);
+    margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+    width: 100%;
+    padding-inline: var(--gutter);
+    display: flex;
+    gap: clamp(2rem, 6vw, 5rem);
+    flex-wrap: wrap;
+  }
+  .hospo__stat span {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--gold-bright);
+  }
+  .hospo__stat small {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============ PINNED HORIZONTAL ============ */
+  .hpin {
+    position: relative;
+  }
+  .hpin__sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .hpin__head {
+    position: absolute;
+    top: clamp(5rem, 12vh, 9rem);
+    left: 0;
+    right: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .hpin__title {
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    color: #fff;
+  }
+  .hpin__track {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding-inline: var(--gutter);
+    height: 100%;
+    will-change: transform;
+  }
+  .hpin__intro {
+    flex: 0 0 auto;
+    width: min(80vw, 420px);
+    align-self: center;
+    padding-top: 6rem;
+  }
+  .hpin__intro .lead {
+    color: #cfcfd6;
+  }
+  .hpin__hint {
+    display: inline-block;
+    margin-top: 1.2rem;
+    color: var(--gold-bright);
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .hcard {
+    flex: 0 0 auto;
+    width: min(78vw, 380px);
+    height: min(64vh, 540px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .hcard:hover {
+    border-color: rgba(234, 153, 20, 0.5);
+    transform: translateY(-6px);
+  }
+  .hcard__index {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--gold-bright);
+    letter-spacing: 0.12em;
+  }
+  .hcard__media {
+    position: relative;
+    flex: 1;
+    display: grid;
+    place-items: center;
+    margin: 0.5rem 0 1rem;
+  }
+  .hcard__glow {
+    position: absolute;
+    inset: 12% 18%;
+    background: radial-gradient(circle, rgba(234, 153, 20, 0.4), transparent 65%);
+    filter: blur(14px);
+  }
+  .hcard__media img {
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.5));
+  }
+  .hcard__body h3 {
+    color: #fff;
+    font-size: 1.7rem;
+    margin-bottom: 0.4rem;
+  }
+  .hcard__body p {
+    color: #b4b4bd;
+    font-size: 0.95rem;
+    margin-bottom: 0.9rem;
+  }
+  @media (max-width: 760px) {
+    /* On small screens, fall back to natural horizontal swipe */
+    .hpin { height: auto !important; }
+    .hpin__sticky { position: static; height: auto; padding-block: 6rem 4rem; }
+    .hpin__track {
+      transform: none !important;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 1rem;
+    }
+    .hpin__head { position: static; margin-bottom: 2rem; }
+    .hcard { scroll-snap-align: center; height: 70vh; }
+  }
+
+  /* ============ VALUES ============ */
+  .big-statement {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2rem, 6vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    margin: 1rem 0 clamp(2.5rem, 6vw, 4.5rem);
+    max-width: 18ch;
+  }
+  .big-statement em {
+    font-style: normal;
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    border-top: 1px solid var(--line);
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+  .value-no {
+    font-family: var(--font-display);
+    color: var(--gold);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+  }
+  .value-block h3 {
+    font-size: 1.35rem;
+    margin: 0.8rem 0 0.6rem;
+  }
+  .value-block p {
+    color: var(--grey);
+    margin: 0;
+  }
+  @media (max-width: 760px) {
+    .values-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  /* ============ SECTORS ============ */
+  .sectors-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    flex-wrap: wrap;
+  }
+  .sectors-head .lead { max-width: 38ch; }
+  .sectors-stack {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.1rem;
+  }
+  .sec-tile {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    min-height: 360px;
+    display: flex;
+    align-items: flex-end;
+    isolation: isolate;
+  }
+  .sec-tile:nth-child(1) { grid-column: span 4; }
+  .sec-tile:nth-child(2) { grid-column: span 2; }
+  .sec-tile:nth-child(3) { grid-column: span 2; }
+  .sec-tile:nth-child(4) { grid-column: span 2; }
+  .sec-tile:nth-child(5) { grid-column: span 2; }
+  .sec-tile:nth-child(6) { grid-column: span 6; min-height: 300px; }
+  .sec-tile__img {
+    position: absolute;
+    inset: -12% 0;
+    z-index: -2;
+  }
+  .sec-tile__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sec-tile__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to top, rgba(5, 5, 7, 0.95), rgba(5, 5, 7, 0.2) 65%);
+  }
+  .sec-tile__txt { padding: 1.8rem; }
+  .sec-tile__no {
+    font-family: var(--font-display);
+    color: var(--gold-bright);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+  }
+  .sec-tile__txt h3 { color: #fff; font-size: 1.6rem; margin: 0.3rem 0 0.4rem; }
+  .sec-tile__txt p {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.95rem;
+    margin: 0;
+    max-width: 40ch;
+  }
+  @media (max-width: 760px) {
+    .sectors-stack { grid-template-columns: 1fr; }
+    .sec-tile,
+    .sec-tile:nth-child(n) { grid-column: auto; min-height: 320px; }
+  }
+
+  /* ============ TESTIMONIALS ============ */
+  .quote-head {
+    max-width: 720px;
+    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    text-align: center;
+  }
+  .quote-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .tcard {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 1.8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .tcard:hover { transform: translateY(-5px); border-color: var(--line-strong); }
+  .tcard__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .tcard__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease);
+  }
+  .tcard:hover .tcard__media img { transform: scale(1.05); }
+  .tcard blockquote {
+    margin: 0;
+    padding: 0 1.6rem;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .tcard figcaption {
+    margin-top: auto;
+    padding: 0 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .tcard figcaption strong { color: var(--ink); }
+  .tcard figcaption small { color: var(--grey); font-size: 0.85rem; }
+  @media (max-width: 900px) {
+    .quote-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .quote-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<!-- Holographic globe canvas -->
+<script>
+  function bootGlobe() {
+  const canvas = document.getElementById("holo-canvas") as HTMLCanvasElement | null;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (canvas && !reduce && !canvas.dataset.booted) {
+    canvas.dataset.booted = "1";
+    const ctx = canvas.getContext("2d")!;
+    let w = 0,
+      h = 0,
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    type P = { x: number; y: number; z: number };
+    const N = 520;
+    const pts: P[] = [];
+    for (let i = 0; i < N; i++) {
+      // fibonacci sphere
+      const phi = Math.acos(1 - (2 * (i + 0.5)) / N);
+      const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+      pts.push({
+        x: Math.sin(phi) * Math.cos(theta),
+        y: Math.sin(phi) * Math.sin(theta),
+        z: Math.cos(phi),
+      });
+    }
+
+    const resize = () => {
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    let mx = 0,
+      my = 0,
+      tx = 0,
+      ty = 0;
+    window.addEventListener("mousemove", (e) => {
+      tx = (e.clientX / window.innerWidth - 0.5) * 0.6;
+      ty = (e.clientY / window.innerHeight - 0.5) * 0.6;
+    });
+
+    let rot = 0;
+    const render = () => {
+      ctx.clearRect(0, 0, w, h);
+      mx += (tx - mx) * 0.05;
+      my += (ty - my) * 0.05;
+      rot += 0.0016;
+
+      const cx = w * (w < 720 ? 0.6 : 0.86);
+      const cy = h * (w < 720 ? 0.24 : 0.52);
+      const R = Math.min(w, h) * (w < 720 ? 0.42 : 0.36);
+
+      const cosY = Math.cos(rot + mx),
+        sinY = Math.sin(rot + mx);
+      const cosX = Math.cos(my * 0.6),
+        sinX = Math.sin(my * 0.6);
+
+      const proj = pts.map((p) => {
+        let x = p.x * cosY - p.z * sinY;
+        let z = p.x * sinY + p.z * cosY;
+        let y = p.y * cosX - z * sinX;
+        z = p.y * sinX + z * cosX;
+        const persp = 1 / (1.8 - z);
+        return { sx: cx + x * R * persp, sy: cy + y * R * persp, z, persp };
+      });
+
+      // connection lines
+      for (let i = 0; i < proj.length; i += 3) {
+        for (let j = i + 1; j < Math.min(i + 14, proj.length); j++) {
+          const a = proj[i],
+            b = proj[j];
+          const dx = a.sx - b.sx,
+            dy = a.sy - b.sy;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 70 * 70) {
+            const al = (1 - d2 / (70 * 70)) * 0.16 * ((a.z + b.z) / 2 + 1);
+            ctx.strokeStyle = `rgba(234,153,20,${Math.max(al, 0)})`;
+            ctx.beginPath();
+            ctx.moveTo(a.sx, a.sy);
+            ctx.lineTo(b.sx, b.sy);
+            ctx.stroke();
+          }
+        }
+      }
+      // points
+      for (const p of proj) {
+        const a = (p.z + 1) / 2;
+        const r = 0.6 + a * 1.8;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(${255},${180 + a * 40},${120 + a * 60},${0.25 + a * 0.6})`;
+        ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(render);
+    };
+    render();
+  }
+  }
+  bootGlobe();
+  document.addEventListener("astro:page-load", bootGlobe);
+</script>

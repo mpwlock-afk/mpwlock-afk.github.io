@@ -1,23 +1,30 @@
 ---
+import {
+  getLangFromUrl,
+  localizePath,
+  useTranslations,
+  type Lang,
+} from "../i18n/ui";
+
 interface Props {
   title?: string;
   text?: string;
+  lang?: Lang;
 }
-const {
-  title = "Ready to experience holography done right?",
-  text = "Book a personal demo and discover how our holographic solutions add value for your company. Is your audience ready for next-level immersive experiences?",
-} = Astro.props;
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const tt = useTranslations(lang);
+const { title = tt("ctaBand.title"), text = tt("ctaBand.text") } = Astro.props;
 ---
 
 <section class="section section--dark cta">
   <div class="container cta-inner anim anim-up">
     <div class="cta-glow" aria-hidden="true"></div>
-    <p class="eyebrow">Book a demo</p>
+    <p class="eyebrow">{tt("ctaBand.eyebrow")}</p>
     <h2 class="section-title">{title}</h2>
     <p class="lead measure center">{text}</p>
     <div class="cta-actions">
-      <a href="/demo" class="magnetic btn btn--gold">Book a demo</a>
-      <a href="/products/holobox" class="magnetic btn btn--ghost">Explore the Holobox</a>
+      <a href={localizePath("/demo", lang)} class="magnetic btn btn--gold">{tt("cta.bookDemo")}</a>
+      <a href={localizePath("/products/holobox", lang)} class="magnetic btn btn--ghost">{tt("cta.exploreHolobox")}</a>
     </div>
   </div>
 </section>

@@ -4,35 +4,96 @@
 // set drawn from site facts (sizes, buy/rent/lease, sectors, 470+ projects in
 // 30+ countries) — edit freely.
 import { site } from "../data/site";
+import { getLangFromUrl, t, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang?: Lang;
+}
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const tl = (v: { en: string; nl: string }) => t(v, lang);
 
 const waNumber = site.whatsapp.replace(/[^0-9]/g, "");
-const waHref = `https://wa.me/${waNumber}?text=Hi%20Holoconnects%2C%20I%20have%20a%20question.`;
+const waText = tl({
+  en: "Hi Holoconnects, I have a question.",
+  nl: "Hoi Holoconnects, ik heb een vraag.",
+});
+const waHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`;
 const phoneTel = `tel:${site.supportPhone.replace(/[^0-9+]/g, "")}`;
 
+const copy = {
+  eyebrow: { en: "Support", nl: "Support" },
+  title: {
+    en: "Questions? We are here to help.",
+    nl: "Vragen? We helpen u graag.",
+  },
+  cardPhoneTitle: { en: "Personal contact", nl: "Persoonlijk contact" },
+  cardPhoneText: {
+    en: `Call one of our support consultants on ${site.supportPhone}.`,
+    nl: `Bel een van onze supportconsulenten op ${site.supportPhone}.`,
+  },
+  cardMailTitle: { en: "Mail your question", nl: "Mail uw vraag" },
+  cardMailText: {
+    en: `Mail your question to ${site.supportEmail}.`,
+    nl: `Mail uw vraag naar ${site.supportEmail}.`,
+  },
+  cardChatTitle: { en: "Chat with us", nl: "Chat met ons" },
+  cardChatText: {
+    en: "Ask your question easily via WhatsApp.",
+    nl: "Stel uw vraag eenvoudig via WhatsApp.",
+  },
+  cardCenterTitle: { en: "Visit our support center", nl: "Bezoek ons supportcentrum" },
+  cardCenterText: {
+    en: "Get instant answers to the most common questions.",
+    nl: "Krijg direct antwoord op de meest gestelde vragen.",
+  },
+  faqTitle: { en: "Frequently asked questions", nl: "Veelgestelde vragen" },
+} as const;
+
+// FAQ copy. NL is a first-pass translation — see TODO(native-review) markers.
 const faqs = [
   {
-    q: "What is a Holobox?",
-    a: "A Holobox is a life-size holographic display that brings people, products and presenters to life in interactive 3D, so a real human presence can appear anywhere.",
+    q: { en: "What is a Holobox?", nl: "Wat is een Holobox?" },
+    a: {
+      en: "A Holobox is a life-size holographic display that brings people, products and presenters to life in interactive 3D, so a real human presence can appear anywhere.",
+      // TODO(native-review): marketing tone
+      nl: "Een Holobox is een levensgroot holografisch display dat mensen, producten en presentatoren tot leven brengt in interactief 3D, zodat een echte menselijke aanwezigheid overal kan verschijnen.",
+    },
   },
   {
-    q: "Which sizes are available?",
-    a: "The range runs from a 22\" tabletop to the 86\" life-size flagship, with a 43\" model in between and the modular Hologrid for wall-size setups.",
+    q: { en: "Which sizes are available?", nl: "Welke maten zijn beschikbaar?" },
+    a: {
+      en: "The range runs from a 22\" tabletop to the 86\" life-size flagship, with a 43\" model in between and the modular Hologrid for wall-size setups.",
+      nl: "Het assortiment loopt van een 22\"-tafelmodel tot het 86\" levensgrote vlaggenschip, met een 43\"-model daartussen en de modulaire Hologrid voor wandopstellingen.",
+    },
   },
   {
-    q: "Can I buy, rent or lease a Holobox?",
-    a: "Yes. We offer purchase, rental and lease options. Book a demo and we will advise what fits your use case and budget, with real numbers.",
+    q: { en: "Can I buy, rent or lease a Holobox?", nl: "Kan ik een Holobox kopen, huren of leasen?" },
+    a: {
+      en: "Yes. We offer purchase, rental and lease options. Book a demo and we will advise what fits your use case and budget, with real numbers.",
+      // TODO(native-review): tone of "with real numbers"
+      nl: "Ja. We bieden koop-, huur- en leaseopties. Boek een demo en we adviseren wat past bij uw use case en budget, met echte cijfers.",
+    },
   },
   {
-    q: "How does the hologram work?",
-    a: "A transparent display shows specially prepared content at human scale. Presenters can be streamed live or played from pre-recorded content, managed remotely through Holocontrol.",
+    q: { en: "How does the hologram work?", nl: "Hoe werkt het hologram?" },
+    a: {
+      en: "A transparent display shows specially prepared content at human scale. Presenters can be streamed live or played from pre-recorded content, managed remotely through Holocontrol.",
+      nl: "Een transparant display toont speciaal voorbereide content op menselijke schaal. Presentatoren kunnen live worden gestreamd of vanaf vooraf opgenomen content worden afgespeeld, op afstand beheerd via Holocontrol.",
+    },
   },
   {
-    q: "Which industries use Holoconnects?",
-    a: "Hospitality, retail, telehealth, events, education and advertising, among others. Hospitality is our flagship use case with a 24/7 holographic concierge.",
+    q: { en: "Which industries use Holoconnects?", nl: "Welke branches gebruiken Holoconnects?" },
+    a: {
+      en: "Hospitality, retail, telehealth, events, education and advertising, among others. Hospitality is our flagship use case with a 24/7 holographic concierge.",
+      nl: "Onder meer hospitality, retail, telehealth, evenementen, onderwijs en adverteren. Hospitality is onze belangrijkste use case met een 24/7 holografische concierge.",
+    },
   },
   {
-    q: "Do you deliver and support internationally?",
-    a: "Yes. We have completed 470+ projects in 30+ countries, with offices in the Netherlands and the United States and full ongoing support.",
+    q: { en: "Do you deliver and support internationally?", nl: "Leveren en ondersteunen jullie internationaal?" },
+    a: {
+      en: "Yes. We have completed 470+ projects in 30+ countries, with offices in the Netherlands and the United States and full ongoing support.",
+      nl: "Ja. We hebben 470+ projecten voltooid in 30+ landen, met kantoren in Nederland en de Verenigde Staten en volledige doorlopende support.",
+    },
   },
 ];
 ---
@@ -40,8 +101,8 @@ const faqs = [
 <section class="section section--soft support" id="support">
   <div class="container">
     <div class="support-head" data-reveal>
-      <p class="eyebrow">Support</p>
-      <h2 class="section-title">Questions? We are here to help.</h2>
+      <p class="eyebrow">{tl(copy.eyebrow)}</p>
+      <h2 class="section-title">{tl(copy.title)}</h2>
     </div>
 
     <div class="support-grid">
@@ -49,46 +110,46 @@ const faqs = [
         <span class="support-ico" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 4h3l1.5 4-2 1.5a12 12 0 005 5l1.5-2 4 1.5v3a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
         </span>
-        <h3>Personal contact</h3>
-        <p>Call one of our support consultants on {site.supportPhone}.</p>
+        <h3>{tl(copy.cardPhoneTitle)}</h3>
+        <p>{tl(copy.cardPhoneText)}</p>
       </a>
 
       <a class="support-card" href={`mailto:${site.supportEmail}`} data-tilt="4" data-reveal style="--reveal-delay:80ms">
         <span class="support-ico" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
         </span>
-        <h3>Mail your question</h3>
-        <p>Mail your question to {site.supportEmail}.</p>
+        <h3>{tl(copy.cardMailTitle)}</h3>
+        <p>{tl(copy.cardMailText)}</p>
       </a>
 
       <a class="support-card" href={waHref} target="_blank" rel="noopener noreferrer" data-tilt="4" data-reveal style="--reveal-delay:160ms">
         <span class="support-ico" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.2A9 9 0 1012 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.5 9c0 4 2.5 6.5 6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         </span>
-        <h3>Chat with us</h3>
-        <p>Ask your question easily via WhatsApp.</p>
+        <h3>{tl(copy.cardChatTitle)}</h3>
+        <p>{tl(copy.cardChatText)}</p>
       </a>
 
       <a class="support-card" href="#faq" data-tilt="4" data-reveal style="--reveal-delay:240ms">
         <span class="support-ico" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 9.5a2.5 2.5 0 014.5 1.5c0 1.5-2 2-2 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>
         </span>
-        <h3>Visit our support center</h3>
-        <p>Get instant answers to the most common questions.</p>
+        <h3>{tl(copy.cardCenterTitle)}</h3>
+        <p>{tl(copy.cardCenterText)}</p>
       </a>
     </div>
 
     <div class="faq" id="faq">
-      <h3 class="faq-title" data-reveal>Frequently asked questions</h3>
+      <h3 class="faq-title" data-reveal>{tl(copy.faqTitle)}</h3>
       <div class="faq-list">
         {
           faqs.map((f, i) => (
             <details class="faq-item" data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
               <summary>
-                <span>{f.q}</span>
+                <span>{tl(f.q)}</span>
                 <svg class="faq-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </summary>
-              <p>{f.a}</p>
+              <p>{tl(f.a)}</p>
             </details>
           ))
         }

@@ -1,47 +1,59 @@
 ---
 import { site, products, sectors } from "../data/site";
+import {
+  getLangFromUrl,
+  localizePath,
+  t,
+  useTranslations,
+  type Lang,
+} from "../i18n/ui";
+
+interface Props {
+  lang?: Lang;
+}
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const tt = useTranslations(lang);
 ---
 
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="brand">
+        <a href={localizePath("/", lang)} class="brand">
           <span class="brand-mark" aria-hidden="true"></span>
           <span class="brand-name">holoconnects</span>
         </a>
         <p class="footer-tagline">
-          Innovation with a human touch. Holographic technology that brings real
-          people and real connections wherever they matter.
+          {tt("footer.tagline")}
         </p>
         <div class="rating">
           <span class="rating-stars" aria-hidden="true">★★★★★</span>
-          <span>{site.rating}</span>
+          <span>{t(site.rating, lang)}</span>
         </div>
       </div>
 
       <div class="footer-col">
-        <h4>Products</h4>
-        {products.map((p) => <a href={`/products/${p.slug}`}>{p.name}</a>)}
+        <h4>{tt("footer.products")}</h4>
+        {products.map((p) => <a href={localizePath(`/products/${p.slug}`, lang)}>{p.name}</a>)}
       </div>
 
       <div class="footer-col">
-        <h4>Sectors</h4>
-        {sectors.slice(0, 5).map((s) => <a href="/sectors">{s.name}</a>)}
+        <h4>{tt("footer.sectors")}</h4>
+        {sectors.slice(0, 5).map((s) => <a href={localizePath("/sectors", lang)}>{t(s.name, lang)}</a>)}
       </div>
 
       <div class="footer-col">
-        <h4>Company</h4>
-        <a href="/about">About</a>
-        <a href="/cases">Cases</a>
-        <a href="/contact">Contact</a>
+        <h4>{tt("footer.company")}</h4>
+        <a href={localizePath("/about", lang)}>{tt("footer.about")}</a>
+        <a href={localizePath("/cases", lang)}>{tt("footer.cases")}</a>
+        <a href={localizePath("/contact", lang)}>{tt("footer.contact")}</a>
         <a href={`mailto:${site.email}`}>{site.email}</a>
         <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <p>© {new Date().getFullYear()} Holoconnects. All rights reserved.</p>
+      <p>© {new Date().getFullYear()} Holoconnects. {tt("footer.rights")}</p>
       <div class="socials">
         <a href="https://www.linkedin.com/company/holoconnects" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
         <a href="https://www.instagram.com/holoconnects" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>

@@ -1,0 +1,200 @@
+---
+// About page — single source for both locales. Render via the thin route files
+// src/pages/about.astro (en) and src/pages/nl/about.astro (nl).
+import Base from "../../layouts/Base.astro";
+import CtaSection from "../CtaSection.astro";
+import { stats } from "../../data/site";
+import { t, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+const copy = {
+  meta: {
+    title: {
+      en: "About Holoconnects — Europe's Leading Hologram Technology Company",
+      // TODO(native-review): marketing tone
+      nl: "Over Holoconnects — Europa's toonaangevende hologramtechnologiebedrijf",
+    },
+    description: {
+      en: "Founded by André and Marnix. 470+ projects, 30+ countries, 9.5/10 customer rating.",
+      nl: "Opgericht door André en Marnix. 470+ projecten, 30+ landen, 9,5/10 klantbeoordeling.",
+    },
+  },
+  eyebrow: { en: "About us", nl: "Over ons" },
+  h1a: { en: "Innovation with", nl: "Innovatie met" },
+  h1b: { en: "a human touch.", nl: "een menselijke touch." },
+  lead: {
+    en: "Europe's leading hologram company, built on a belief in real, human connection.",
+    // TODO(native-review): marketing tone
+    nl: "Europa's toonaangevende hologrambedrijf, gebouwd op het geloof in echte, menselijke connectie.",
+  },
+  storyEyebrow: { en: "Our story", nl: "Ons verhaal" },
+  storyTitleA: { en: "It started with", nl: "Het begon met" },
+  storyTitleB: { en: "a human idea.", nl: "een menselijk idee." },
+  storyP1: {
+    // TODO(native-review): marketing tone
+    en: 'Founders Andre and Marnix set out to keep people &ldquo;in touch&rdquo; across any distance. When Covid-19 hit, they went all in on holographic presence.',
+    nl: 'Oprichters Andre en Marnix wilden mensen &ldquo;in contact&rdquo; houden over elke afstand. Toen Covid-19 toesloeg, gingen ze volledig voor holografische aanwezigheid.',
+  },
+  storyP2: {
+    en: "Everything is built in-house for quality, 20 to 30 units a month and growing.",
+    // TODO(native-review): marketing tone
+    nl: "Alles wordt in eigen huis gebouwd voor kwaliteit, 20 tot 30 units per maand en groeiend.",
+  },
+  valuesEyebrow: { en: "What we stand for", nl: "Waar we voor staan" },
+  valuesTitle: {
+    en: "A future where technology and<br />human interaction go hand in hand.",
+    // TODO(native-review): marketing tone
+    nl: "Een toekomst waarin technologie en<br />menselijke interactie hand in hand gaan.",
+  },
+  values: [
+    {
+      h: { en: "Innovation with a human touch", nl: "Innovatie met een menselijke touch" },
+      p: {
+        // TODO(native-review): marketing tone
+        en: "Technology that enhances human connection and promotes sustainable business without losing authentic interaction.",
+        nl: "Technologie die menselijke connectie versterkt en duurzaam ondernemen bevordert zonder authentieke interactie te verliezen.",
+      },
+    },
+    {
+      h: { en: "Inclusive sustainability", nl: "Inclusieve duurzaamheid" },
+      p: {
+        // TODO(native-review): marketing tone
+        en: "Helping businesses across every sector reach a broader audience in an environmentally friendly, inclusive way.",
+        nl: "We helpen bedrijven in elke sector een breder publiek te bereiken op een milieuvriendelijke, inclusieve manier.",
+      },
+    },
+    {
+      h: { en: "Real people, real connections", nl: "Echte mensen, echte connecties" },
+      p: {
+        // TODO(native-review): marketing tone
+        en: "A genuinely personal presence in virtual spaces, with technology as a complement to the human experience, never a replacement.",
+        nl: "Een oprecht persoonlijke aanwezigheid in virtuele ruimtes, met technologie als aanvulling op de menselijke ervaring, nooit als vervanging.",
+      },
+    },
+  ],
+} as const;
+
+const tl = (v: { en: string; nl: string }) => t(v, lang);
+---
+
+<Base lang={lang} title={tl(copy.meta.title)} description={tl(copy.meta.description)}>
+  <section class="page-hero section--dark">
+    <div class="container">
+      <p class="eyebrow anim anim-up">{tl(copy.eyebrow)}</p>
+      <h1 class="display anim anim-up" style="--d:80ms">{tl(copy.h1a)}<br /><span class="holo-text">{tl(copy.h1b)}</span></h1>
+      <p class="lead measure anim anim-up" style="--d:160ms">{tl(copy.lead)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container story">
+      <div class="story-text anim anim-up">
+        <p class="eyebrow">{tl(copy.storyEyebrow)}</p>
+        <h2 class="section-title">{tl(copy.storyTitleA)}<br />a <span class="holo-text">{tl(copy.storyTitleB)}</span></h2>
+        <p set:html={tl(copy.storyP1)}></p>
+        <p class="text-muted">{tl(copy.storyP2)}</p>
+      </div>
+      <div class="story-media anim anim-scale" style="--d:120ms">
+        <img src="/images/setup.jpg" alt="Holoconnects team installing a life-size Holobox hologram display" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight stats-band">
+    <div class="container">
+      <div class="stats-grid">
+        {
+          stats.map((s, i) => (
+            <div class="stat" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <span class="stat-value">{s.value}</span>
+              <span class="stat-label">{t(s.label, lang)}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container">
+      <div class="block-head center" data-reveal>
+        <p class="eyebrow">{tl(copy.valuesEyebrow)}</p>
+        <h2 class="section-title" set:html={tl(copy.valuesTitle)}></h2>
+      </div>
+      <div class="grid cols-3 values-grid">
+        {
+          copy.values.map((v, i) => (
+            <div class="value" data-reveal style={i === 0 ? undefined : `--reveal-delay:${i * 90}ms`}>
+              <h3>{tl(v.h)}</h3>
+              <p>{tl(v.p)}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaSection lang={lang} />
+</Base>
+
+<style>
+  .page-hero {
+    padding-top: clamp(8rem, 14vw, 12rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+  .page-hero .lead { margin-top: 1.4rem; }
+
+  .story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .story-text h2 { margin-bottom: 1.5rem; }
+  .story-text p { font-size: 1.08rem; line-height: 1.7; }
+  .story-media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+  }
+  .story-media img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 820px) {
+    .story { grid-template-columns: 1fr; }
+    .story-media { order: -1; aspect-ratio: 16 / 10; }
+  }
+
+  .stats-band { border-block: 1px solid var(--line); }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .stat { display: flex; flex-direction: column; gap: 0.3rem; padding: 1rem 0; }
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4vw, 3.4rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-label { font-size: 0.9rem; color: var(--grey); }
+  @media (max-width: 620px) { .stats-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+
+  .block-head { max-width: 820px; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .block-head.center { margin-inline: auto; text-align: center; }
+
+  .value {
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.4s, background 0.4s;
+  }
+  .value:hover { border-color: rgba(200, 120, 0, 0.4); background: rgba(200, 120, 0, 0.04); }
+  .value h3 { font-size: 1.3rem; margin-bottom: 0.7rem; }
+</style>

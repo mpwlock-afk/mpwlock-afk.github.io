@@ -2,6 +2,14 @@
 import { ClientRouter } from "astro:transitions";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import {
+  getAlternates,
+  getLangFromUrl,
+  localeTag,
+  ogLocale,
+  useTranslations,
+  type Lang,
+} from "../i18n/ui";
 import "../styles/global.css";
 
 interface Props {
@@ -12,7 +20,11 @@ interface Props {
   noindex?: boolean;
   canonical?: string;
   jsonLd?: Record<string, any> | Record<string, any>[];
+  lang?: Lang;
 }
+
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const tt = useTranslations(lang);
 
 const {
   title = "Holoconnects — Europe's leading hologram company",
@@ -27,6 +39,9 @@ const {
 const siteUrl = Astro.site ?? new URL("https://www.holoconnects.com");
 const canonical = canonicalProp ?? new URL(Astro.url.pathname, siteUrl).href;
 const ogImage = new URL(image, siteUrl).href;
+
+// hreflang alternates (one per locale + x-default → English) for this page.
+const alternates = getAlternates(Astro.url.pathname, siteUrl);
 
 // Site-wide structured data: Organization + WebSite (rendered on every page)
 const organizationLd = {
@@ -68,7 +83,7 @@ const structuredData = [organizationLd, websiteLd, ...pageLd];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={localeTag[lang]}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -76,6 +91,11 @@ const structuredData = [organizationLd, websiteLd, ...pageLd];
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+
+    {/* hreflang alternates — both locales + x-default */}
+    {alternates.map((alt) => (
+      <link rel="alternate" hreflang={alt.lang} href={alt.href} />
+    ))}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     {!noindex && <meta name="robots" content="index, follow, max-image-preview:large" />}
     <meta name="theme-color" content="#000000" />
@@ -87,7 +107,12 @@ const structuredData = [organizationLd, websiteLd, ...pageLd];
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content="Holoconnects" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    {alternates
+      .filter((alt) => alt.lang !== "x-default" && alt.lang !== lang)
+      .map((alt) => (
+        <meta property="og:locale:alternate" content={ogLocale[alt.lang as Lang]} />
+      ))}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -109,11 +134,11 @@ const structuredData = [organizationLd, websiteLd, ...pageLd];
   <body>
     <div class="grain" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
-    <Header />
+    <Header lang={lang} />
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
 
     <!-- Floating WhatsApp (links to the Holoconnects WhatsApp number) -->
     <a
@@ -121,7 +146,7 @@ const structuredData = [organizationLd, websiteLd, ...pageLd];
       href="https://wa.me/31633036221?text=Hi%20Holoconnects%2C%20I%27d%20like%20to%20know%20more%20about%20your%20holographic%20displays."
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat with Holoconnects on WhatsApp"
+      aria-label={tt("wa.aria")}
     >
       <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" fill="currentColor">
         <path d="M16 .5C7.4.5.5 7.4.5 16c0 2.8.8 5.6 2.2 8L.4 31.5l7.3-1.9c2.3 1.2 4.8 1.9 7.4 1.9h.1c8.6 0 15.5-6.9 15.5-15.5S24.6.5 16 .5zm0 28.4c-2.4 0-4.7-.6-6.7-1.8l-.5-.3-4.4 1.1 1.2-4.3-.3-.5C4 20.9 3.3 18.5 3.3 16 3.3 9 8.9 3.4 16 3.4S28.7 9 28.7 16 23.1 28.9 16 28.9zm7.9-9.6c-.4-.2-2.6-1.3-3-1.4-.4-.2-.7-.2-1 .2-.3.4-1.1 1.4-1.4 1.7-.3.3-.5.3-.9.1-.4-.2-1.8-.7-3.5-2.2-1.3-1.2-2.2-2.6-2.4-3-.3-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.3-.4.4-.7.1-.3.1-.5 0-.7-.1-.2-1-2.4-1.4-3.3-.4-.8-.7-.7-1-.7h-.8c-.3 0-.7.1-1.1.5-.4.4-1.5 1.4-1.5 3.4s1.5 3.9 1.7 4.2c.2.3 3 4.6 7.3 6.4 1 .4 1.8.7 2.4.9 1 .3 1.9.3 2.7.2.8-.1 2.6-1.1 3-2.1.4-1 .4-1.8.3-2-.1-.2-.4-.3-.8-.5z"/>

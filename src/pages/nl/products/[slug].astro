@@ -1,6 +1,6 @@
 ---
-import ProductDetail from "../../components/views/ProductDetail.astro";
-import { products } from "../../data/site";
+import ProductDetail from "../../../components/views/ProductDetail.astro";
+import { products } from "../../../data/site";
 
 export function getStaticPaths() {
   return products.map((p) => ({
@@ -12,4 +12,4 @@ export function getStaticPaths() {
 const { product } = Astro.props;
 ---
 
-<ProductDetail lang="en" product={product} />
+<ProductDetail lang="nl" product={product} />

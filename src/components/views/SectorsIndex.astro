@@ -1,0 +1,117 @@
+---
+import Base from "../../layouts/Base.astro";
+import CtaSection from "../CtaSection.astro";
+import { sectors } from "../../data/site";
+import { t, localizePath, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const tl = (v: { en: string; nl: string }) => t(v, lang);
+
+const copy = {
+  metaTitle: {
+    en: "Hologram Solutions — Hospitality, Retail, Healthcare & Events | Holoconnects",
+    // TODO(native-review): SEO meta title
+    nl: "Hologramoplossingen — Hospitality, Retail, Zorg & Evenementen | Holoconnects",
+  },
+  metaDescription: {
+    en: "Holoconnects holographic displays for hospitality, telehealth, retail, events, education and advertising. Life-size interactive holograms for every industry.",
+    // TODO(native-review): SEO meta description
+    nl: "Holografische displays van Holoconnects voor hospitality, telehealth, retail, evenementen, onderwijs en adverteren. Levensgrote interactieve hologrammen voor elke branche.",
+  },
+  eyebrow: { en: "Sectors", nl: "Sectoren" },
+  titleLine1: { en: "Where holograms", nl: "Waar hologrammen" },
+  titleLine2: { en: "make the difference.", nl: "het verschil maken." },
+  lead: {
+    en: "Leading with hospitality, and at home in telehealth, retail, events, education and advertising.",
+    // TODO(native-review): marketing tone
+    nl: "Toonaangevend in hospitality, en thuis in telehealth, retail, evenementen, onderwijs en adverteren.",
+  },
+  explore: { en: "Explore", nl: "Ontdek" },
+  altPrefix: { en: "Hologram for", nl: "Hologram voor" },
+  altSuffix: { en: "by Holoconnects", nl: "door Holoconnects" },
+};
+---
+
+<Base lang={lang} title={tl(copy.metaTitle)} description={tl(copy.metaDescription)}>
+  <section class="page-hero section--dark">
+    <div class="container">
+      <p class="eyebrow anim anim-up">{tl(copy.eyebrow)}</p>
+      <h1 class="display anim anim-up" style="--d:80ms">{tl(copy.titleLine1)}<br /><span class="holo-text">{tl(copy.titleLine2)}</span></h1>
+      <p class="lead measure anim anim-up" style="--d:160ms">{tl(copy.lead)}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="sector-list">
+        {
+          sectors.map((s, i) => (
+            <article class="srow" data-reveal>
+              <div class={`srow-media ${i % 2 === 1 ? "is-right" : ""}`}>
+                <img src={s.image} alt={`${tl(copy.altPrefix)} ${t(s.name, lang)} ${tl(copy.altSuffix)}`} loading="lazy" />
+              </div>
+              <div class="srow-body">
+                <span class="srow-index">{String(i + 1).padStart(2, "0")}</span>
+                <h2>{t(s.name, lang)}</h2>
+                <p class="lead">{t(s.blurb, lang)}</p>
+                <a href={localizePath(`/sectors/${s.slug}`, lang)} class="arrow-link">{tl(copy.explore)} {t(s.name, lang).toLowerCase()}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaSection lang={lang} />
+</Base>
+
+<style>
+  .page-hero {
+    padding-top: clamp(8rem, 14vw, 12rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+  .page-hero .lead { margin-top: 1.4rem; }
+  .sector-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+  .srow {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .srow-media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+  }
+  .srow-media.is-right { order: 2; }
+  .srow-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease);
+  }
+  .srow:hover .srow-media img { transform: scale(1.05); }
+  .srow-body { display: flex; flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+  .srow-index {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .srow-body h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+  @media (max-width: 760px) {
+    .srow { grid-template-columns: 1fr; gap: 1.25rem; }
+    .srow-media.is-right { order: 0; }
+  }
+</style>

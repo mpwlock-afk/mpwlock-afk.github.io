@@ -1,0 +1,335 @@
+---
+import Base from "../../layouts/Base.astro";
+import CtaSection from "../CtaSection.astro";
+import { sectors, type Sector } from "../../data/site";
+import { t, localizePath, type Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+  sector: Sector;
+}
+const { lang, sector } = Astro.props;
+const tl = (v: { en: string; nl: string }) => t(v, lang);
+
+const others = sectors.filter((s) => s.slug !== sector.slug);
+
+const site = Astro.site ?? new URL("https://www.holoconnects.com");
+// Localized URL for JSON-LD only (canonical itself is computed by Base per-locale).
+const localizedUrl = new URL(localizePath(`/sectors/${sector.slug}`, lang), site).href;
+
+const sectorName = t(sector.name, lang);
+const sectorNameLower = sectorName.toLowerCase();
+
+// Page chrome copy.
+const copy = {
+  home: { en: "Home", nl: "Home" },
+  sectors: { en: "Sectors", nl: "Sectoren" },
+  bookDemo: { en: "Book a demo", nl: "Boek een demo" },
+  allSectors: { en: "All sectors", nl: "Alle sectoren" },
+  hologramsFor: { en: "Holograms for", nl: "Hologrammen voor" },
+  whyHere: { en: "Why holograms here", nl: "Waarom hier hologrammen" },
+  bodyText: {
+    en: "Holoconnects delivers life-size, interactive holographic displays used in 30+ countries. For",
+    // TODO(native-review): marketing tone
+    nl: "Holoconnects levert levensgrote, interactieve holografische displays die in meer dan 30 landen worden gebruikt. Voor",
+  },
+  bodyTextEnd: {
+    en: "that means a real human presence that is engaging, lifelike and always on brand.",
+    // TODO(native-review): marketing tone
+    nl: "betekent dat een echte menselijke aanwezigheid die boeiend, levensecht en altijd op merk is.",
+  },
+  talkTo: { en: "Talk to us about", nl: "Praat met ons over" },
+  keepExploring: { en: "Keep exploring", nl: "Blijf ontdekken" },
+  moreSectors: { en: "More sectors.", nl: "Meer sectoren." },
+  bringTo: { en: "Bring holograms to", nl: "Breng hologrammen naar" },
+  altPrefix: { en: "Hologram for", nl: "Hologram voor" },
+  altSuffix: { en: "by Holoconnects", nl: "door Holoconnects" },
+};
+
+type SeoEntry = {
+  title: { en: string; nl: string };
+  description: { en: string; nl: string };
+  intro: { en: string; nl: string };
+};
+
+// Unique, keyword-rich SEO copy per sector. NL = first-pass; SEO-critical → native review.
+const sectorSeo: Record<string, SeoEntry> = {
+  hospitality: {
+    title: {
+      en: "Hologram Solutions for Hospitality & Travel | Holoconnects",
+      nl: "Hologramoplossingen voor Hospitality & Reizen | Holoconnects",
+    },
+    description: {
+      en: "A 24/7 holographic concierge that welcomes every guest with a human touch. Life-size interactive holograms for hotels, travel and hospitality.",
+      // TODO(native-review): SEO description
+      nl: "Een 24/7 holografische concierge die elke gast verwelkomt met een menselijke touch. Levensgrote interactieve hologrammen voor hotels, reizen en hospitality.",
+    },
+    intro: {
+      en: "From check-in to concierge, a life-size hologram greets every guest with a genuine human presence, around the clock, in any language, in any lobby.",
+      // TODO(native-review): SEO intro
+      nl: "Van check-in tot concierge: een levensgroot hologram begroet elke gast met een echte menselijke aanwezigheid, de klok rond, in elke taal, in elke lobby.",
+    },
+  },
+  telehealth: {
+    title: {
+      en: "Telehealth Holograms — Life-Size Virtual Care | Holoconnects",
+      nl: "Telehealth-hologrammen — Levensgrote virtuele zorg | Holoconnects",
+    },
+    description: {
+      en: "Life-size, lifelike holographic consultations that bring specialist care closer to patients, wherever the specialist is based.",
+      // TODO(native-review): SEO description
+      nl: "Levensgrote, levensechte holografische consulten die specialistische zorg dichter bij patiënten brengen, waar de specialist zich ook bevindt.",
+    },
+    intro: {
+      en: "Bring the specialist into the room. Life-size holographic consultations make remote care feel personal, present and reassuring.",
+      // TODO(native-review): SEO intro
+      nl: "Breng de specialist de spreekkamer in. Levensgrote holografische consulten laten zorg op afstand persoonlijk, aanwezig en geruststellend voelen.",
+    },
+  },
+  retail: {
+    title: {
+      en: "Holographic Retail Displays — Windows & Showrooms | Holoconnects",
+      nl: "Holografische retaildisplays — Etalages & Showrooms | Holoconnects",
+    },
+    description: {
+      en: "Turn windows and showrooms into holographic stages that stop shoppers in their tracks with life-size, interactive 3D product displays.",
+      // TODO(native-review): SEO description
+      nl: "Verander etalages en showrooms in holografische podia die shoppers doen stilstaan met levensgrote, interactieve 3D-productdisplays.",
+    },
+    intro: {
+      en: "Turn any window or showroom into a holographic stage. Products float in vivid 3D and invite shoppers to interact, not just look.",
+      // TODO(native-review): SEO intro
+      nl: "Verander elke etalage of showroom in een holografisch podium. Producten zweven in levendig 3D en nodigen shoppers uit om te interacteren, niet alleen te kijken.",
+    },
+  },
+  events: {
+    title: {
+      en: "Event Holograms — Beam Speakers & Brands on Stage | Holoconnects",
+      nl: "Evenementhologrammen — Beam sprekers & merken op het podium | Holoconnects",
+    },
+    description: {
+      en: "Beam speakers, presenters and brands onto any stage in striking, large-format 3D holograms for events and live experiences.",
+      // TODO(native-review): SEO description
+      nl: "Beam sprekers, presentatoren en merken naar elk podium in opvallende, grootformaat 3D-hologrammen voor evenementen en live-ervaringen.",
+    },
+    intro: {
+      en: "Put a speaker, performer or product on any stage in striking large-format 3D, with no travel required and all the impact of being there.",
+      // TODO(native-review): SEO intro
+      nl: "Zet een spreker, performer of product op elk podium in opvallend grootformaat 3D, zonder reizen en met alle impact van fysiek aanwezig zijn.",
+    },
+  },
+  education: {
+    title: {
+      en: "Holograms for Education — Lessons in 3D | Holoconnects",
+      nl: "Hologrammen voor onderwijs — Lessen in 3D | Holoconnects",
+    },
+    description: {
+      en: "Bring lessons, guest lecturers and complex ideas to life in three dimensions with life-size, interactive education holograms.",
+      // TODO(native-review): SEO description
+      nl: "Breng lessen, gastdocenten en complexe ideeën tot leven in drie dimensies met levensgrote, interactieve onderwijshologrammen.",
+    },
+    intro: {
+      en: "Make the abstract tangible. Guest lecturers, demonstrations and complex ideas come to life at human scale, in three dimensions.",
+      // TODO(native-review): SEO intro
+      nl: "Maak het abstracte tastbaar. Gastdocenten, demonstraties en complexe ideeën komen tot leven op menselijke schaal, in drie dimensies.",
+    },
+  },
+  advertising: {
+    title: {
+      en: "Holographic Advertising — Premium 3D Out-of-Home | Holoconnects",
+      nl: "Holografisch adverteren — Premium 3D out-of-home | Holoconnects",
+    },
+    description: {
+      en: "Premium holographic out-of-home advertising that commands attention in 4K 3D. Life-size hologram displays that brands can't ignore.",
+      // TODO(native-review): SEO description
+      nl: "Premium holografische out-of-home-reclame die de aandacht trekt in 4K 3D. Levensgrote hologramdisplays die merken niet kunnen negeren.",
+    },
+    intro: {
+      en: "Premium holographic out-of-home that commands attention in 4K 3D, with campaigns that audiences stop for, photograph and remember.",
+      // TODO(native-review): SEO intro
+      nl: "Premium holografische out-of-home die de aandacht trekt in 4K 3D, met campagnes waarvoor publiek stilstaat, die het fotografeert en onthoudt.",
+    },
+  },
+};
+
+const seoEntry = sectorSeo[sector.slug];
+const seo = seoEntry
+  ? {
+      title: tl(seoEntry.title),
+      description: tl(seoEntry.description),
+      intro: tl(seoEntry.intro),
+    }
+  : {
+      title: `${tl(copy.hologramsFor)} ${sectorName} | Holoconnects`,
+      description: t(sector.blurb, lang),
+      intro: t(sector.blurb, lang),
+    };
+
+const serviceLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: `${tl(copy.hologramsFor)} ${sectorName}`,
+  description: seo.description,
+  serviceType: "Holographic display",
+  provider: { "@type": "Organization", name: "Holoconnects", url: site.href },
+  areaServed: "Worldwide",
+  url: localizedUrl,
+};
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: tl(copy.home), item: new URL(localizePath("/", lang), site).href },
+    { "@type": "ListItem", position: 2, name: tl(copy.sectors), item: new URL(localizePath("/sectors", lang), site).href },
+    { "@type": "ListItem", position: 3, name: sectorName, item: localizedUrl },
+  ],
+};
+---
+
+<Base
+  lang={lang}
+  title={seo.title}
+  description={seo.description}
+  image={sector.image}
+  jsonLd={[serviceLd, breadcrumbLd]}
+>
+  <section class="sector-hero section--dark">
+    <div class="sector-hero__media">
+      <img src={sector.image} alt={`${tl(copy.altPrefix)} ${sectorName} ${tl(copy.altSuffix)}`} data-parallax="0.12" />
+    </div>
+    <div class="sector-hero__veil" aria-hidden="true"></div>
+    <div class="container sector-hero__content">
+      <p class="eyebrow anim anim-up">{tl(copy.sectors)} · {sectorName}</p>
+      <h1 class="display anim anim-up" style="--d:80ms">
+        {tl(copy.hologramsFor)}<br /><span class="holo-text">{sectorNameLower}.</span>
+      </h1>
+      <p class="lead measure anim anim-up" style="--d:160ms">{seo.intro}</p>
+      <div class="sector-hero__actions anim anim-up" style="--d:240ms">
+        <a href={localizePath("/contact", lang)} class="magnetic btn btn--gold">{tl(copy.bookDemo)}</a>
+        <a href={localizePath("/sectors", lang)} class="magnetic btn btn--ghost-light">{tl(copy.allSectors)}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container sector-body">
+      <div class="sector-copy anim anim-up">
+        <p class="eyebrow">{tl(copy.whyHere)}</p>
+        <h2 class="section-title">{t(sector.blurb, lang)}</h2>
+        <p class="text-muted">
+          {tl(copy.bodyText)} {sectorNameLower} {tl(copy.bodyTextEnd)}
+        </p>
+        <a href={localizePath("/contact", lang)} class="arrow-link">{tl(copy.talkTo)} {sectorNameLower}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="block-head" data-reveal>
+        <p class="eyebrow">{tl(copy.keepExploring)}</p>
+        <h2 class="section-title">{tl(copy.moreSectors)}</h2>
+      </div>
+      <div class="grid cols-3 other-sectors">
+        {
+          others.map((s, i) => (
+            <a href={localizePath(`/sectors/${s.slug}`, lang)} class="mini-card" data-tilt="6" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <div class="mini-media">
+                <img src={s.image} alt={`${tl(copy.altPrefix)} ${t(s.name, lang)} ${tl(copy.altSuffix)}`} loading="lazy" />
+              </div>
+              <div class="mini-body">
+                <h3>{t(s.name, lang)}</h3>
+                <p class="text-muted">{t(s.blurb, lang)}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaSection lang={lang} title={`${tl(copy.bringTo)} ${sectorNameLower}`} />
+</Base>
+
+<style>
+  .sector-hero {
+    position: relative;
+    min-height: 70svh;
+    display: flex;
+    align-items: flex-end;
+    padding-top: clamp(8rem, 14vw, 12rem);
+    padding-bottom: clamp(3rem, 7vw, 6rem);
+    overflow: hidden;
+    color: #fff;
+  }
+  .sector-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .sector-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sector-hero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(90deg, rgba(5, 5, 7, 0.92) 18%, rgba(5, 5, 7, 0.5) 55%, rgba(5, 5, 7, 0.2) 100%),
+      linear-gradient(0deg, rgba(5, 5, 7, 0.85) 0%, transparent 60%);
+  }
+  .sector-hero__content {
+    position: relative;
+    z-index: 2;
+  }
+  .sector-hero__content .lead {
+    margin-top: 1.4rem;
+    color: #d7d7de;
+  }
+  .sector-hero__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .sector-body {
+    max-width: 760px;
+  }
+  .sector-copy h2 {
+    margin: 0.6rem 0 1.2rem;
+  }
+  .sector-copy .text-muted {
+    margin-bottom: 1.6rem;
+    line-height: 1.7;
+  }
+
+  .block-head {
+    max-width: 760px;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .mini-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.4s var(--ease);
+  }
+  .mini-card:hover { transform: translateY(-5px); }
+  .mini-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .mini-media img { width: 100%; height: 100%; object-fit: cover; }
+  .mini-body { padding: 1.4rem; }
+  .mini-body h3 { font-size: 1.3rem; margin-bottom: 0.3rem; }
+
+  @media (max-width: 760px) {
+    .sector-hero { min-height: 60svh; }
+  }
+</style>

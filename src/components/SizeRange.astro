@@ -9,6 +9,14 @@
 // NOTE: 75" currently reuses the 86" render as a stand-in until the real
 // 75" render is supplied (see CLAUDE.md). 22" uses the cut-out mini render
 // (flipped so its glass front faces the same way as the other boxes).
+import { getLangFromUrl, t, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang?: Lang;
+}
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const tl = (v: { en: string; nl: string }) => t(v, lang);
+
 const sizes = [
   { label: '22"', ratio: 0.299, solid: false, img: { black: "/images/holobox-mini-flip.png", white: "" } },
   { label: '43"', ratio: 0.524, solid: false, img: { black: "/images/holobox-43.png", white: "" } },
@@ -16,20 +24,38 @@ const sizes = [
   { label: '86"', ratio: 1.0, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
 ];
 const hasSwitch = sizes.every((s) => s.img.white) && sizes.every((s) => s.img.black);
+
+const copy = {
+  eyebrow: { en: "The range", nl: "Het assortiment" },
+  titleA: { en: "One Holobox.", nl: "Eén Holobox." },
+  titleB: { en: "Four sizes.", nl: "Vier maten." },
+  lead: {
+    en: "From a 22\" tabletop to an 86\" life-size flagship. The same holographic magic, scaled to your space.",
+    // TODO(native-review): marketing tone
+    nl: "Van een 22\"-tafelmodel tot een 86\" levensgroot vlaggenschip. Dezelfde holografische magie, geschaald naar uw ruimte.",
+  },
+  colorBlack: { en: "Midnight Black", nl: "Midnight Black" },
+  colorWhite: { en: "Starlight White", nl: "Starlight White" },
+  swatchAria: { en: "Holobox colour", nl: "Holobox-kleur" },
+  foot: {
+    en: "Heights shown to scale · 21.5\" · 43\" · 75\" · 86\"",
+    nl: "Hoogtes op schaal weergegeven · 21,5\" · 43\" · 75\" · 86\"",
+  },
+} as const;
 ---
 
 <section class="section section--dark sizerange">
   <div class="container">
     <div class="block-head center" data-reveal>
-      <p class="eyebrow">The range</p>
-      <h2 class="section-title">One Holobox.<br /><span class="holo-text">Four sizes.</span></h2>
-      <p class="lead measure center">From a 22&quot; tabletop to an 86&quot; life-size flagship. The same holographic magic, scaled to your space.</p>
+      <p class="eyebrow">{tl(copy.eyebrow)}</p>
+      <h2 class="section-title">{tl(copy.titleA)}<br /><span class="holo-text">{tl(copy.titleB)}</span></h2>
+      <p class="lead measure center">{tl(copy.lead)}</p>
     </div>
 
     {hasSwitch && (
-      <div class="colorswitch" role="tablist" aria-label="Holobox colour">
-        <button class="colorswitch__btn is-active" data-color="black" role="tab">Midnight Black</button>
-        <button class="colorswitch__btn" data-color="white" role="tab">Starlight White</button>
+      <div class="colorswitch" role="tablist" aria-label={tl(copy.swatchAria)}>
+        <button class="colorswitch__btn is-active" data-color="black" role="tab">{tl(copy.colorBlack)}</button>
+        <button class="colorswitch__btn" data-color="white" role="tab">{tl(copy.colorWhite)}</button>
       </div>
     )}
 
@@ -43,11 +69,11 @@ const hasSwitch = sizes.every((s) => s.img.white) && sizes.every((s) => s.img.bl
                   src={s.img.black || s.img.white}
                   data-black={s.img.black}
                   data-white={s.img.white}
-                  alt={`Holobox ${s.label} holographic display`}
+                  alt={`Holobox ${s.label} ${tl({ en: "holographic display", nl: "holografisch display" })}`}
                   loading="lazy"
                 />
               ) : (
-                <div class="sizeunit__ph"><span>{s.label}</span><small>render coming</small></div>
+                <div class="sizeunit__ph"><span>{s.label}</span><small>{tl({ en: "render coming", nl: "render volgt" })}</small></div>
               )}
             </div>
             <span class="sizeunit__label">{s.label}</span>
@@ -55,7 +81,7 @@ const hasSwitch = sizes.every((s) => s.img.white) && sizes.every((s) => s.img.bl
         ))
       }
     </div>
-    <p class="sizeline__foot">Heights shown to scale · 21.5&quot; · 43&quot; · 75&quot; · 86&quot;</p>
+    <p class="sizeline__foot">{tl(copy.foot)}</p>
   </div>
 </section>
 

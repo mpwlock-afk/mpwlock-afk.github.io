@@ -4,6 +4,50 @@
 // right, from the studio render set); the 22/43/75 currently only have a black
 // front render, so their finish/view options degrade gracefully (disabled) until
 // matching renders are supplied. New component — does not touch SizeRange.astro.
+import { getLangFromUrl, t, localizePath, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang?: Lang;
+}
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const tl = (v: { en: string; nl: string }) => t(v, lang);
+
+const copy = {
+  eyebrow: { en: "Configure", nl: "Configureer" },
+  titleA: { en: "Build your ", nl: "Stel uw " },
+  titleB: { en: "Holobox.", nl: "Holobox samen." },
+  lead: {
+    en: "Pick a size, a finish and an angle. See it your way.",
+    // TODO(native-review): marketing tone
+    nl: "Kies een maat, een afwerking en een hoek. Bekijk het op uw manier.",
+  },
+  labelModel: { en: "Model", nl: "Model" },
+  labelFinish: { en: "Finish", nl: "Afwerking" },
+  labelView: { en: "View", nl: "Weergave" },
+  ariaModel: { en: "Model", nl: "Model" },
+  ariaFinish: { en: "Finish", nl: "Afwerking" },
+  ariaView: { en: "View", nl: "Weergave" },
+  colorBlack: { en: "Midnight Black", nl: "Midnight Black" },
+  colorWhite: { en: "Starlight White", nl: "Starlight White" },
+  viewLeft: { en: "Left", nl: "Links" },
+  viewFront: { en: "Front", nl: "Voor" },
+  viewRight: { en: "Right", nl: "Rechts" },
+  cta: { en: "Book a demo", nl: "Boek een demo" },
+} as const;
+
+// Strings the client-side script needs (alt text + the "coming soon" note).
+const cfgStrings = {
+  black: tl(copy.colorBlack),
+  white: tl(copy.colorWhite),
+  views: { left: tl(copy.viewLeft), front: tl(copy.viewFront), right: tl(copy.viewRight) },
+  altView: { en: "view", nl: "weergave" }[lang],
+  // {label} is replaced client-side (functions don't survive define:vars).
+  comingSoon: {
+    en: "White finish and side views for the {label} are coming soon.",
+    nl: "Witte afwerking en zijaanzichten voor de {label} volgen binnenkort.",
+  }[lang],
+};
+
 const models = [
   {
     id: "86",
@@ -33,9 +77,9 @@ const start = models[0].colors.black.front;
 <section class="section configurator" id="configurator">
   <div class="container">
     <div class="cfg-head" data-reveal>
-      <p class="eyebrow">Configure</p>
-      <h2 class="cfg-title">Build your <span class="holo-text">Holobox.</span></h2>
-      <p class="cfg-lead">Pick a size, a finish and an angle. See it your way.</p>
+      <p class="eyebrow">{tl(copy.eyebrow)}</p>
+      <h2 class="cfg-title">{tl(copy.titleA)}<span class="holo-text">{tl(copy.titleB)}</span></h2>
+      <p class="cfg-lead">{tl(copy.lead)}</p>
     </div>
 
     <div class="cfg" data-cfg>
@@ -45,7 +89,7 @@ const start = models[0].colors.black.front;
           class="cfg__img"
           data-cfg-img
           src={start}
-          alt="Holobox 86 inch, Midnight Black, front view"
+          alt={`Holobox 86", ${cfgStrings.black}, ${cfgStrings.views.front}`}
           width="811"
           height="1300"
         />
@@ -53,8 +97,8 @@ const start = models[0].colors.black.front;
 
       <div class="cfg__panel">
         <div class="cfg__group">
-          <span class="cfg__label">Model</span>
-          <div class="cfg__opts" role="group" aria-label="Model">
+          <span class="cfg__label">{tl(copy.labelModel)}</span>
+          <div class="cfg__opts" role="group" aria-label={tl(copy.ariaModel)}>
             {models.map((m) => (
               <button type="button" class="cfg__chip" data-model={m.id}>{m.label}</button>
             ))}
@@ -62,25 +106,25 @@ const start = models[0].colors.black.front;
         </div>
 
         <div class="cfg__group">
-          <span class="cfg__label">Finish</span>
-          <div class="cfg__opts" role="group" aria-label="Finish">
-            <button type="button" class="cfg__chip" data-color="black"><span class="cfg__dot cfg__dot--black"></span>Midnight Black</button>
-            <button type="button" class="cfg__chip" data-color="white"><span class="cfg__dot cfg__dot--white"></span>Starlight White</button>
+          <span class="cfg__label">{tl(copy.labelFinish)}</span>
+          <div class="cfg__opts" role="group" aria-label={tl(copy.ariaFinish)}>
+            <button type="button" class="cfg__chip" data-color="black"><span class="cfg__dot cfg__dot--black"></span>{tl(copy.colorBlack)}</button>
+            <button type="button" class="cfg__chip" data-color="white"><span class="cfg__dot cfg__dot--white"></span>{tl(copy.colorWhite)}</button>
           </div>
         </div>
 
         <div class="cfg__group">
-          <span class="cfg__label">View</span>
-          <div class="cfg__opts" role="group" aria-label="View">
-            <button type="button" class="cfg__chip" data-view="left">Left</button>
-            <button type="button" class="cfg__chip" data-view="front">Front</button>
-            <button type="button" class="cfg__chip" data-view="right">Right</button>
+          <span class="cfg__label">{tl(copy.labelView)}</span>
+          <div class="cfg__opts" role="group" aria-label={tl(copy.ariaView)}>
+            <button type="button" class="cfg__chip" data-view="left">{tl(copy.viewLeft)}</button>
+            <button type="button" class="cfg__chip" data-view="front">{tl(copy.viewFront)}</button>
+            <button type="button" class="cfg__chip" data-view="right">{tl(copy.viewRight)}</button>
           </div>
         </div>
 
         <p class="cfg__note" data-cfg-note hidden></p>
 
-        <a href="/demo" class="magnetic btn btn--gold cfg__cta">Book a demo</a>
+        <a href={localizePath("/demo", lang)} class="magnetic btn btn--gold cfg__cta">{tl(copy.cta)}</a>
       </div>
     </div>
   </div>
@@ -184,7 +228,7 @@ const start = models[0].colors.black.front;
   }
 </style>
 
-<script define:vars={{ models }}>
+<script define:vars={{ models, cfgStrings }}>
   function initConfigurator() {
     document.querySelectorAll("[data-cfg]").forEach((root) => {
       if (root.dataset.wired) return;
@@ -194,7 +238,8 @@ const start = models[0].colors.black.front;
       const note = root.querySelector("[data-cfg-note]");
       const byId = Object.fromEntries(models.map((m) => [m.id, m]));
       const state = { model: "86", color: "black", view: "front" };
-      const colorName = (c) => (c === "white" ? "Starlight White" : "Midnight Black");
+      const colorName = (c) => (c === "white" ? cfgStrings.white : cfgStrings.black);
+      const viewName = (v) => cfgStrings.views[v] || v;
 
       function resolve() {
         const m = byId[state.model];
@@ -216,7 +261,7 @@ const start = models[0].colors.black.front;
           const onload = () => { img.style.opacity = "1"; };
           img.addEventListener("load", onload, { once: true });
           img.src = src;
-          img.alt = `${m.name} ${m.label}, ${colorName(color)}, ${view} view`;
+          img.alt = `${m.name} ${m.label}, ${colorName(color)}, ${viewName(view)} ${cfgStrings.altView}`;
           img.style.transform = `translateX(${shift})`;
           if (img.complete) { img.removeEventListener("load", onload); img.style.opacity = "1"; }
         }, 160);
@@ -247,7 +292,7 @@ const start = models[0].colors.black.front;
         const onlyBlackFront = !m.colors.white && !m.colors.black.left && !m.colors.black.right;
         if (onlyBlackFront) {
           note.hidden = false;
-          note.textContent = `White finish and side views for the ${m.label} are coming soon.`;
+          note.textContent = cfgStrings.comingSoon.replace("{label}", m.label);
         } else {
           note.hidden = true;
         }

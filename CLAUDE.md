@@ -63,6 +63,38 @@ lock. To avoid clobbering each other:
   homepage) AND inline in `src/pages/products/index.astro`.
   **TODO: de-dupe** — make products/index use `<SizeRange />` too.
 
+## i18n (NL + EN) — READ BEFORE EDITING ANY PAGE
+
+The site is **bilingual**: English is the default at the root (`/`), Dutch lives
+under `/nl/`. Astro native i18n, `prefixDefaultLocale: false` (see
+`astro.config.mjs`). Every route exists in both locales (34 pages).
+
+**Architecture — single source, no duplicated markup:**
+- Page bodies live in **view components** under `src/components/views/*.astro`,
+  each taking an `interface Props { lang: Lang; … }`.
+- Route files are **thin wrappers**: `src/pages/<x>.astro` renders the view with
+  `lang="en"`; `src/pages/nl/<x>.astro` renders it with `lang="nl"`. Dynamic
+  `[slug]` routes keep their own `getStaticPaths()` in each wrapper.
+- `src/i18n/ui.ts` = locale registry + helpers (`t`, `localizePath`,
+  `getLangFromUrl`, `getAlternates`, `useTranslations`) + the shared **chrome**
+  dictionary (nav, footer, CTA band, buttons).
+- **Content is localized in `src/data/site.ts`**: translatable fields are
+  `Loc = { en, nl }` (resolve with `t(field, lang)`); proper nouns / brand names
+  / verbatim customer quotes stay plain strings.
+- **Page-specific copy** lives in each view's local `const copy = { … }` object
+  (`{ en, nl }` pairs) — NOT in `ui.ts`. No hardcoded user-visible English.
+
+**Rules when adding/editing pages:**
+- Every internal link uses `localizePath("/path", lang)` (trailing-slashed to
+  match canonical). Never hardcode `/nl/…`.
+- Pass `lang={lang}` to `<Base>`, `<CtaSection>`, and shared components.
+- Don't pass a `canonical` prop — `Base` derives it per-locale, and emits
+  hreflang (both locales + `x-default` → EN) + `og:locale`. Sitemap auto-adds
+  `xhtml:link` alternates (sitemap integration `i18n` option).
+- NL is a **first-pass** translation. Lines needing a native marketing review
+  carry `// TODO(native-review)`. See `docs/seo/i18n-native-review.md` for the
+  full punch-list of strings/pages still to be reviewed.
+
 ## Key conventions
 
 - Astro scopes `<style>`; selectors on `document.body` (e.g. `.menu-open`,
@@ -74,7 +106,8 @@ lock. To avoid clobbering each other:
 - Brand palette: black/white + gold (`--gold` #c87800 → `--gold-bright` #ea9914).
   Fonts: Clash Display (display) + Satoshi (body) via Fontshare.
 - Real content/photos come from the live site; `src/data/site.ts` is the
-  single source for nav, products, sectors, cases, testimonials, offices.
+  single source for nav, products, sectors, cases, testimonials, offices —
+  now **localized** (`Loc = { en, nl }`, see i18n section above).
 
 ## Docs
 
