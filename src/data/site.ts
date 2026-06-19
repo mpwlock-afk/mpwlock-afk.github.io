@@ -146,7 +146,7 @@ export const products: Product[] = [
       en: 'An 86" transparent LCD screen brings people, products and presenters to life at human scale. Interactive, vivid and unforgettable.',
       nl: 'Een 86"-transparant LCD-scherm brengt mensen, producten en presentatoren tot leven op ware grootte. Interactief, levendig en onvergetelijk.',
     },
-    image: "/images/holobox-black.jpg",
+    image: "/images/holobox-black.png",
     specs: [
       { label: { en: "Display", nl: "Scherm" }, value: { en: '86" transparent LCD', nl: '86" transparant LCD' } },
       { label: { en: "Touch", nl: "Touch" }, value: { en: "20-point IR touch", nl: "20-punts IR-touch" } },
@@ -195,7 +195,7 @@ export const products: Product[] = [
       en: 'A 43" holographic display that delivers Holobox-quality presence in a smaller, more flexible footprint.',
       nl: 'Een 43"-holografisch display dat Holobox-kwaliteit levert in een kleinere, flexibelere voetafdruk.',
     },
-    image: "/images/holobox-white.jpg",
+    image: "/images/holobox-43.png",
     features: [
       { title: { en: "Flexible footprint", nl: "Flexibele voetafdruk" }, body: { en: "A smaller display that fits lobbies, booths and tighter retail environments.", nl: "Een kleiner display dat past in lobby's, stands en krappere retailomgevingen." } },
       { title: { en: "Holographic clarity", nl: "Holografische helderheid" }, body: { en: "Sharp, lifelike holographic imagery in a more accessible size.", nl: "Scherpe, levensechte holografische beelden in een toegankelijker formaat." } },
@@ -213,7 +213,7 @@ export const products: Product[] = [
       en: "Place up to five Holobox units side by side to build a modular holographic wall for events, lobbies and flagship spaces.",
       nl: "Plaats tot vijf Holobox-units naast elkaar voor een modulaire holografische wand voor evenementen, lobby's en flagship-ruimtes.",
     },
-    image: "/images/holobox-black.png",
+    image: "/images/holobox-hologrid.png",
     features: [
       { title: { en: "Modular by design", nl: "Modulair van opzet" }, body: { en: "Line up multiple Holobox units to create a dramatic, large-format holographic wall.", nl: "Zet meerdere Holobox-units op een rij voor een indrukwekkende, grootformaat holografische wand." } },
       { title: { en: "Built for events", nl: "Gebouwd voor evenementen" }, body: { en: "Command attention at expos, launches and live experiences.", nl: "Trek alle aandacht op beurzen, lanceringen en live-ervaringen." } },
