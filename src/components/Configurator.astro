@@ -48,27 +48,17 @@ const cfgStrings = {
   }[lang],
 };
 
+// All models use the clean, transparent studio cut-outs (centred-logo Holobox),
+// so the box sits on the section background with no white card/frame. The 86"
+// multi-angle / white-finish render set (config/*.png) had a baked-in white
+// background and a different logo placement, so it is parked until a proper
+// transparent black+white × front/left/right set is supplied — until then the
+// finish/view options degrade gracefully (disabled + note).
 const models = [
-  {
-    id: "86",
-    label: '86"',
-    name: "Holobox",
-    colors: {
-      black: {
-        front: "/images/config/holobox86-black-front.png",
-        left: "/images/config/holobox86-black-left.png",
-        right: "/images/config/holobox86-black-right.png",
-      },
-      white: {
-        front: "/images/config/holobox86-white-front.png",
-        left: "/images/config/holobox86-white-left.png",
-        right: "/images/config/holobox86-white-right.png",
-      },
-    },
-  },
-  { id: "75", label: '75"', name: "The 75", colors: { black: { front: "/images/holobox-75-black.png" } } },
+  { id: "86", label: '86"', name: "Holobox", colors: { black: { front: "/images/holobox-black.png" } } },
+  { id: "75", label: '75"', name: "The 75", colors: { black: { front: "/images/holobox-black.png" } } },
   { id: "43", label: '43"', name: "The 43", colors: { black: { front: "/images/holobox-43.png" } } },
-  { id: "22", label: '22"', name: "Mini", colors: { black: { front: "/images/holobox-mini-flip.png" } } },
+  { id: "22", label: '22"', name: "Mini", colors: { black: { front: "/images/holobox-mini-cut.png" } } },
 ];
 
 const start = models[0].colors.black.front;
@@ -90,8 +80,8 @@ const start = models[0].colors.black.front;
           data-cfg-img
           src={start}
           alt={`Holobox 86", ${cfgStrings.black}, ${cfgStrings.views.front}`}
-          width="811"
-          height="1300"
+          width="1200"
+          height="1520"
         />
       </div>
 
@@ -150,11 +140,12 @@ const start = models[0].colors.black.front;
     max-width: 1040px;
     margin-inline: auto;
   }
+  /* No card/frame: the box render (transparent PNG with its own soft shadow)
+     sits directly on the section background, in the same block as the panel. */
   .cfg__stage {
     position: relative;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg, 20px);
+    background: transparent;
+    border: 0;
     height: clamp(360px, 50vh, 520px);
     display: grid;
     place-items: center;
@@ -162,15 +153,15 @@ const start = models[0].colors.black.front;
   }
   .cfg__glow {
     position: absolute;
-    inset: 12% 8% 6%;
-    background: radial-gradient(60% 60% at 55% 45%, rgba(234, 153, 20, 0.12), transparent 70%);
+    inset: 8% 4% 4%;
+    background: radial-gradient(60% 60% at 50% 45%, rgba(234, 153, 20, 0.10), transparent 70%);
     pointer-events: none;
   }
   .cfg__img {
     position: relative;
-    height: 88%;
+    height: 94%;
     width: auto;
-    max-width: 86%;
+    max-width: 100%;
     object-fit: contain;
     opacity: 1;
     transition: opacity 0.25s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);

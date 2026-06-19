@@ -6,9 +6,11 @@
 // the real render lands.
 // `img.black` / `img.white` hold the uniform renders; once BOTH colours exist
 // for every size, the colour switch turns on automatically.
-// NOTE: 75" currently reuses the 86" render as a stand-in until the real
-// 75" render is supplied (see CLAUDE.md). 22" uses the cut-out mini render
-// (flipped so its glass front faces the same way as the other boxes).
+// NOTE: 75" reuses the same 86" cabinet render, just scaled down by its real
+// height ratio (per art-direction: "use the 86" model, smaller to ratio") so
+// the 75" never looks larger than the 86" and stays the correct model.
+// 22" uses the real Mini render (front speaker grille, screw holes, light-grey
+// screen) cut out of the studio shot to a transparent PNG: holobox-mini-cut.png.
 import { getLangFromUrl, t, type Lang } from "../i18n/ui";
 
 interface Props {
@@ -18,9 +20,9 @@ const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
 const tl = (v: { en: string; nl: string }) => t(v, lang);
 
 const sizes = [
-  { label: '22"', ratio: 0.299, solid: false, img: { black: "/images/holobox-mini-flip.png", white: "" } },
+  { label: '22"', ratio: 0.299, solid: false, img: { black: "/images/holobox-mini-cut.png", white: "" } },
   { label: '43"', ratio: 0.524, solid: false, img: { black: "/images/holobox-43.png", white: "" } },
-  { label: '75"', ratio: 0.874, solid: false, img: { black: "/images/holobox-75-black.png", white: "" } },
+  { label: '75"', ratio: 0.874, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
   { label: '86"', ratio: 1.0, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
 ];
 const hasSwitch = sizes.every((s) => s.img.white) && sizes.every((s) => s.img.black);

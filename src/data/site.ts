@@ -171,7 +171,7 @@ export const products: Product[] = [
       en: "A compact table model designed for product placement and showcasing smaller features with the same striking holographic depth.",
       nl: "Een compact tafelmodel ontworpen voor productplaatsing en het tonen van kleinere details met dezelfde opvallende holografische diepte.",
     },
-    image: "/images/holobox-mini.jpg",
+    image: "/images/holobox-mini-cut.png",
     specs: [
       { label: { en: "Format", nl: "Formaat" }, value: { en: "Table model", nl: "Tafelmodel" } },
       { label: { en: "Use", nl: "Gebruik" }, value: { en: "Product placement", nl: "Productplaatsing" } },
