@@ -63,11 +63,20 @@ lock. To avoid clobbering each other:
   homepage) AND inline in `src/pages/products/index.astro`.
   **TODO: de-dupe** — make products/index use `<SizeRange />` too.
 
-## i18n (NL + EN) — READ BEFORE EDITING ANY PAGE
+## i18n (EN + NL + DE) — READ BEFORE EDITING ANY PAGE
 
-The site is **bilingual**: English is the default at the root (`/`), Dutch lives
-under `/nl/`. Astro native i18n, `prefixDefaultLocale: false` (see
-`astro.config.mjs`). Every route exists in both locales (34 pages).
+The site is **trilingual**: English is the default at the root (`/`), Dutch under
+`/nl/`, German under `/de/`. Astro native i18n, `prefixDefaultLocale: false` (see
+`astro.config.mjs`). Every localized route exists in all three locales. Plus an
+**EN-only `/news/` blog** (content collection) that opts out of locale alternates
+via `<Base localized={false}>`. Build = 67 pages, 55 indexable URLs.
+
+- `Loc = { en; nl; de? }` — `de` is optional; `t()` falls back to EN on a gap so
+  the build never breaks. `ui.ts` chrome has full `de`. Function-valued / direct
+  `copy.x[lang]` indexing MUST have a `de` key or it crashes at build (no fallback).
+- `localizePath()` and `stripLangPrefix()` are **generic over `locales`** — never
+  hardcode a prefix (the old 2-locale version hardcoded `nl` and broke all DE
+  links + DE hreflang; fixed 2026-06-20).
 
 **Architecture — single source, no duplicated markup:**
 - Page bodies live in **view components** under `src/components/views/*.astro`,
@@ -79,21 +88,22 @@ under `/nl/`. Astro native i18n, `prefixDefaultLocale: false` (see
   `getLangFromUrl`, `getAlternates`, `useTranslations`) + the shared **chrome**
   dictionary (nav, footer, CTA band, buttons).
 - **Content is localized in `src/data/site.ts`**: translatable fields are
-  `Loc = { en, nl }` (resolve with `t(field, lang)`); proper nouns / brand names
-  / verbatim customer quotes stay plain strings.
+  `Loc = { en, nl, de? }` (resolve with `t(field, lang)`); proper nouns / brand
+  names / verbatim customer quotes stay plain strings.
 - **Page-specific copy** lives in each view's local `const copy = { … }` object
-  (`{ en, nl }` pairs) — NOT in `ui.ts`. No hardcoded user-visible English.
+  (`{ en, nl, de }` triples) — NOT in `ui.ts`. No hardcoded user-visible English.
 
 **Rules when adding/editing pages:**
 - Every internal link uses `localizePath("/path", lang)` (trailing-slashed to
   match canonical). Never hardcode `/nl/…`.
 - Pass `lang={lang}` to `<Base>`, `<CtaSection>`, and shared components.
 - Don't pass a `canonical` prop — `Base` derives it per-locale, and emits
-  hreflang (both locales + `x-default` → EN) + `og:locale`. Sitemap auto-adds
+  hreflang (all 3 locales + `x-default` → EN) + `og:locale`. Sitemap auto-adds
   `xhtml:link` alternates (sitemap integration `i18n` option).
-- NL is a **first-pass** translation. Lines needing a native marketing review
-  carry `// TODO(native-review)`. See `docs/seo/i18n-native-review.md` for the
-  full punch-list of strings/pages still to be reviewed.
+- NL + DE titles/descriptions/sector copy are SEO-finalized; all
+  `// TODO(native-review)` markers are removed. Long body copy is still a
+  first-pass/AI translation — a native NL+DE marketing review is the remaining
+  polish (see `docs/seo/i18n-native-review.md` for the original punch-list).
 
 ## Key conventions
 
