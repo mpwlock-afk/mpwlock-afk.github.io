@@ -39,13 +39,14 @@ const tt = useTranslations(lang);
 
       <div class="footer-col">
         <h4>{tt("footer.sectors")}</h4>
-        {sectors.slice(0, 5).map((s) => <a href={localizePath("/sectors", lang)}>{t(s.name, lang)}</a>)}
+        {sectors.slice(0, 5).map((s) => <a href={localizePath(`/sectors/${s.slug}`, lang)}>{t(s.name, lang)}</a>)}
       </div>
 
       <div class="footer-col">
         <h4>{tt("footer.company")}</h4>
         <a href={localizePath("/about", lang)}>{tt("footer.about")}</a>
         <a href={localizePath("/cases", lang)}>{tt("footer.cases")}</a>
+        <a href="/news/">{tt("footer.insights")}</a>
         <a href={localizePath("/contact", lang)}>{tt("footer.contact")}</a>
         <a href={`mailto:${site.email}`}>{site.email}</a>
         <a href={`tel:${site.phoneHref}`}>{site.phone}</a>

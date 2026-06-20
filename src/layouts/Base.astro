@@ -21,6 +21,9 @@ interface Props {
   canonical?: string;
   jsonLd?: Record<string, any> | Record<string, any>[];
   lang?: Lang;
+  // Set false for single-language pages (e.g. the EN-only blog) so we don't
+  // emit hreflang/og:locale alternates pointing at non-existent locale URLs.
+  localized?: boolean;
 }
 
 const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
@@ -34,6 +37,7 @@ const {
   noindex = false,
   canonical: canonicalProp,
   jsonLd,
+  localized = true,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL("https://www.holoconnects.com");
@@ -41,7 +45,8 @@ const canonical = canonicalProp ?? new URL(Astro.url.pathname, siteUrl).href;
 const ogImage = new URL(image, siteUrl).href;
 
 // hreflang alternates (one per locale + x-default → English) for this page.
-const alternates = getAlternates(Astro.url.pathname, siteUrl);
+// Single-language pages opt out so they don't advertise non-existent URLs.
+const alternates = localized ? getAlternates(Astro.url.pathname, siteUrl) : [];
 
 // Site-wide structured data: Organization + WebSite (rendered on every page)
 const organizationLd = {
@@ -134,7 +139,7 @@ const structuredData = [organizationLd, websiteLd, ...pageLd];
   <body>
     <div class="grain" aria-hidden="true"></div>
     <div class="scroll-progress" aria-hidden="true"></div>
-    <Header lang={lang} />
+    <Header lang={lang} localized={localized} />
     <main>
       <slot />
     </main>

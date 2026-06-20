@@ -1,6 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { redirects } from './src/data/redirects.ts';
+
+// Legacy redirect stubs are noindex meta-refresh pages — keep them OUT of the
+// sitemap so search engines only see canonical, indexable URLs.
+const redirectPaths = new Set(
+  redirects.map((r) => `https://www.holoconnects.com${r.from}/`),
+);
 
 // https://astro.build
 export default defineConfig({
@@ -20,6 +27,7 @@ export default defineConfig({
     sitemap({
       changefreq: 'weekly',
       priority: 0.7,
+      filter: (page) => !redirectPaths.has(page),
       // Emits <xhtml:link rel="alternate" hreflang="…"> for every page so the
       // sitemap advertises both language variants to search engines.
       i18n: {

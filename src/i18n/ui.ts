@@ -55,7 +55,10 @@ export function getLangFromUrl(url: URL): Lang {
 /** Strip the locale prefix → a logical, language-neutral path (always /-rooted). */
 export function stripLangPrefix(pathname: string): string {
   const parts = pathname.split("/").filter(Boolean);
-  if (parts[0] === "nl") parts.shift();
+  // Drop any non-default locale prefix (nl, de, …); EN is unprefixed.
+  if (parts[0] && parts[0] !== defaultLang && (locales as string[]).includes(parts[0])) {
+    parts.shift();
+  }
   return "/" + parts.join("/");
 }
 
@@ -65,13 +68,14 @@ export function stripLangPrefix(pathname: string): string {
  * directory-style canonical URLs (e.g. `/products/`).
  *   localizePath("/products", "en") → "/products/"
  *   localizePath("/products", "nl") → "/nl/products/"
- *   localizePath("/", "nl")         → "/nl/"
+ *   localizePath("/products", "de") → "/de/products/"
+ *   localizePath("/", "de")         → "/de/"
  */
 export function localizePath(path: string, lang: Lang): string {
   let clean = path === "" ? "/" : path.startsWith("/") ? path : "/" + path;
   if (clean !== "/" && !clean.endsWith("/")) clean += "/";
   if (lang === defaultLang) return clean;
-  return clean === "/" ? "/nl/" : `/nl${clean}`;
+  return clean === "/" ? `/${lang}/` : `/${lang}${clean}`;
 }
 
 /**
@@ -140,6 +144,7 @@ export const ui = {
   "footer.company": { en: "Company", nl: "Bedrijf", de: "Unternehmen" },
   "footer.about": { en: "About", nl: "Over ons", de: "Über uns" },
   "footer.cases": { en: "Cases", nl: "Cases", de: "Referenzen" },
+  "footer.insights": { en: "Insights", nl: "Insights", de: "Insights" },
   "footer.contact": { en: "Contact", nl: "Contact", de: "Kontakt" },
   "footer.rights": {
     en: "All rights reserved.",

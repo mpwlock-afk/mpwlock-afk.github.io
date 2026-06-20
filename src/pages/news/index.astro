@@ -1,0 +1,92 @@
+---
+import Base from "../../layouts/Base.astro";
+import CtaSection from "../../components/CtaSection.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<Base
+  lang="en"
+  localized={false}
+  title="Hologram Insights & Guides | Holoconnects"
+  description="Guides, comparisons and pricing for hologram displays. Learn how holographic displays work, what they cost, and how to rent or buy a Holobox."
+>
+  <section class="news-hero section--dark">
+    <div class="container">
+      <p class="eyebrow anim anim-up">Insights</p>
+      <h1 class="display anim anim-up" style="--d:80ms">
+        Hologram displays, <span class="holo-text">explained.</span>
+      </h1>
+      <p class="lead measure anim anim-up" style="--d:160ms">
+        Practical guides to how holographic displays work, what they cost, and how
+        to put them to work in your sector.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid cols-3 news-grid">
+        {
+          posts.map((post, i) => (
+            <a
+              href={`/news/${post.id}/`}
+              class="news-card"
+              data-tilt="6"
+              data-reveal
+              style={`--reveal-delay:${i * 70}ms`}
+            >
+              <div class="news-media">
+                <img src={post.data.heroImage ?? "/images/og-default.jpg"} alt={post.data.title} loading="lazy" />
+              </div>
+              <div class="news-body">
+                <p class="news-meta">{post.data.category} · {fmt(post.data.pubDate)}</p>
+                <h2>{post.data.title}</h2>
+                <p class="text-muted">{post.data.description}</p>
+                <span class="arrow-link">Read guide
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaSection lang="en" />
+</Base>
+
+<style>
+  .news-hero {
+    padding-top: clamp(9rem, 16vw, 13rem);
+    padding-bottom: clamp(3rem, 7vw, 6rem);
+    color: #fff;
+  }
+  .news-hero .lead { margin-top: 1.4rem; color: #d7d7de; }
+
+  .news-grid { gap: clamp(1.5rem, 3vw, 2.2rem); }
+  .news-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.4s var(--ease);
+    display: flex;
+    flex-direction: column;
+  }
+  .news-card:hover { transform: translateY(-5px); }
+  .news-media { aspect-ratio: 16 / 10; overflow: hidden; background: radial-gradient(circle at 50% 40%, #1a1a1d, #0a0a0a); }
+  .news-media img { width: 100%; height: 100%; object-fit: cover; }
+  .news-body { padding: 1.6rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .news-meta { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+  .news-body h2 { font-size: 1.35rem; line-height: 1.25; }
+  .news-body .arrow-link { margin-top: 0.4rem; }
+</style>

@@ -89,7 +89,7 @@ const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
             <figure class="quote-card" data-reveal style={`--reveal-delay:${i * 90}ms`}>
               <blockquote>&ldquo;{tm.quote}&rdquo;</blockquote>
               <figcaption>
-                <img src={tm.image} alt="" loading="lazy" />
+                <img src={tm.image} alt={`${tm.name}, ${t(tm.role, lang)}`} loading="lazy" />
                 <span><strong>{tm.name}</strong><small>{t(tm.role, lang)}</small></span>
               </figcaption>
             </figure>

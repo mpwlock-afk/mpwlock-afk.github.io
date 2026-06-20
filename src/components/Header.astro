@@ -12,8 +12,12 @@ import {
 
 interface Props {
   lang?: Lang;
+  // False on single-language pages (e.g. the EN-only blog): the switcher then
+  // points at each locale's homepage instead of a non-existent translated URL.
+  localized?: boolean;
 }
 const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const localized = Astro.props.localized ?? true;
 const tt = useTranslations(lang);
 
 // Active state is compared on the logical (locale-stripped) path.
@@ -22,7 +26,8 @@ const isActive = (href: string) =>
   href === "/" ? path === "/" : path.startsWith(href);
 
 // The same logical page in the other languages, for the language switcher.
-const logicalPath = path;
+// On non-localized pages the page has no per-locale variant, so switch to "/".
+const logicalPath = localized ? path : "/";
 const otherLangs: Lang[] = locales.filter((l) => l !== lang);
 const fullLangLabel: Record<Lang, string> = {
   en: "View in English",
