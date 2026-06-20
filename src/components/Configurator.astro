@@ -10,29 +10,29 @@ interface Props {
   lang?: Lang;
 }
 const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
 const copy = {
-  eyebrow: { en: "Configure", nl: "Configureer" },
-  titleA: { en: "Build your ", nl: "Stel uw " },
-  titleB: { en: "Holobox.", nl: "Holobox samen." },
+  eyebrow: { en: "Configure", nl: "Configureer", de: "Konfigurieren" },
+  titleA: { en: "Build your ", nl: "Stel uw ", de: "Stellen Sie Ihre " },
+  titleB: { en: "Holobox.", nl: "Holobox samen.", de: "Holobox zusammen." },
   lead: {
     en: "Pick a size, a finish and an angle. See it your way.",
-    // TODO(native-review): marketing tone
-    nl: "Kies een maat, een afwerking en een hoek. Bekijk het op uw manier.",
+    nl: "Kies een maat, een afwerking en een hoek. Bekijk uw holografisch display zoals u wilt.",
+    de: "Wählen Sie Größe, Finish und Blickwinkel. Sehen Sie Ihr Hologramm Display ganz nach Ihren Wünschen.",
   },
-  labelModel: { en: "Model", nl: "Model" },
-  labelFinish: { en: "Finish", nl: "Afwerking" },
-  labelView: { en: "View", nl: "Weergave" },
-  ariaModel: { en: "Model", nl: "Model" },
-  ariaFinish: { en: "Finish", nl: "Afwerking" },
-  ariaView: { en: "View", nl: "Weergave" },
-  colorBlack: { en: "Midnight Black", nl: "Midnight Black" },
-  colorWhite: { en: "Starlight White", nl: "Starlight White" },
-  viewLeft: { en: "Left", nl: "Links" },
-  viewFront: { en: "Front", nl: "Voor" },
-  viewRight: { en: "Right", nl: "Rechts" },
-  cta: { en: "Book a demo", nl: "Boek een demo" },
+  labelModel: { en: "Model", nl: "Model", de: "Modell" },
+  labelFinish: { en: "Finish", nl: "Afwerking", de: "Finish" },
+  labelView: { en: "View", nl: "Weergave", de: "Ansicht" },
+  ariaModel: { en: "Model", nl: "Model", de: "Modell" },
+  ariaFinish: { en: "Finish", nl: "Afwerking", de: "Finish" },
+  ariaView: { en: "View", nl: "Weergave", de: "Ansicht" },
+  colorBlack: { en: "Midnight Black", nl: "Midnight Black", de: "Midnight Black" },
+  colorWhite: { en: "Starlight White", nl: "Starlight White", de: "Starlight White" },
+  viewLeft: { en: "Left", nl: "Links", de: "Links" },
+  viewFront: { en: "Front", nl: "Voor", de: "Vorne" },
+  viewRight: { en: "Right", nl: "Rechts", de: "Rechts" },
+  cta: { en: "Book a demo", nl: "Boek een demo", de: "Demo buchen" },
 } as const;
 
 // Strings the client-side script needs (alt text + the "coming soon" note).
@@ -40,11 +40,12 @@ const cfgStrings = {
   black: tl(copy.colorBlack),
   white: tl(copy.colorWhite),
   views: { left: tl(copy.viewLeft), front: tl(copy.viewFront), right: tl(copy.viewRight) },
-  altView: { en: "view", nl: "weergave" }[lang],
+  altView: { en: "view", nl: "weergave", de: "Ansicht" }[lang],
   // {label} is replaced client-side (functions don't survive define:vars).
   comingSoon: {
     en: "White finish and side views for the {label} are coming soon.",
     nl: "Witte afwerking en zijaanzichten voor de {label} volgen binnenkort.",
+    de: "Weißes Finish und Seitenansichten für die {label} folgen in Kürze.",
   }[lang],
 };
 

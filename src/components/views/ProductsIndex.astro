@@ -1,5 +1,5 @@
 ---
-// Products listing — single source for both locales. Render via the thin route
+// Products listing | single source for both locales. Render via the thin route
 // files src/pages/products/index.astro (en) and src/pages/nl/products/index.astro (nl).
 import Base from "../../layouts/Base.astro";
 import CtaSection from "../CtaSection.astro";
@@ -23,55 +23,59 @@ const sizes = [
 const hasWhite = sizes.every((s) => s.img.white);
 const hasBlack = sizes.every((s) => s.img.black);
 
-// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+// Page copy. Localized across en / nl / de.
 const copy = {
   meta: {
-    title: { en: "Products — Holoconnects", nl: "Producten — Holoconnects" },
+    title: { en: "Products | Holoconnects", nl: "Producten | Holoconnects", de: "Produkte | Holoconnects" },
     description: {
       en: "Explore the Holoconnects holographic display range: Holobox, Holobox Mini, The 43 and Hologrid. Life-size holographic displays from 22 to 86 inch.",
-      // TODO(native-review): marketing tone
-      nl: "Ontdek het holografische displaygamma van Holoconnects: Holobox, Holobox Mini, The 43 en Hologrid. Levensgrote holografische displays van 22 tot 86 inch.",
+      nl: "Ontdek het complete aanbod holografische displays van Holoconnects: Holobox, Holobox Mini, The 43 en Hologrid. Levensgrote hologram displays van 22 tot 86 inch.",
+      de: "Entdecken Sie das Hologramm Display Sortiment von Holoconnects: Holobox, Holobox Mini, The 43 und Hologrid. Lebensgroße holografische Displays von 22 bis 86 Zoll.",
     },
   },
-  eyebrow: { en: "Our products", nl: "Onze producten" },
-  h1a: { en: "The hologram", nl: "Het hologram" },
-  h1b: { en: "product range.", nl: "productgamma." },
+  eyebrow: { en: "Our products", nl: "Onze producten", de: "Unsere Produkte" },
+  h1a: { en: "The hologram", nl: "Het hologram", de: "Das Hologramm" },
+  h1b: { en: "product range.", nl: "productgamma.", de: "Display Sortiment." },
   lead: {
     en: 'One platform for every display, from a 22" tabletop to the 86" life-size Holobox.',
-    // TODO(native-review): marketing tone
     nl: 'Eén platform voor elk display, van een 22"-tafelmodel tot de 86" levensgrote Holobox.',
+    de: 'Eine Plattform für jedes Display, vom 22"-Tischmodell bis zur 86" lebensgroßen Holobox.',
   },
-  rangeEyebrow: { en: "The range", nl: "Het gamma" },
-  rangeTitleA: { en: "One Holobox.", nl: "Eén Holobox." },
-  rangeTitleB: { en: "Four sizes.", nl: "Vier maten." },
+  rangeEyebrow: { en: "The range", nl: "Het gamma", de: "Das Sortiment" },
+  rangeTitleA: { en: "One Holobox.", nl: "Eén Holobox.", de: "Eine Holobox." },
+  rangeTitleB: { en: "Four sizes.", nl: "Vier maten.", de: "Vier Größen." },
   rangeLead: {
     en: 'From a 22" tabletop to an 86" life-size flagship, the same holographic magic scaled to your space.',
-    // TODO(native-review): marketing tone
-    nl: 'Van een 22"-tafelmodel tot een 86" levensgroot vlaggenschip, dezelfde holografische magie geschaald naar uw ruimte.',
+    nl: 'Van een 22"-tafelmodel tot een 86" levensgroot vlaggenschip: dezelfde holografische magie, geschaald naar uw ruimte.',
+    de: 'Vom 22"-Tischmodell bis zum 86" lebensgroßen Flaggschiff: dieselbe holografische Magie, skaliert auf Ihren Raum.',
   },
-  colorAria: { en: "Holobox colour", nl: "Holobox-kleur" },
-  colorBlack: { en: "Midnight Black", nl: "Midnight Black" },
-  colorWhite: { en: "Starlight White", nl: "Starlight White" },
-  altLabel: { en: "render coming", nl: "render volgt" },
+  colorAria: { en: "Holobox colour", nl: "Holobox-kleur", de: "Holobox-Farbe" },
+  colorBlack: { en: "Midnight Black", nl: "Midnight Black", de: "Midnight Black" },
+  colorWhite: { en: "Starlight White", nl: "Starlight White", de: "Starlight White" },
+  altLabel: { en: "render coming", nl: "render volgt", de: "Render folgt" },
   sizeAlt: {
     en: (label: string) => `Holobox ${label} holographic display`,
     nl: (label: string) => `Holobox ${label} holografisch display`,
+    de: (label: string) => `Holobox ${label} Hologramm Display`,
   },
   foot: {
     en: 'Heights shown to scale · 21.5" · 43" · 75" · 86"',
     nl: 'Hoogtes op schaal weergegeven · 21,5" · 43" · 75" · 86"',
+    de: 'Höhen maßstabsgetreu dargestellt · 21,5" · 43" · 75" · 86"',
   },
   prodImgAlt: {
     en: (name: string) => `${name} holographic display by Holoconnects`,
     nl: (name: string) => `${name} holografisch display van Holoconnects`,
+    de: (name: string) => `${name} Hologramm Display von Holoconnects`,
   },
   explore: {
     en: (name: string) => `Explore ${name}`,
     nl: (name: string) => `Ontdek ${name}`,
+    de: (name: string) => `${name} entdecken`,
   },
 } as const;
 
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 ---
 
 <Base lang={lang} title={tl(copy.meta.title)} description={tl(copy.meta.description)}>

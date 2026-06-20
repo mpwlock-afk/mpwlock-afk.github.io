@@ -18,7 +18,7 @@ interface Props {
   lang?: Lang;
 }
 const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
 const sizes = [
   { label: '22"', ratio: 0.299, solid: false, img: { black: "/images/holobox-mini-black.png", white: "" } },
@@ -29,20 +29,21 @@ const sizes = [
 const hasSwitch = sizes.every((s) => s.img.white) && sizes.every((s) => s.img.black);
 
 const copy = {
-  eyebrow: { en: "The range", nl: "Het assortiment" },
-  titleA: { en: "One Holobox.", nl: "Eén Holobox." },
-  titleB: { en: "Four sizes.", nl: "Vier maten." },
+  eyebrow: { en: "The range", nl: "Het assortiment", de: "Das Sortiment" },
+  titleA: { en: "One Holobox.", nl: "Eén Holobox.", de: "Eine Holobox." },
+  titleB: { en: "Four sizes.", nl: "Vier maten.", de: "Vier Größen." },
   lead: {
     en: "From a 22\" tabletop to an 86\" life-size flagship. The same holographic magic, scaled to your space.",
-    // TODO(native-review): marketing tone
-    nl: "Van een 22\"-tafelmodel tot een 86\" levensgroot vlaggenschip. Dezelfde holografische magie, geschaald naar uw ruimte.",
+    nl: "Van een 22\"-tafelmodel tot een 86\" levensgroot vlaggenschip. Hetzelfde holografisch display, perfect geschaald naar uw ruimte.",
+    de: "Vom 22\"-Tischmodell bis zum 86\" lebensgroßen Flaggschiff. Dasselbe holografische Display, passgenau auf Ihren Raum skaliert.",
   },
-  colorBlack: { en: "Midnight Black", nl: "Midnight Black" },
-  colorWhite: { en: "Starlight White", nl: "Starlight White" },
-  swatchAria: { en: "Holobox colour", nl: "Holobox-kleur" },
+  colorBlack: { en: "Midnight Black", nl: "Midnight Black", de: "Midnight Black" },
+  colorWhite: { en: "Starlight White", nl: "Starlight White", de: "Starlight White" },
+  swatchAria: { en: "Holobox colour", nl: "Holobox-kleur", de: "Holobox-Farbe" },
   foot: {
     en: "Heights shown to scale · 21.5\" · 43\" · 75\" · 86\"",
     nl: "Hoogtes op schaal weergegeven · 21,5\" · 43\" · 75\" · 86\"",
+    de: "Höhen maßstabsgetreu dargestellt · 21,5\" · 43\" · 75\" · 86\"",
   },
 } as const;
 ---
@@ -72,11 +73,11 @@ const copy = {
                   src={s.img.black || s.img.white}
                   data-black={s.img.black}
                   data-white={s.img.white}
-                  alt={`Holobox ${s.label} ${tl({ en: "holographic display", nl: "holografisch display" })}`}
+                  alt={`Holobox ${s.label} ${tl({ en: "holographic display", nl: "holografisch display", de: "holografisches Display" })}`}
                   loading="lazy"
                 />
               ) : (
-                <div class="sizeunit__ph"><span>{s.label}</span><small>{tl({ en: "render coming", nl: "render volgt" })}</small></div>
+                <div class="sizeunit__ph"><span>{s.label}</span><small>{tl({ en: "render coming", nl: "render volgt", de: "Render folgt" })}</small></div>
               )}
             </div>
             <span class="sizeunit__label">{s.label}</span>

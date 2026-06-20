@@ -10,89 +10,99 @@ interface Props {
   lang?: Lang;
 }
 const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
 const waNumber = site.whatsapp.replace(/[^0-9]/g, "");
 const waText = tl({
   en: "Hi Holoconnects, I have a question.",
   nl: "Hoi Holoconnects, ik heb een vraag.",
+  de: "Hallo Holoconnects, ich habe eine Frage.",
 });
 const waHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`;
 const phoneTel = `tel:${site.supportPhone.replace(/[^0-9+]/g, "")}`;
 
 const copy = {
-  eyebrow: { en: "Support", nl: "Support" },
+  eyebrow: { en: "Support", nl: "Support", de: "Support" },
   title: {
     en: "Questions? We are here to help.",
     nl: "Vragen? We helpen u graag.",
+    de: "Fragen? Wir helfen Ihnen gerne.",
   },
-  cardPhoneTitle: { en: "Personal contact", nl: "Persoonlijk contact" },
+  cardPhoneTitle: { en: "Personal contact", nl: "Persoonlijk contact", de: "Persönlicher Kontakt" },
   cardPhoneText: {
     en: `Call one of our support consultants on ${site.supportPhone}.`,
     nl: `Bel een van onze supportconsulenten op ${site.supportPhone}.`,
+    de: `Rufen Sie einen unserer Support-Berater an unter ${site.supportPhone}.`,
   },
-  cardMailTitle: { en: "Mail your question", nl: "Mail uw vraag" },
+  cardMailTitle: { en: "Mail your question", nl: "Mail uw vraag", de: "Frage per E-Mail" },
   cardMailText: {
     en: `Mail your question to ${site.supportEmail}.`,
     nl: `Mail uw vraag naar ${site.supportEmail}.`,
+    de: `Senden Sie Ihre Frage per E-Mail an ${site.supportEmail}.`,
   },
-  cardChatTitle: { en: "Chat with us", nl: "Chat met ons" },
+  cardChatTitle: { en: "Chat with us", nl: "Chat met ons", de: "Chatten Sie mit uns" },
   cardChatText: {
     en: "Ask your question easily via WhatsApp.",
     nl: "Stel uw vraag eenvoudig via WhatsApp.",
+    de: "Stellen Sie Ihre Frage ganz einfach per WhatsApp.",
   },
-  cardCenterTitle: { en: "Visit our support center", nl: "Bezoek ons supportcentrum" },
+  cardCenterTitle: { en: "Visit our support center", nl: "Bezoek ons supportcentrum", de: "Besuchen Sie unser Support-Center" },
   cardCenterText: {
     en: "Get instant answers to the most common questions.",
     nl: "Krijg direct antwoord op de meest gestelde vragen.",
+    de: "Erhalten Sie sofort Antworten auf die häufigsten Fragen.",
   },
-  faqTitle: { en: "Frequently asked questions", nl: "Veelgestelde vragen" },
+  faqTitle: { en: "Frequently asked questions", nl: "Veelgestelde vragen", de: "Häufig gestellte Fragen" },
 } as const;
 
-// FAQ copy. NL is a first-pass translation — see TODO(native-review) markers.
+// FAQ copy — localized EN / NL / DE.
 const faqs = [
   {
-    q: { en: "What is a Holobox?", nl: "Wat is een Holobox?" },
+    q: { en: "What is a Holobox?", nl: "Wat is een Holobox?", de: "Was ist eine Holobox?" },
     a: {
       en: "A Holobox is a life-size holographic display that brings people, products and presenters to life in interactive 3D, so a real human presence can appear anywhere.",
-      // TODO(native-review): marketing tone
       nl: "Een Holobox is een levensgroot holografisch display dat mensen, producten en presentatoren tot leven brengt in interactief 3D, zodat een echte menselijke aanwezigheid overal kan verschijnen.",
+      de: "Eine Holobox ist ein lebensgroßes holografisches Display, das Menschen, Produkte und Präsentatoren in interaktivem 3D zum Leben erweckt, sodass eine echte menschliche Präsenz überall erscheinen kann.",
     },
   },
   {
-    q: { en: "Which sizes are available?", nl: "Welke maten zijn beschikbaar?" },
+    q: { en: "Which sizes are available?", nl: "Welke maten zijn beschikbaar?", de: "Welche Größen sind verfügbar?" },
     a: {
       en: "The range runs from a 22\" tabletop to the 86\" life-size flagship, with a 43\" model in between and the modular Hologrid for wall-size setups.",
       nl: "Het assortiment loopt van een 22\"-tafelmodel tot het 86\" levensgrote vlaggenschip, met een 43\"-model daartussen en de modulaire Hologrid voor wandopstellingen.",
+      de: "Das Sortiment reicht vom 22\"-Tischmodell bis zum 86\" lebensgroßen Flaggschiff, mit einem 43\"-Modell dazwischen und dem modularen Hologrid für wandgroße Installationen.",
     },
   },
   {
-    q: { en: "Can I buy, rent or lease a Holobox?", nl: "Kan ik een Holobox kopen, huren of leasen?" },
+    q: { en: "Can I buy, rent or lease a Holobox?", nl: "Kan ik een Holobox kopen, huren of leasen?", de: "Kann ich eine Holobox kaufen, mieten oder leasen?" },
     a: {
       en: "Yes. We offer purchase, rental and lease options. Book a demo and we will advise what fits your use case and budget, with real numbers.",
-      // TODO(native-review): tone of "with real numbers"
-      nl: "Ja. We bieden koop-, huur- en leaseopties. Boek een demo en we adviseren wat past bij uw use case en budget, met echte cijfers.",
+      nl: "Ja. We bieden koop-, huur- en leaseopties. Boek een demo en we adviseren wat past bij uw use case en budget, met concrete cijfers.",
+      de: "Ja. Wir bieten Kauf-, Miet- und Leasingoptionen. Buchen Sie eine Demo und wir beraten Sie mit konkreten Zahlen, was zu Ihrem Anwendungsfall und Budget passt.",
     },
   },
   {
-    q: { en: "How does the hologram work?", nl: "Hoe werkt het hologram?" },
+    q: { en: "How does the hologram work?", nl: "Hoe werkt het hologram?", de: "Wie funktioniert das Hologramm?" },
     a: {
       en: "A transparent display shows specially prepared content at human scale. Presenters can be streamed live or played from pre-recorded content, managed remotely through Holocontrol.",
       nl: "Een transparant display toont speciaal voorbereide content op menselijke schaal. Presentatoren kunnen live worden gestreamd of vanaf vooraf opgenomen content worden afgespeeld, op afstand beheerd via Holocontrol.",
+      de: "Ein transparentes Display zeigt speziell aufbereitete Inhalte in menschlicher Größe. Präsentatoren können live gestreamt oder aus vorab aufgezeichneten Inhalten abgespielt und über Holocontrol aus der Ferne verwaltet werden.",
     },
   },
   {
-    q: { en: "Which industries use Holoconnects?", nl: "Welke branches gebruiken Holoconnects?" },
+    q: { en: "Which industries use Holoconnects?", nl: "Welke branches gebruiken Holoconnects?", de: "Welche Branchen nutzen Holoconnects?" },
     a: {
       en: "Hospitality, retail, telehealth, events, education and advertising, among others. Hospitality is our flagship use case with a 24/7 holographic concierge.",
       nl: "Onder meer hospitality, retail, telehealth, evenementen, onderwijs en adverteren. Hospitality is onze belangrijkste use case met een 24/7 holografische concierge.",
+      de: "Unter anderem Hospitality, Einzelhandel, Telemedizin, Events, Bildung und Werbung. Hospitality ist unser wichtigster Anwendungsfall mit einem holografischen Concierge rund um die Uhr.",
     },
   },
   {
-    q: { en: "Do you deliver and support internationally?", nl: "Leveren en ondersteunen jullie internationaal?" },
+    q: { en: "Do you deliver and support internationally?", nl: "Leveren en ondersteunen jullie internationaal?", de: "Liefern und betreuen Sie international?" },
     a: {
       en: "Yes. We have completed 470+ projects in 30+ countries, with offices in the Netherlands and the United States and full ongoing support.",
       nl: "Ja. We hebben 470+ projecten voltooid in 30+ landen, met kantoren in Nederland en de Verenigde Staten en volledige doorlopende support.",
+      de: "Ja. Wir haben über 470 Projekte in mehr als 30 Ländern realisiert, mit Standorten in den Niederlanden und den USA und umfassendem laufendem Support.",
     },
   },
 ];

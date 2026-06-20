@@ -6,11 +6,11 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.holoconnects.com',
   // English is the default locale and is served at the root (`/`). Dutch lives
-  // under `/nl/`. `prefixDefaultLocale: false` keeps EN URLs unprefixed, which
-  // is the SEO-friendly choice (root = x-default).
+  // under `/nl/`, German under `/de/`. `prefixDefaultLocale: false` keeps EN
+  // URLs unprefixed, which is the SEO-friendly choice (root = x-default).
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'nl'],
+    locales: ['en', 'nl', 'de'],
     routing: {
       prefixDefaultLocale: false,
       redirectToDefaultLocale: false,
@@ -27,6 +27,7 @@ export default defineConfig({
         locales: {
           en: 'en-US',
           nl: 'nl-NL',
+          de: 'de-DE',
         },
       },
     }),

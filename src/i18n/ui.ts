@@ -14,27 +14,31 @@
 export const languages = {
   en: "English",
   nl: "Nederlands",
+  de: "Deutsch",
 } as const;
 
 export type Lang = keyof typeof languages;
 
 export const defaultLang: Lang = "en";
-export const locales: Lang[] = ["en", "nl"];
+export const locales: Lang[] = ["en", "nl", "de"];
 
 // BCP-47 tags used for <html lang>, og:locale and hreflang.
 export const localeTag: Record<Lang, string> = {
   en: "en",
   nl: "nl",
+  de: "de",
 };
 export const ogLocale: Record<Lang, string> = {
   en: "en_US",
   nl: "nl_NL",
+  de: "de_DE",
 };
 
 // ── Localized content helper ─────────────────────────────────────────────
-// A translatable value is either a plain string (same in both languages) or a
-// per-locale object. `t()` resolves it, falling back to English.
-export type Loc = { en: string; nl: string };
+// A translatable value is either a plain string (same in every language) or a
+// per-locale object. `de` is optional: where a German string is missing, `t()`
+// falls back to English so the build never breaks on a gap. `t()` resolves it.
+export type Loc = { en: string; nl: string; de?: string };
 export function t(value: Loc | string, lang: Lang): string {
   if (typeof value === "string") return value;
   return value[lang] ?? value.en;
@@ -98,53 +102,56 @@ export function getAlternates(
 // where a native review is recommended for final marketing tone.
 export const ui = {
   // Header / nav
-  "nav.products": { en: "Products", nl: "Producten" },
-  "nav.sectors": { en: "Sectors", nl: "Sectoren" },
-  "nav.cases": { en: "Cases", nl: "Cases" },
-  "nav.about": { en: "About", nl: "Over ons" },
-  "nav.contact": { en: "Contact", nl: "Contact" },
-  "cta.bookDemo": { en: "Book a demo", nl: "Boek een demo" },
+  "nav.products": { en: "Products", nl: "Producten", de: "Produkte" },
+  "nav.sectors": { en: "Sectors", nl: "Sectoren", de: "Branchen" },
+  "nav.cases": { en: "Cases", nl: "Cases", de: "Referenzen" },
+  "nav.about": { en: "About", nl: "Over ons", de: "Über uns" },
+  "nav.contact": { en: "Contact", nl: "Contact", de: "Kontakt" },
+  "cta.bookDemo": { en: "Book a demo", nl: "Boek een demo", de: "Demo buchen" },
   "cta.exploreHolobox": {
     en: "Explore the Holobox",
     nl: "Ontdek de Holobox",
+    de: "Holobox entdecken",
   },
-  "nav.openMenu": { en: "Open menu", nl: "Menu openen" },
-  "lang.switch": { en: "Language", nl: "Taal" },
+  "nav.openMenu": { en: "Open menu", nl: "Menu openen", de: "Menü öffnen" },
+  "lang.switch": { en: "Language", nl: "Taal", de: "Sprache" },
 
   // CTA band (default copy; pages may override)
-  "ctaBand.eyebrow": { en: "Book a demo", nl: "Boek een demo" },
+  "ctaBand.eyebrow": { en: "Book a demo", nl: "Boek een demo", de: "Demo buchen" },
   "ctaBand.title": {
     en: "Ready to experience holography done right?",
-    // TODO(native-review): marketing tone
-    nl: "Klaar om holografie te ervaren zoals het hoort?",
+    nl: "Klaar voor holografie zoals het hoort?",
+    de: "Bereit für Holografie, wie sie sein soll?",
   },
   "ctaBand.text": {
     en: "Book a personal demo and discover how our holographic solutions add value for your company. Is your audience ready for next-level immersive experiences?",
-    // TODO(native-review): marketing tone
-    nl: "Boek een persoonlijke demo en ontdek hoe onze holografische oplossingen waarde toevoegen voor uw bedrijf. Is uw publiek klaar voor meeslepende ervaringen van het volgende niveau?",
+    nl: "Boek een persoonlijke demo en ontdek hoe onze holografische displays uw merk versterken. Is uw publiek klaar voor een onvergetelijke, meeslepende ervaring?",
+    de: "Buchen Sie eine persönliche Demo und erleben Sie, wie unsere holografischen Displays Ihre Marke stärken. Ist Ihr Publikum bereit für ein unvergessliches, immersives Erlebnis?",
   },
 
   // Footer
   "footer.tagline": {
     en: "Innovation with a human touch. Holographic technology that brings real people and real connections wherever they matter.",
-    // TODO(native-review): marketing tone
-    nl: "Innovatie met een menselijke touch. Holografische technologie die echte mensen en echte connecties brengt waar ze ertoe doen.",
+    nl: "Innovatie met een menselijke touch. Holografische technologie die echte mensen en echt contact brengt, juist daar waar het telt.",
+    de: "Innovation mit menschlicher Note. Holografische Technologie, die echte Menschen und echten Kontakt dorthin bringt, wo es zählt.",
   },
-  "footer.products": { en: "Products", nl: "Producten" },
-  "footer.sectors": { en: "Sectors", nl: "Sectoren" },
-  "footer.company": { en: "Company", nl: "Bedrijf" },
-  "footer.about": { en: "About", nl: "Over ons" },
-  "footer.cases": { en: "Cases", nl: "Cases" },
-  "footer.contact": { en: "Contact", nl: "Contact" },
+  "footer.products": { en: "Products", nl: "Producten", de: "Produkte" },
+  "footer.sectors": { en: "Sectors", nl: "Sectoren", de: "Branchen" },
+  "footer.company": { en: "Company", nl: "Bedrijf", de: "Unternehmen" },
+  "footer.about": { en: "About", nl: "Over ons", de: "Über uns" },
+  "footer.cases": { en: "Cases", nl: "Cases", de: "Referenzen" },
+  "footer.contact": { en: "Contact", nl: "Contact", de: "Kontakt" },
   "footer.rights": {
     en: "All rights reserved.",
     nl: "Alle rechten voorbehouden.",
+    de: "Alle Rechte vorbehalten.",
   },
 
   // Misc
   "wa.aria": {
     en: "Chat with Holoconnects on WhatsApp",
     nl: "Chat met Holoconnects via WhatsApp",
+    de: "Mit Holoconnects über WhatsApp chatten",
   },
 } as const;
 

@@ -8,30 +8,30 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
 const copy = {
   metaTitle: {
-    en: "Hologram Solutions — Hospitality, Retail, Healthcare & Events | Holoconnects",
-    // TODO(native-review): SEO meta title
-    nl: "Hologramoplossingen — Hospitality, Retail, Zorg & Evenementen | Holoconnects",
+    en: "Hologram Solutions | Hospitality, Retail, Healthcare & Events | Holoconnects",
+    nl: "Hologram sectoren voor hospitality, retail, zorg en events | Holoconnects",
+    de: "Hologramm Branchen für Hotellerie, Retail, Gesundheit und Events | Holoconnects",
   },
   metaDescription: {
     en: "Holoconnects holographic displays for hospitality, telehealth, retail, events, education and advertising. Life-size interactive holograms for every industry.",
-    // TODO(native-review): SEO meta description
-    nl: "Holografische displays van Holoconnects voor hospitality, telehealth, retail, evenementen, onderwijs en adverteren. Levensgrote interactieve hologrammen voor elke branche.",
+    nl: "Holografische displays van Holoconnects voor hospitality, telehealth, retail, events, onderwijs en reclame. Levensgrote interactieve hologrammen voor elke branche.",
+    de: "Holografische Displays von Holoconnects für Hotellerie, Telehealth, Retail, Events, Bildung und Werbung. Lebensgroße interaktive Hologramme für jede Branche.",
   },
-  eyebrow: { en: "Sectors", nl: "Sectoren" },
-  titleLine1: { en: "Where holograms", nl: "Waar hologrammen" },
-  titleLine2: { en: "make the difference.", nl: "het verschil maken." },
+  eyebrow: { en: "Sectors", nl: "Sectoren", de: "Branchen" },
+  titleLine1: { en: "Where holograms", nl: "Waar hologrammen", de: "Wo Hologramme" },
+  titleLine2: { en: "make the difference.", nl: "het verschil maken.", de: "den Unterschied machen." },
   lead: {
     en: "Leading with hospitality, and at home in telehealth, retail, events, education and advertising.",
-    // TODO(native-review): marketing tone
-    nl: "Toonaangevend in hospitality, en thuis in telehealth, retail, evenementen, onderwijs en adverteren.",
+    nl: "Toonaangevend in hospitality en thuis in telehealth, retail, events, onderwijs en reclame.",
+    de: "Führend in der Hotellerie und zu Hause in Telehealth, Retail, Events, Bildung und Werbung.",
   },
-  explore: { en: "Explore", nl: "Ontdek" },
-  altPrefix: { en: "Hologram for", nl: "Hologram voor" },
-  altSuffix: { en: "by Holoconnects", nl: "door Holoconnects" },
+  explore: { en: "Explore", nl: "Ontdek", de: "Entdecken" },
+  altPrefix: { en: "Hologram for", nl: "Hologram voor", de: "Hologramm für" },
+  altSuffix: { en: "by Holoconnects", nl: "door Holoconnects", de: "von Holoconnects" },
 };
 ---
 

@@ -1,5 +1,5 @@
 ---
-// Homepage body — single source for both locales. Render via the thin route files
+// Homepage body | single source for both locales. Render via the thin route files
 // src/pages/index.astro (en) and src/pages/nl/index.astro (nl).
 import Base from "../../layouts/Base.astro";
 import CtaSection from "../CtaSection.astro";
@@ -13,13 +13,13 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
 // Brands Holoconnects has worked with, shown as a white monochrome "Trusted by"
 // wall. A logo file in /images/logos/ renders as an <img> forced to white by CSS;
 // a brand without a logo yet falls back to its name in white text. Drop official
 // logos (svg/png, any colour, transparent background) in to complete the set.
-// Brand names — kept as-is (not translated).
+// Brand names | kept as-is (not translated).
 const clients = [
   { name: "Best Western", logo: "" },
   { name: "UNICEF", logo: "" },
@@ -30,106 +30,112 @@ const clients = [
   { name: "Visit Britain", logo: "" },
 ];
 
-// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+// Page copy. Localized as { en, nl, de }.
 const copy = {
   meta: {
     title: {
-      en: "Holoconnects — Life-Size Interactive Holograms | Europe's Leading Hologram Company",
-      // TODO(native-review): SEO title tone/keywords
-      nl: "Holoconnects — Levensgrote interactieve hologrammen | Europa's toonaangevende hologrambedrijf",
+      en: "Holoconnects | Life-Size Interactive Holograms | Europe's Leading Hologram Company",
+      nl: "Holoconnects | Levensgroot hologram & interactief holografisch display | Europa's hologramspecialist",
+      de: "Holoconnects | Lebensgroße interaktive Hologramme | Führender Anbieter für Hologramm Displays in Europa",
     },
     description: {
       en: "Interactive life-size holographic displays for hospitality, retail, healthcare and events. 470+ projects in 30+ countries. Book a demo.",
-      // TODO(native-review): SEO description tone/keywords
-      nl: "Interactieve levensgrote holografische displays voor hospitality, retail, zorg en evenementen. 470+ projecten in 30+ landen. Boek een demo.",
+      nl: "Interactieve, levensgrote holografische displays voor hospitality, retail, zorg en events. 470+ projecten in 30+ landen. Boek een demo.",
+      de: "Interaktive, lebensgroße holografische Displays für Hospitality, Retail, Healthcare und Events. 470+ Projekte in 30+ Ländern. Demo buchen.",
     },
   },
   heroTag: {
     en: "Innovation with a human touch",
     nl: "Innovatie met een menselijke touch",
+    de: "Innovation mit menschlicher Note",
   },
-  heroTitleStart: { en: "Real people,", nl: "Echte mensen," },
+  heroTitleStart: { en: "Real people,", nl: "Echte mensen,", de: "Echte Menschen," },
   heroRotator: [
-    { en: "real connections.", nl: "echte connecties." },
-    { en: "24/7 hospitality.", nl: "24/7 hospitality." },
-    { en: "life-size presence.", nl: "levensgrote aanwezigheid." },
-    { en: "global reach.", nl: "wereldwijd bereik." },
+    { en: "real connections.", nl: "echte connecties.", de: "echte Verbindungen." },
+    { en: "24/7 hospitality.", nl: "24/7 hospitality.", de: "24/7 Hospitality." },
+    { en: "life-size presence.", nl: "levensgrote aanwezigheid.", de: "lebensgroße Präsenz." },
+    { en: "global reach.", nl: "wereldwijd bereik.", de: "globale Reichweite." },
   ],
   heroSub: {
     en: "Life-size, interactive holograms that bring a human presence anywhere.",
-    // TODO(native-review): marketing tone
-    nl: "Levensgrote, interactieve hologrammen die een menselijke aanwezigheid overal brengen.",
+    nl: "Levensgrote, interactieve hologrammen die overal een menselijke aanwezigheid creëren.",
+    de: "Lebensgroße, interaktive Hologramme, die überall eine menschliche Präsenz schaffen.",
   },
-  heroBookDemo: { en: "Book a demo", nl: "Boek een demo" },
-  heroDiscover: { en: "Discover the Holobox", nl: "Ontdek de Holobox" },
+  heroBookDemo: { en: "Book a demo", nl: "Boek een demo", de: "Demo buchen" },
+  heroDiscover: { en: "Discover the Holobox", nl: "Ontdek de Holobox", de: "Holobox entdecken" },
   heroRating: {
     en: "★ 9.5/10 · 346 reviews",
     nl: "★ 9,5/10 · 346 reviews",
+    de: "★ 9,5/10 · 346 Bewertungen",
   },
-  heroScrollCue: { en: "Scroll to explore", nl: "Scroll om te ontdekken" },
+  heroScrollCue: { en: "Scroll to explore", nl: "Scroll om te ontdekken", de: "Scrollen zum Entdecken" },
 
   trustedLabel: {
     en: "Trusted by leading organisations worldwide",
     nl: "Vertrouwd door toonaangevende organisaties wereldwijd",
+    de: "Vertraut von führenden Organisationen weltweit",
   },
 
-  hospoEyebrow: { en: "Flagship · Hospitality", nl: "Flagship · Hospitality" },
-  hospoTitleA: { en: "The 24/7 holographic", nl: "De 24/7 holografische" },
-  hospoTitleB: { en: "concierge.", nl: "concierge." },
+  hospoEyebrow: { en: "Flagship · Hospitality", nl: "Flagship · Hospitality", de: "Flagship · Hospitality" },
+  hospoTitleA: { en: "The 24/7 holographic", nl: "De 24/7 holografische", de: "Der holografische 24/7-" },
+  hospoTitleB: { en: "concierge.", nl: "concierge.", de: "Concierge." },
   hospoLead: {
     en: "One host. Every lobby. A welcome that never sleeps.",
-    // TODO(native-review): marketing tone
     nl: "Eén host. Elke lobby. Een welkom dat nooit slaapt.",
+    de: "Ein Gastgeber. Jede Lobby. Ein Empfang, der niemals schläft.",
   },
-  hospoCta: { en: "Explore hospitality", nl: "Ontdek hospitality" },
-  hospoStat1: { en: "Front-desk costs", nl: "Receptiekosten" },
-  hospoStat2: { en: "Guest presence", nl: "Gastaanwezigheid" },
-  hospoStat3: { en: "Hotels live", nl: "Hotels live" },
+  hospoCta: { en: "Explore hospitality", nl: "Ontdek hospitality", de: "Hospitality entdecken" },
+  hospoStat1: { en: "Front-desk costs", nl: "Receptiekosten", de: "Empfangskosten" },
+  hospoStat2: { en: "Guest presence", nl: "Gastaanwezigheid", de: "Gästepräsenz" },
+  hospoStat3: { en: "Hotels live", nl: "Hotels live", de: "Hotels live" },
 
-  hpinEyebrow: { en: "The ecosystem", nl: "Het ecosysteem" },
-  hpinTitleA: { en: "Scroll the", nl: "Scroll door het" },
-  hpinTitleB: { en: "hologram range.", nl: "hologramassortiment." },
+  hpinEyebrow: { en: "The ecosystem", nl: "Het ecosysteem", de: "Das Ökosystem" },
+  hpinTitleA: { en: "Scroll the", nl: "Scroll door het", de: "Scrollen Sie durch das" },
+  hpinTitleB: { en: "hologram range.", nl: "hologramassortiment.", de: "Hologramm-Sortiment." },
   hpinIntro: {
     en: 'One platform powers every display, from a life-size 86" Holobox to a desktop Mini and modular walls.',
-    // TODO(native-review): marketing tone
     nl: 'Eén platform stuurt elk display aan, van een levensgrote 86" Holobox tot een desktop Mini en modulaire wanden.',
+    de: 'Eine Plattform steuert jedes Display, vom lebensgroßen 86" Holobox bis zum Desktop-Mini und modularen Wänden.',
   },
-  hpinHint: { en: "Keep scrolling →", nl: "Blijf scrollen →" },
-  cardExplore: { en: "Explore", nl: "Ontdek" },
+  hpinHint: { en: "Keep scrolling →", nl: "Blijf scrollen →", de: "Weiter scrollen →" },
+  cardExplore: { en: "Explore", nl: "Ontdek", de: "Entdecken" },
 
-  valuesEyebrow: { en: "Why Holoconnects", nl: "Waarom Holoconnects" },
-  valuesLine1: { en: "Technology that brings", nl: "Technologie die mensen" },
-  valuesLine2a: { en: "people ", nl: "dichter " },
-  valuesLine2b: { en: "closer", nl: "bij elkaar" },
-  valuesLine2c: { en: ", not", nl: " brengt, geen" },
-  valuesLine3: { en: "screens between them.", nl: "schermen ertussen." },
-  value1Title: { en: "A human touch", nl: "Een menselijke touch" },
+  valuesEyebrow: { en: "Why Holoconnects", nl: "Waarom Holoconnects", de: "Warum Holoconnects" },
+  valuesLine1: { en: "Technology that brings", nl: "Technologie die mensen", de: "Technologie, die Menschen" },
+  valuesLine2a: { en: "people ", nl: "dichter ", de: "näher " },
+  valuesLine2b: { en: "closer", nl: "bij elkaar", de: "zusammen" },
+  valuesLine2c: { en: ", not", nl: " brengt, geen", de: "bringt, keine" },
+  valuesLine3: { en: "screens between them.", nl: "schermen ertussen.", de: "Bildschirme dazwischen." },
+  value1Title: { en: "A human touch", nl: "Een menselijke touch", de: "Eine menschliche Note" },
   value1Body: {
     en: "Technology that deepens human connection instead of replacing it.",
     nl: "Technologie die menselijke verbinding verdiept in plaats van vervangt.",
+    de: "Technologie, die menschliche Verbindung vertieft, statt sie zu ersetzen.",
   },
-  value2Title: { en: "Real presence", nl: "Echte aanwezigheid" },
+  value2Title: { en: "Real presence", nl: "Echte aanwezigheid", de: "Echte Präsenz" },
   value2Body: {
     en: "A genuinely personal presence in any virtual space.",
     nl: "Een echt persoonlijke aanwezigheid in elke virtuele ruimte.",
+    de: "Eine wirklich persönliche Präsenz in jedem virtuellen Raum.",
   },
-  value3Title: { en: "Sustainable reach", nl: "Duurzaam bereik" },
+  value3Title: { en: "Sustainable reach", nl: "Duurzaam bereik", de: "Nachhaltige Reichweite" },
   value3Body: {
     en: "Broader reach, lower footprint, inclusive by design.",
     nl: "Breder bereik, kleinere voetafdruk, inclusief van opzet.",
+    de: "Größere Reichweite, kleinerer Fußabdruck, von Grund auf inklusiv.",
   },
 
-  sectorsTitleA: { en: "Built for the moments", nl: "Gebouwd voor de momenten" },
-  sectorsTitleB: { en: "that matter.", nl: "die ertoe doen." },
+  sectorsTitleA: { en: "Built for the moments", nl: "Gebouwd voor de momenten", de: "Gemacht für die Momente," },
+  sectorsTitleB: { en: "that matter.", nl: "die ertoe doen.", de: "die zählen." },
   sectorsLead: {
     en: "From guest experiences in hospitality to virtual care in telehealth, lifelike presence where it counts.",
-    // TODO(native-review): marketing tone
-    nl: "Van gastervaringen in hospitality tot virtuele zorg in telehealth, levensechte aanwezigheid waar het telt.",
+    nl: "Van gastervaringen in hospitality tot virtuele zorg in telehealth: levensechte aanwezigheid waar het telt.",
+    de: "Von Gästeerlebnissen in der Hospitality bis zur virtuellen Betreuung im Telehealth: lebensechte Präsenz, wo sie zählt.",
   },
 
-  quoteEyebrow: { en: "In their words", nl: "In hun woorden" },
-  quoteTitleA: { en: "Trusted by teams", nl: "Vertrouwd door teams" },
-  quoteTitleB: { en: "around the world.", nl: "over de hele wereld." },
+  quoteEyebrow: { en: "In their words", nl: "In hun woorden", de: "In ihren Worten" },
+  quoteTitleA: { en: "Trusted by teams", nl: "Vertrouwd door teams", de: "Vertraut von Teams" },
+  quoteTitleB: { en: "around the world.", nl: "over de hele wereld.", de: "auf der ganzen Welt." },
 } as const;
 ---
 

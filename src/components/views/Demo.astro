@@ -1,5 +1,5 @@
 ---
-// Demo page — single source for both locales. Render via the thin route files
+// Demo page | single source for both locales. Render via the thin route files
 // src/pages/demo.astro (en) and src/pages/nl/demo.astro (nl).
 import Base from "../../layouts/Base.astro";
 import { site } from "../../data/site";
@@ -13,57 +13,67 @@ const { lang } = Astro.props;
 const calendly =
   "https://calendly.com/mpw-lock/30min?hide_gdpr_banner=1&background_color=0a0a0a&text_color=ffffff&primary_color=ea9914";
 
-// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+// Page copy. Localized in en / nl / de.
 const copy = {
   meta: {
     title: {
-      en: "Book a demo — Holoconnects",
-      nl: "Boek een demo — Holoconnects",
+      en: "Book a demo | Holoconnects",
+      nl: "Demo boeken | Holoconnects",
+      de: "Hologramm Demo buchen | Holoconnects",
     },
     description: {
       en: "Schedule a live 30-minute Holobox demo directly in our calendar.",
-      nl: "Plan direct in onze agenda een live Holobox-demo van 30 minuten.",
+      nl: "Plan direct in onze agenda een live Holobox-demo van 30 minuten. Vraag uw hologram demo aan.",
+      de: "Buchen Sie direkt in unserem Kalender eine 30-minütige Live-Demo der Holobox. Erleben Sie das Hologramm aus erster Hand.",
     },
   },
-  eyebrow: { en: "Book a demo", nl: "Boek een demo" },
-  h1a: { en: "See it ", nl: "Zie het " },
-  h1b: { en: "life-size.", nl: "levensgroot." },
+  eyebrow: { en: "Book a demo", nl: "Demo boeken", de: "Demo buchen" },
+  h1a: { en: "See it ", nl: "Zie het ", de: "Erleben Sie es " },
+  h1b: { en: "life-size.", nl: "levensgroot.", de: "lebensgroß." },
   lead: {
     en: "Pick a slot. 30 minutes with our team, live on a Holobox.",
     nl: "Kies een tijdslot. 30 minuten met ons team, live op een Holobox.",
+    de: "Wählen Sie einen Termin. 30 Minuten mit unserem Team, live auf einer Holobox.",
   },
   calTitle: {
     en: "Schedule a Holoconnects demo",
     nl: "Plan een Holoconnects-demo",
+    de: "Holoconnects-Demo buchen",
   },
   points: [
     {
-      h: { en: "Live, not a video", nl: "Live, geen video" },
+      h: { en: "Live, not a video", nl: "Live, geen video", de: "Live, kein Video" },
       p: {
         en: "We broadcast in real time, so you experience the presence first-hand.",
         nl: "We zenden in realtime uit, zodat u de aanwezigheid zelf ervaart.",
+        de: "Wir übertragen in Echtzeit, sodass Sie die Präsenz aus erster Hand erleben.",
       },
     },
     {
-      h: { en: "Tailored to your sector", nl: "Afgestemd op uw sector" },
+      h: { en: "Tailored to your sector", nl: "Afgestemd op uw sector", de: "Auf Ihre Branche zugeschnitten" },
       p: {
         en: "Hospitality, retail, events or telehealth, we demo your use case.",
-        nl: "Hospitality, retail, evenementen of telehealth — we demonstreren uw use case.",
+        nl: "Hospitality, retail, evenementen of telehealth: we demonstreren uw use case.",
+        de: "Hospitality, Retail, Events oder Telehealth: Wir zeigen Ihren Anwendungsfall.",
       },
     },
     {
-      h: { en: "Honest advice", nl: "Eerlijk advies" },
+      h: { en: "Honest advice", nl: "Eerlijk advies", de: "Ehrliche Beratung" },
       p: {
-        // TODO(native-review): tone of "with real numbers"
         en: "Buy, rent or lease. We'll tell you what fits, with real numbers.",
-        nl: "Kopen, huren of leasen. We vertellen u wat past, met echte cijfers.",
+        nl: "Kopen, huren of leasen. We vertellen u eerlijk wat bij u past, met concrete cijfers.",
+        de: "Kauf, Miete oder Leasing. Wir sagen Ihnen, was passt, mit konkreten Zahlen.",
       },
     },
   ],
-  altLabel: { en: "Prefer email or phone?", nl: "Liever e-mail of telefoon?" },
+  altLabel: {
+    en: "Prefer email or phone?",
+    nl: "Liever e-mail of telefoon?",
+    de: "Lieber per E-Mail oder Telefon?",
+  },
 } as const;
 
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 ---
 
 <Base lang={lang} title={tl(copy.meta.title)} description={tl(copy.meta.description)}>

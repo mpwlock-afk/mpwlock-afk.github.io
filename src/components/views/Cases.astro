@@ -1,5 +1,5 @@
 ---
-// Cases page — single source for both locales. Render via the thin route files
+// Cases page | single source for both locales. Render via the thin route files
 // src/pages/cases.astro (en) and src/pages/nl/cases.astro (nl).
 import Base from "../../layouts/Base.astro";
 import CtaSection from "../CtaSection.astro";
@@ -11,34 +11,42 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+// Page copy. EN / NL / DE.
 const copy = {
   meta: {
-    title: { en: "Cases — Holoconnects", nl: "Cases — Holoconnects" },
+    title: {
+      en: "Cases | Holoconnects",
+      nl: "Hologram cases | Holoconnects",
+      de: "Hologramm Referenzen | Holoconnects",
+    },
     description: {
       en: "They already chose Holoconnects. Discover holographic projects with BMW, ING, Visit Britain and more.",
-      // TODO(native-review): marketing tone
-      nl: "Zij kozen al voor Holoconnects. Ontdek holografische projecten met BMW, ING, Visit Britain en meer.",
+      nl: "Zij kozen al voor Holoconnects. Bekijk onze hologram cases en hologram projecten met BMW, ING, Visit Britain en meer.",
+      de: "Sie haben sich bereits für Holoconnects entschieden. Entdecken Sie unsere Hologramm Referenzen und Hologramm Projekte mit BMW, ING, Visit Britain und mehr.",
     },
   },
-  eyebrow: { en: "Cases", nl: "Cases" },
-  h1a: { en: "They already chose", nl: "Zij kozen al voor" },
-  h1b: { en: "Holoconnects.", nl: "Holoconnects." },
+  eyebrow: { en: "Cases", nl: "Cases", de: "Referenzen" },
+  h1a: { en: "They already chose", nl: "Zij kozen al voor", de: "Sie entschieden sich für" },
+  h1b: { en: "Holoconnects.", nl: "Holoconnects.", de: "Holoconnects." },
   lead: {
     en: "From global brands to government missions.",
-    // TODO(native-review): marketing tone
-    nl: "Van wereldmerken tot overheidsmissies.",
+    nl: "Van wereldmerken tot overheidsmissies: ontdek onze hologram projecten.",
+    de: "Von globalen Marken bis zu staatlichen Projekten: entdecken Sie unsere Hologramm Projekte.",
   },
-  quotesEyebrow: { en: "In their words", nl: "In hun woorden" },
-  quotesTitle: { en: "What our clients say.", nl: "Wat onze klanten zeggen." },
+  quotesEyebrow: { en: "In their words", nl: "In hun woorden", de: "In ihren Worten" },
+  quotesTitle: {
+    en: "What our clients say.",
+    nl: "Wat onze klanten zeggen.",
+    de: "Was unsere Kunden sagen.",
+  },
   ctaTitle: {
     en: "Curious how our technology adds value for you?",
-    // TODO(native-review): marketing tone
     nl: "Benieuwd hoe onze technologie waarde toevoegt voor u?",
+    de: "Neugierig, wie unsere Technologie für Sie Mehrwert schafft?",
   },
 } as const;
 
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 ---
 
 <Base lang={lang} title={tl(copy.meta.title)} description={tl(copy.meta.description)}>

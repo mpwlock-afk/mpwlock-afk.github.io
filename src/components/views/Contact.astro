@@ -1,5 +1,5 @@
 ---
-// Contact page — single source for both locales. Render via the thin route files
+// Contact page | single source for both locales. Render via the thin route files
 // src/pages/contact.astro (en) and src/pages/nl/contact.astro (nl).
 import Base from "../../layouts/Base.astro";
 import { site, offices } from "../../data/site";
@@ -11,99 +11,105 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+// Page copy. Localized across en / nl / de.
 const copy = {
   meta: {
     title: {
-      en: "Contact Holoconnects — Book a Hologram Demo",
-      // TODO(native-review): marketing tone
-      nl: "Contact Holoconnects — Boek een hologramdemo",
+      en: "Contact Holoconnects | Book a Hologram Demo",
+      nl: "Contact Holoconnects | Demo aanvragen voor een hologram demo",
+      de: "Kontakt Holoconnects | Hologramm Demo buchen",
     },
     description: {
       en: "Book a personal hologram demo. Offices in Culemborg (NL) and Houston (TX). Rated 9.5/10 by 346 customers.",
-      // TODO(native-review): marketing tone
-      nl: "Boek een persoonlijke hologramdemo. Kantoren in Culemborg (NL) en Houston (TX). Beoordeeld met 9,5/10 door 346 klanten.",
+      nl: "Vraag een persoonlijke hologram demo aan. Kantoren in Culemborg (NL) en Houston (TX). Beoordeeld met 9,5/10 door 346 klanten.",
+      de: "Buchen Sie eine persönliche Hologramm Demo. Büros in Culemborg (NL) und Houston (TX). Bewertet mit 9,5/10 von 346 Kunden.",
     },
   },
-  eyebrow: { en: "Contact", nl: "Contact" },
-  h1a: { en: "Let's bring your", nl: "Laten we uw" },
-  h1b: { en: "idea to life.", nl: "idee tot leven brengen." },
+  eyebrow: { en: "Contact", nl: "Contact", de: "Kontakt" },
+  h1a: { en: "Let's bring your", nl: "Laten we uw", de: "Erwecken wir Ihre" },
+  h1b: { en: "idea to life.", nl: "idee tot leven brengen.", de: "Idee zum Leben." },
   lead: {
     en: "Book a personal demo or get in touch.",
-    nl: "Boek een persoonlijke demo of neem contact op.",
+    nl: "Vraag een persoonlijke demo aan of neem contact op.",
+    de: "Buchen Sie eine persönliche Demo oder nehmen Sie Kontakt auf.",
   },
-  formTitleA: { en: "Send us a ", nl: "Stuur ons een " },
-  formTitleB: { en: "message", nl: "bericht" },
-  firstName: { en: "First name *", nl: "Voornaam *" },
-  lastName: { en: "Last name *", nl: "Achternaam *" },
-  company: { en: "Company name *", nl: "Bedrijfsnaam *" },
-  country: { en: "Country *", nl: "Land *" },
-  countryPlaceholder: { en: "Choose your country", nl: "Kies uw land" },
-  email: { en: "Email address *", nl: "E-mailadres *" },
-  phone: { en: "Phone number *", nl: "Telefoonnummer *" },
-  sourceLabel: { en: "Where did you learn about us? *", nl: "Waar heeft u over ons gehoord? *" },
-  sourcePlaceholder: { en: "Make a choice", nl: "Maak een keuze" },
-  messageLabel: { en: "Additional message", nl: "Aanvullend bericht" },
+  formTitleA: { en: "Send us a ", nl: "Stuur ons een ", de: "Senden Sie uns eine " },
+  formTitleB: { en: "message", nl: "bericht", de: "Nachricht" },
+  firstName: { en: "First name *", nl: "Voornaam *", de: "Vorname *" },
+  lastName: { en: "Last name *", nl: "Achternaam *", de: "Nachname *" },
+  company: { en: "Company name *", nl: "Bedrijfsnaam *", de: "Firmenname *" },
+  country: { en: "Country *", nl: "Land *", de: "Land *" },
+  countryPlaceholder: { en: "Choose your country", nl: "Kies uw land", de: "Wählen Sie Ihr Land" },
+  email: { en: "Email address *", nl: "E-mailadres *", de: "E-Mail-Adresse *" },
+  phone: { en: "Phone number *", nl: "Telefoonnummer *", de: "Telefonnummer *" },
+  sourceLabel: { en: "Where did you learn about us? *", nl: "Waar heeft u over ons gehoord? *", de: "Wie haben Sie von uns erfahren? *" },
+  sourcePlaceholder: { en: "Make a choice", nl: "Maak een keuze", de: "Treffen Sie eine Auswahl" },
+  messageLabel: { en: "Additional message", nl: "Aanvullend bericht", de: "Zusätzliche Nachricht" },
   messagePlaceholder: {
     en: "Tell us about your project...",
     nl: "Vertel ons over uw project...",
+    de: "Erzählen Sie uns von Ihrem Projekt...",
   },
-  submit: { en: "Send message", nl: "Verstuur bericht" },
-  sending: { en: "Sending…", nl: "Versturen…" },
+  submit: { en: "Send message", nl: "Verstuur bericht", de: "Nachricht senden" },
+  sending: { en: "Sending…", nl: "Versturen…", de: "Wird gesendet…" },
   formError: {
     en: "Please fill in all required fields.",
     nl: "Vul alstublieft alle verplichte velden in.",
+    de: "Bitte füllen Sie alle Pflichtfelder aus.",
   },
   formErrorSend: {
-    // TODO(native-review): marketing tone
     en: "Something went wrong. Please email info@holoconnects.com directly.",
-    nl: "Er ging iets mis. Mail rechtstreeks naar info@holoconnects.com.",
+    nl: "Er is iets misgegaan. Mail rechtstreeks naar info@holoconnects.com.",
+    de: "Etwas ist schiefgelaufen. Bitte schreiben Sie direkt an info@holoconnects.com.",
   },
   formOk: {
-    // TODO(native-review): marketing tone
     en: "Thank you, we'll be in touch shortly.",
     nl: "Bedankt, we nemen spoedig contact met u op.",
+    de: "Vielen Dank, wir melden uns in Kürze bei Ihnen.",
   },
   newsletterTitle: {
-    // TODO(native-review): marketing tone
     en: "Join our newsletter and stay up to date",
-    nl: "Schrijf u in voor onze nieuwsbrief en blijf op de hoogte",
+    nl: "Meld u aan voor onze nieuwsbrief en blijf op de hoogte",
+    de: "Abonnieren Sie unseren Newsletter und bleiben Sie auf dem Laufenden",
   },
   newsletterPlaceholder: {
     en: "Enter your email address",
     nl: "Vul uw e-mailadres in",
+    de: "Geben Sie Ihre E-Mail-Adresse ein",
   },
-  subscribe: { en: "Subscribe", nl: "Aanmelden" },
+  subscribe: { en: "Subscribe", nl: "Aanmelden", de: "Abonnieren" },
   newsletterOk: {
-    // TODO(native-review): marketing tone
     en: "You're subscribed. Welcome!",
     nl: "U bent aangemeld. Welkom!",
+    de: "Sie sind angemeldet. Willkommen!",
   },
-  demoTitle: { en: "Book a live demo", nl: "Boek een live demo" },
+  demoTitle: { en: "Book a live demo", nl: "Vraag een live demo aan", de: "Live-Demo buchen" },
   demoText: {
-    // TODO(native-review): marketing tone
     en: "Pick a slot directly in our calendar. 30 minutes, life-size.",
     nl: "Kies direct een tijdslot in onze agenda. 30 minuten, levensgroot.",
+    de: "Wählen Sie direkt einen Termin in unserem Kalender. 30 Minuten, in Lebensgröße.",
   },
-  demoButton: { en: "Schedule demo", nl: "Plan demo" },
-  talkTitle: { en: "Talk to us", nl: "Neem contact op" },
-  ciPhone: { en: "Phone", nl: "Telefoon" },
-  ciEmail: { en: "Email", nl: "E-mail" },
-  ciSupport: { en: "Support", nl: "Support" },
-  ciWhatsapp: { en: "WhatsApp", nl: "WhatsApp" },
+  demoButton: { en: "Schedule demo", nl: "Demo plannen", de: "Demo planen" },
+  talkTitle: { en: "Talk to us", nl: "Neem contact op", de: "Sprechen Sie mit uns" },
+  ciPhone: { en: "Phone", nl: "Telefoon", de: "Telefon" },
+  ciEmail: { en: "Email", nl: "E-mail", de: "E-Mail" },
+  ciSupport: { en: "Support", nl: "Support", de: "Support" },
+  ciWhatsapp: { en: "WhatsApp", nl: "WhatsApp", de: "WhatsApp" },
 } as const;
 
 // Lead-source options shown in the form select.
+// `en` is the submitted VALUE (kept English for internal notifications);
+// nl / de are display LABELS only.
 const sources = [
-  { en: "Google Ads", nl: "Google Ads" },
-  { en: "At an Exhibition", nl: "Op een beurs" },
-  { en: "Through Social Media", nl: "Via social media" },
-  { en: "In the Media", nl: "In de media" },
-  { en: "ChatGPT or other AI Search Engine", nl: "ChatGPT of andere AI-zoekmachine" },
-  { en: "Through our Partner network", nl: "Via ons partnernetwerk" },
+  { en: "Google Ads", nl: "Google Ads", de: "Google Ads" },
+  { en: "At an Exhibition", nl: "Op een beurs", de: "Auf einer Messe" },
+  { en: "Through Social Media", nl: "Via social media", de: "Über Social Media" },
+  { en: "In the Media", nl: "In de media", de: "In den Medien" },
+  { en: "ChatGPT or other AI Search Engine", nl: "ChatGPT of andere AI-zoekmachine", de: "ChatGPT oder andere KI-Suchmaschine" },
+  { en: "Through our Partner network", nl: "Via ons partnernetwerk", de: "Über unser Partnernetzwerk" },
 ];
 
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
 const siteUrl = Astro.site ?? new URL("https://www.holoconnects.com");
 const localBusinessLd = {
@@ -165,7 +171,7 @@ const localBusinessLd = {
             </label>
             <label class="field">
               <span>{tl(copy.country)}</span>
-              {/* TODO(native-review): country option names are kept in English pending native review. */}
+              {/* Country option names are intentionally kept in English across all locales. */}
               <select name="country" required>
                 <option value="" selected disabled>{tl(copy.countryPlaceholder)}</option>
                 {countries.map((c) => <option value={c}>{c}</option>)}
@@ -250,12 +256,12 @@ const localBusinessLd = {
 
 <script>
   // Submissions are delivered by FormSubmit (no backend needed).
-  // NOTE: the inbox address is set here — swap for the FormSubmit
+  // NOTE: the inbox address is set here | swap for the FormSubmit
   // random alias after activation if you want it out of the source.
   // Destination is injected at build time (PUBLIC_CONTACT_INBOX) so the real
   // address stays out of the public repo source. Local dev reads it from .env;
   // the GitHub Pages build reads it from the CONTACT_INBOX repo secret.
-  // NOTE: on a static host the value still ends up in the deployed JS — to hide
+  // NOTE: on a static host the value still ends up in the deployed JS | to hide
   // it on the live site too, switch to a FormSubmit alias once activated.
   const INBOX = import.meta.env.PUBLIC_CONTACT_INBOX || "info@holoconnects.com";
   const ENDPOINT = `https://formsubmit.co/ajax/${INBOX}`;

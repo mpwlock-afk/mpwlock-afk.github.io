@@ -4,6 +4,7 @@ import {
   getLangFromUrl,
   localizePath,
   stripLangPrefix,
+  locales,
   t,
   useTranslations,
   type Lang,
@@ -20,9 +21,14 @@ const path = stripLangPrefix(Astro.url.pathname);
 const isActive = (href: string) =>
   href === "/" ? path === "/" : path.startsWith(href);
 
-// The same logical page in the other language, for the language switcher.
+// The same logical page in the other languages, for the language switcher.
 const logicalPath = path;
-const otherLang: Lang = lang === "nl" ? "en" : "nl";
+const otherLangs: Lang[] = locales.filter((l) => l !== lang);
+const fullLangLabel: Record<Lang, string> = {
+  en: "View in English",
+  nl: "Bekijk in het Nederlands",
+  de: "Auf Deutsch ansehen",
+};
 ---
 
 <header class="site-header" id="site-header" data-transparent>
@@ -59,14 +65,18 @@ const otherLang: Lang = lang === "nl" ? "en" : "nl";
     </nav>
 
     <div class="header-actions">
-      <a
-        href={localizePath(logicalPath, otherLang)}
-        class="lang-switch"
-        aria-label={`${tt("lang.switch")}: ${otherLang.toUpperCase()}`}
-        hreflang={otherLang}
-      >
-        {otherLang.toUpperCase()}
-      </a>
+      <div class="lang-switch" role="group" aria-label={tt("lang.switch")}>
+        {otherLangs.map((ol) => (
+          <a
+            href={localizePath(logicalPath, ol)}
+            class="lang-switch__link"
+            aria-label={`${tt("lang.switch")}: ${ol.toUpperCase()}`}
+            hreflang={ol}
+          >
+            {ol.toUpperCase()}
+          </a>
+        ))}
+      </div>
       <a href={localizePath("/demo", lang)} class="btn btn--primary btn--sm">{tt("cta.bookDemo")}</a>
     </div>
 
@@ -91,9 +101,11 @@ const otherLang: Lang = lang === "nl" ? "en" : "nl";
       ))
     }
     <a href={localizePath("/demo", lang)} class="btn btn--gold" style="margin-top:1rem;width:100%;justify-content:center;">{tt("cta.bookDemo")}</a>
-    <a href={localizePath(logicalPath, otherLang)} class="mobile-lang" hreflang={otherLang}>
-      {otherLang === "nl" ? "Bekijk in het Nederlands" : "View in English"}
-    </a>
+    {otherLangs.map((ol) => (
+      <a href={localizePath(logicalPath, ol)} class="mobile-lang" hreflang={ol}>
+        {fullLangLabel[ol]}
+      </a>
+    ))}
   </div>
 </header>
 
@@ -241,22 +253,29 @@ const otherLang: Lang = lang === "nl" ? "en" : "nl";
   .lang-switch {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-width: 36px;
-    padding: 0.4rem 0.6rem;
+    gap: 0.25rem;
+    padding: 0.25rem;
     border-radius: 100px;
-    font-size: 0.8rem;
+    border: 1px solid currentColor;
+  }
+  .lang-switch__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    padding: 0.25rem 0.45rem;
+    border-radius: 100px;
+    font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     color: currentColor;
-    opacity: 0.8;
-    border: 1px solid currentColor;
+    opacity: 0.75;
     transition: opacity 0.25s, background 0.25s, color 0.25s;
   }
-  .lang-switch:hover {
+  .lang-switch__link:hover {
     opacity: 1;
   }
-  .scrolled .lang-switch:hover {
+  .scrolled .lang-switch__link:hover {
     background: rgba(0, 0, 0, 0.05);
   }
   .mobile-lang {

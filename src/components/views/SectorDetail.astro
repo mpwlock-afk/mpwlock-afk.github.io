@@ -9,7 +9,7 @@ interface Props {
   sector: Sector;
 }
 const { lang, sector } = Astro.props;
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
 const others = sectors.filter((s) => s.slug !== sector.slug);
 
@@ -22,34 +22,34 @@ const sectorNameLower = sectorName.toLowerCase();
 
 // Page chrome copy.
 const copy = {
-  home: { en: "Home", nl: "Home" },
-  sectors: { en: "Sectors", nl: "Sectoren" },
-  bookDemo: { en: "Book a demo", nl: "Boek een demo" },
-  allSectors: { en: "All sectors", nl: "Alle sectoren" },
-  hologramsFor: { en: "Holograms for", nl: "Hologrammen voor" },
-  whyHere: { en: "Why holograms here", nl: "Waarom hier hologrammen" },
+  home: { en: "Home", nl: "Home", de: "Home" },
+  sectors: { en: "Sectors", nl: "Sectoren", de: "Branchen" },
+  bookDemo: { en: "Book a demo", nl: "Boek een demo", de: "Demo buchen" },
+  allSectors: { en: "All sectors", nl: "Alle sectoren", de: "Alle Branchen" },
+  hologramsFor: { en: "Holograms for", nl: "Hologrammen voor", de: "Hologramme für" },
+  whyHere: { en: "Why holograms here", nl: "Waarom hier hologrammen", de: "Warum Hologramme hier" },
   bodyText: {
     en: "Holoconnects delivers life-size, interactive holographic displays used in 30+ countries. For",
-    // TODO(native-review): marketing tone
-    nl: "Holoconnects levert levensgrote, interactieve holografische displays die in meer dan 30 landen worden gebruikt. Voor",
+    nl: "Holoconnects levert levensgrote, interactieve holografische displays die in meer dan 30 landen worden ingezet. Voor",
+    de: "Holoconnects liefert lebensgroße, interaktive holografische Displays, die in über 30 Ländern im Einsatz sind. Für",
   },
   bodyTextEnd: {
     en: "that means a real human presence that is engaging, lifelike and always on brand.",
-    // TODO(native-review): marketing tone
-    nl: "betekent dat een echte menselijke aanwezigheid die boeiend, levensecht en altijd op merk is.",
+    nl: "betekent dat een echte menselijke aanwezigheid die boeit, levensecht is en altijd bij het merk past.",
+    de: "bedeutet das eine echte menschliche Präsenz, die fesselt, lebensecht wirkt und stets zur Marke passt.",
   },
-  talkTo: { en: "Talk to us about", nl: "Praat met ons over" },
-  keepExploring: { en: "Keep exploring", nl: "Blijf ontdekken" },
-  moreSectors: { en: "More sectors.", nl: "Meer sectoren." },
-  bringTo: { en: "Bring holograms to", nl: "Breng hologrammen naar" },
-  altPrefix: { en: "Hologram for", nl: "Hologram voor" },
-  altSuffix: { en: "by Holoconnects", nl: "door Holoconnects" },
+  talkTo: { en: "Talk to us about", nl: "Praat met ons over", de: "Sprechen Sie mit uns über" },
+  keepExploring: { en: "Keep exploring", nl: "Blijf ontdekken", de: "Weiter entdecken" },
+  moreSectors: { en: "More sectors.", nl: "Meer sectoren.", de: "Weitere Branchen." },
+  bringTo: { en: "Bring holograms to", nl: "Breng hologrammen naar", de: "Bringen Sie Hologramme in" },
+  altPrefix: { en: "Hologram for", nl: "Hologram voor", de: "Hologramm für" },
+  altSuffix: { en: "by Holoconnects", nl: "door Holoconnects", de: "von Holoconnects" },
 };
 
 type SeoEntry = {
-  title: { en: string; nl: string };
-  description: { en: string; nl: string };
-  intro: { en: string; nl: string };
+  title: { en: string; nl: string; de?: string };
+  description: { en: string; nl: string; de?: string };
+  intro: { en: string; nl: string; de?: string };
 };
 
 // Unique, keyword-rich SEO copy per sector. NL = first-pass; SEO-critical → native review.
@@ -57,97 +57,103 @@ const sectorSeo: Record<string, SeoEntry> = {
   hospitality: {
     title: {
       en: "Hologram Solutions for Hospitality & Travel | Holoconnects",
-      nl: "Hologramoplossingen voor Hospitality & Reizen | Holoconnects",
+      nl: "Hologram receptie & virtuele conciërge voor hotels | Holoconnects",
+      de: "Holografischer Empfang & Hologramm Concierge fürs Hotel | Holoconnects",
     },
     description: {
       en: "A 24/7 holographic concierge that welcomes every guest with a human touch. Life-size interactive holograms for hotels, travel and hospitality.",
-      // TODO(native-review): SEO description
-      nl: "Een 24/7 holografische concierge die elke gast verwelkomt met een menselijke touch. Levensgrote interactieve hologrammen voor hotels, reizen en hospitality.",
+      nl: "Een holografische concierge die elke gast 24/7 persoonlijk ontvangt. Levensgrote hologram receptie voor hotels, reizen en hospitality, in elke taal.",
+      de: "Ein holografischer Empfang, der Gäste rund um die Uhr persönlich begrüßt. Lebensgroßer Hologramm Concierge fürs Hotel, in jeder Sprache, ohne Wartezeit.",
     },
     intro: {
       en: "From check-in to concierge, a life-size hologram greets every guest with a genuine human presence, around the clock, in any language, in any lobby.",
-      // TODO(native-review): SEO intro
-      nl: "Van check-in tot concierge: een levensgroot hologram begroet elke gast met een echte menselijke aanwezigheid, de klok rond, in elke taal, in elke lobby.",
+      nl: "Van check-in tot conciërge: een levensgrote holografische concierge ontvangt elke gast persoonlijk, dag en nacht, in elke taal, in elke lobby.",
+      de: "Vom Check-in bis zum Concierge: Ein lebensgroßer holografischer Empfang begrüßt jeden Gast persönlich, rund um die Uhr, in jeder Sprache, in jeder Lobby.",
     },
   },
   telehealth: {
     title: {
-      en: "Telehealth Holograms — Life-Size Virtual Care | Holoconnects",
-      nl: "Telehealth-hologrammen — Levensgrote virtuele zorg | Holoconnects",
+      en: "Telehealth Holograms | Life-Size Virtual Care | Holoconnects",
+      nl: "Hologram zorg & holografisch consult op afstand | Holoconnects",
+      de: "Hologramm Telemedizin & holografische Sprechstunde | Holoconnects",
     },
     description: {
       en: "Life-size, lifelike holographic consultations that bring specialist care closer to patients, wherever the specialist is based.",
-      // TODO(native-review): SEO description
-      nl: "Levensgrote, levensechte holografische consulten die specialistische zorg dichter bij patiënten brengen, waar de specialist zich ook bevindt.",
+      nl: "Levensechte hologram zorg op afstand. Een holografisch consult brengt de specialist levensgroot bij de patiënt, waar de arts zich ook bevindt.",
+      de: "Lebensechte Hologramm Telemedizin: Eine holografische Sprechstunde bringt die Fachärztin lebensgroß zur Patientin, ganz gleich, wo sie sich befindet.",
     },
     intro: {
       en: "Bring the specialist into the room. Life-size holographic consultations make remote care feel personal, present and reassuring.",
-      // TODO(native-review): SEO intro
-      nl: "Breng de specialist de spreekkamer in. Levensgrote holografische consulten laten zorg op afstand persoonlijk, aanwezig en geruststellend voelen.",
+      nl: "Breng de specialist de spreekkamer in. Een levensgroot holografisch consult laat zorg op afstand persoonlijk, aanwezig en geruststellend voelen.",
+      de: "Holen Sie die Fachärztin ins Sprechzimmer. Eine lebensgroße holografische Sprechstunde lässt Telemedizin persönlich, präsent und vertrauensvoll wirken.",
     },
   },
   retail: {
     title: {
-      en: "Holographic Retail Displays — Windows & Showrooms | Holoconnects",
-      nl: "Holografische retaildisplays — Etalages & Showrooms | Holoconnects",
+      en: "Holographic Retail Displays | Windows & Showrooms | Holoconnects",
+      nl: "Hologram retail & holografische etalage voor winkels | Holoconnects",
+      de: "Hologramm Schaufenster & holografisches Schaufenster | Holoconnects",
     },
     description: {
       en: "Turn windows and showrooms into holographic stages that stop shoppers in their tracks with life-size, interactive 3D product displays.",
-      // TODO(native-review): SEO description
-      nl: "Verander etalages en showrooms in holografische podia die shoppers doen stilstaan met levensgrote, interactieve 3D-productdisplays.",
+      nl: "Maak van uw etalage een hologram vitrine die shoppers laat stilstaan. Holografische etalage met levensgrote, interactieve 3D-producten voor retail.",
+      de: "Verwandeln Sie Ihr Schaufenster in ein Hologramm Schaufenster, das Passanten stoppt. Holografisches Schaufenster mit lebensgroßen, interaktiven 3D-Produkten.",
     },
     intro: {
       en: "Turn any window or showroom into a holographic stage. Products float in vivid 3D and invite shoppers to interact, not just look.",
-      // TODO(native-review): SEO intro
-      nl: "Verander elke etalage of showroom in een holografisch podium. Producten zweven in levendig 3D en nodigen shoppers uit om te interacteren, niet alleen te kijken.",
+      nl: "Verander elke etalage of showroom in een holografisch podium. Producten zweven in levendig 3D en nodigen shoppers uit tot interactie, niet alleen tot kijken.",
+      de: "Verwandeln Sie jedes Schaufenster oder jeden Showroom in eine holografische Bühne. Produkte schweben in lebendigem 3D und laden zur Interaktion ein, nicht nur zum Schauen.",
     },
   },
   events: {
     title: {
-      en: "Event Holograms — Beam Speakers & Brands on Stage | Holoconnects",
-      nl: "Evenementhologrammen — Beam sprekers & merken op het podium | Holoconnects",
+      en: "Event Holograms | Beam Speakers & Brands on Stage | Holoconnects",
+      nl: "Hologram event & hologram podium voor sprekers | Holoconnects",
+      de: "Hologramm Event & Hologramm Bühne mieten | Holoconnects",
     },
     description: {
       en: "Beam speakers, presenters and brands onto any stage in striking, large-format 3D holograms for events and live experiences.",
-      // TODO(native-review): SEO description
-      nl: "Beam sprekers, presentatoren en merken naar elk podium in opvallende, grootformaat 3D-hologrammen voor evenementen en live-ervaringen.",
+      nl: "Zet sprekers, presentatoren en merken levensgroot op het hologram podium. Grootformaat 3D-hologrammen voor elk event en elke live-ervaring.",
+      de: "Bringen Sie Speaker, Moderatoren und Marken lebensgroß auf die Hologramm Bühne. Hologramm Event in großformatigem 3D, einfach zu mieten für jede Live-Erfahrung.",
     },
     intro: {
       en: "Put a speaker, performer or product on any stage in striking large-format 3D, with no travel required and all the impact of being there.",
-      // TODO(native-review): SEO intro
-      nl: "Zet een spreker, performer of product op elk podium in opvallend grootformaat 3D, zonder reizen en met alle impact van fysiek aanwezig zijn.",
+      nl: "Zet een spreker, performer of product op elk hologram podium in opvallend grootformaat 3D, zonder reiskosten en met de impact van fysieke aanwezigheid.",
+      de: "Stellen Sie Speaker, Künstler oder Produkt auf jede Hologramm Bühne in beeindruckendem 3D, ganz ohne Anreise und mit der vollen Wirkung echter Präsenz.",
     },
   },
   education: {
     title: {
-      en: "Holograms for Education — Lessons in 3D | Holoconnects",
-      nl: "Hologrammen voor onderwijs — Lessen in 3D | Holoconnects",
+      en: "Holograms for Education | Lessons in 3D | Holoconnects",
+      nl: "Hologram onderwijs | hologram in de klas in 3D | Holoconnects",
+      de: "Hologramm Bildung | Hologramm im Unterricht in 3D | Holoconnects",
     },
     description: {
       en: "Bring lessons, guest lecturers and complex ideas to life in three dimensions with life-size, interactive education holograms.",
-      // TODO(native-review): SEO description
-      nl: "Breng lessen, gastdocenten en complexe ideeën tot leven in drie dimensies met levensgrote, interactieve onderwijshologrammen.",
+      nl: "Breng lessen, gastdocenten en complexe stof tot leven met een hologram in de klas. Levensgrote, interactieve hologrammen voor het onderwijs in 3D.",
+      de: "Erwecken Sie Lehrstoff, Gastdozenten und komplexe Konzepte zum Leben: ein Hologramm im Unterricht. Lebensgroße, interaktive Hologramme für die Bildung in 3D.",
     },
     intro: {
       en: "Make the abstract tangible. Guest lecturers, demonstrations and complex ideas come to life at human scale, in three dimensions.",
-      // TODO(native-review): SEO intro
-      nl: "Maak het abstracte tastbaar. Gastdocenten, demonstraties en complexe ideeën komen tot leven op menselijke schaal, in drie dimensies.",
+      nl: "Maak het abstracte tastbaar. Met een hologram in de klas komen gastdocenten, demonstraties en complexe ideeën tot leven op ware grootte, in drie dimensies.",
+      de: "Machen Sie Abstraktes greifbar. Mit einem Hologramm im Unterricht werden Gastdozenten, Demonstrationen und komplexe Ideen lebensgroß und dreidimensional erlebbar.",
     },
   },
   advertising: {
     title: {
-      en: "Holographic Advertising — Premium 3D Out-of-Home | Holoconnects",
-      nl: "Holografisch adverteren — Premium 3D out-of-home | Holoconnects",
+      en: "Holographic Advertising | Premium 3D Out-of-Home | Holoconnects",
+      nl: "Holografische reclame & hologram buitenreclame in 3D | Holoconnects",
+      de: "Hologramm Werbung & holografische Außenwerbung in 3D | Holoconnects",
     },
     description: {
       en: "Premium holographic out-of-home advertising that commands attention in 4K 3D. Life-size hologram displays that brands can't ignore.",
-      // TODO(native-review): SEO description
-      nl: "Premium holografische out-of-home-reclame die de aandacht trekt in 4K 3D. Levensgrote hologramdisplays die merken niet kunnen negeren.",
+      nl: "Premium holografische reclame die alle aandacht trekt in 4K 3D. Hologram buitenreclame en levensgrote displays die niemand voorbijloopt.",
+      de: "Premium Hologramm Werbung, die in 4K 3D alle Blicke fesselt. Holografische Außenwerbung und lebensgroße Displays, die im Out-of-Home niemand übersieht.",
     },
     intro: {
       en: "Premium holographic out-of-home that commands attention in 4K 3D, with campaigns that audiences stop for, photograph and remember.",
-      // TODO(native-review): SEO intro
-      nl: "Premium holografische out-of-home die de aandacht trekt in 4K 3D, met campagnes waarvoor publiek stilstaat, die het fotografeert en onthoudt.",
+      nl: "Premium holografische reclame die alle aandacht trekt in 4K 3D, met hologram buitenreclame waarvoor publiek stilstaat, foto's maakt en die het onthoudt.",
+      de: "Premium holografische Außenwerbung, die in 4K 3D alle Blicke fesselt: Out-of-Home Kampagnen, für die Menschen stehen bleiben, die sie fotografieren und erinnern.",
     },
   },
 };

@@ -1,5 +1,5 @@
 ---
-// About page — single source for both locales. Render via the thin route files
+// About page | single source for both locales. Render via the thin route files
 // src/pages/about.astro (en) and src/pages/nl/about.astro (nl).
 import Base from "../../layouts/Base.astro";
 import CtaSection from "../CtaSection.astro";
@@ -11,75 +11,76 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+// Page copy. EN + NL (finalized) + DE.
 const copy = {
   meta: {
     title: {
-      en: "About Holoconnects — Europe's Leading Hologram Technology Company",
-      // TODO(native-review): marketing tone
-      nl: "Over Holoconnects — Europa's toonaangevende hologramtechnologiebedrijf",
+      en: "About Holoconnects | Europe's Leading Hologram Technology Company",
+      nl: "Over Holoconnects | het toonaangevende hologrambedrijf van Europa",
+      de: "Über Holoconnects | das führende Hologramm Unternehmen in Europa",
     },
     description: {
       en: "Founded by André and Marnix. 470+ projects, 30+ countries, 9.5/10 customer rating.",
       nl: "Opgericht door André en Marnix. 470+ projecten, 30+ landen, 9,5/10 klantbeoordeling.",
+      de: "Gegründet von André und Marnix. Über 470 Projekte, mehr als 30 Länder, Kundenbewertung 9,5/10.",
     },
   },
-  eyebrow: { en: "About us", nl: "Over ons" },
-  h1a: { en: "Innovation with", nl: "Innovatie met" },
-  h1b: { en: "a human touch.", nl: "een menselijke touch." },
+  eyebrow: { en: "About us", nl: "Over ons", de: "Über uns" },
+  h1a: { en: "Innovation with", nl: "Innovatie met", de: "Innovation mit" },
+  h1b: { en: "a human touch.", nl: "een menselijke touch.", de: "menschlicher Note." },
   lead: {
     en: "Europe's leading hologram company, built on a belief in real, human connection.",
-    // TODO(native-review): marketing tone
-    nl: "Europa's toonaangevende hologrambedrijf, gebouwd op het geloof in echte, menselijke connectie.",
+    nl: "Het toonaangevende hologrambedrijf van Europa, gebouwd op het geloof in echt, menselijk contact.",
+    de: "Das führende Hologramm Unternehmen Europas, getragen vom Glauben an echte, menschliche Verbindung.",
   },
-  storyEyebrow: { en: "Our story", nl: "Ons verhaal" },
-  storyTitleA: { en: "It started with", nl: "Het begon met" },
-  storyTitleB: { en: "a human idea.", nl: "een menselijk idee." },
+  storyEyebrow: { en: "Our story", nl: "Ons verhaal", de: "Unsere Geschichte" },
+  storyTitleA: { en: "It started with", nl: "Het begon met", de: "Alles begann mit" },
+  storyTitleB: { en: "a human idea.", nl: "een menselijk idee.", de: "einer menschlichen Idee." },
   storyP1: {
-    // TODO(native-review): marketing tone
     en: 'Founders Andre and Marnix set out to keep people &ldquo;in touch&rdquo; across any distance. When Covid-19 hit, they went all in on holographic presence.',
-    nl: 'Oprichters Andre en Marnix wilden mensen &ldquo;in contact&rdquo; houden over elke afstand. Toen Covid-19 toesloeg, gingen ze volledig voor holografische aanwezigheid.',
+    nl: 'Oprichters Andre en Marnix wilden mensen &ldquo;in contact&rdquo; houden over elke afstand. Toen Covid-19 toesloeg, kozen ze voluit voor holografische aanwezigheid.',
+    de: 'Die Gründer Andre und Marnix wollten Menschen über jede Distanz hinweg &ldquo;in Verbindung&rdquo; halten. Als Covid-19 ausbrach, setzten sie voll auf holografische Präsenz.',
   },
   storyP2: {
     en: "Everything is built in-house for quality, 20 to 30 units a month and growing.",
-    // TODO(native-review): marketing tone
-    nl: "Alles wordt in eigen huis gebouwd voor kwaliteit, 20 tot 30 units per maand en groeiend.",
+    nl: "Alles wordt in eigen huis gebouwd voor topkwaliteit, 20 tot 30 units per maand en groeiend.",
+    de: "Für höchste Qualität fertigen wir alles im eigenen Haus, 20 bis 30 Einheiten pro Monat und wachsend.",
   },
-  valuesEyebrow: { en: "What we stand for", nl: "Waar we voor staan" },
+  valuesEyebrow: { en: "What we stand for", nl: "Waar we voor staan", de: "Wofür wir stehen" },
   valuesTitle: {
     en: "A future where technology and<br />human interaction go hand in hand.",
-    // TODO(native-review): marketing tone
     nl: "Een toekomst waarin technologie en<br />menselijke interactie hand in hand gaan.",
+    de: "Eine Zukunft, in der Technologie und<br />menschliche Interaktion Hand in Hand gehen.",
   },
   values: [
     {
-      h: { en: "Innovation with a human touch", nl: "Innovatie met een menselijke touch" },
+      h: { en: "Innovation with a human touch", nl: "Innovatie met een menselijke touch", de: "Innovation mit menschlicher Note" },
       p: {
-        // TODO(native-review): marketing tone
         en: "Technology that enhances human connection and promotes sustainable business without losing authentic interaction.",
-        nl: "Technologie die menselijke connectie versterkt en duurzaam ondernemen bevordert zonder authentieke interactie te verliezen.",
+        nl: "Technologie die menselijk contact versterkt en duurzaam ondernemen bevordert zonder authentieke interactie te verliezen.",
+        de: "Technologie, die menschliche Verbindung stärkt und nachhaltiges Wirtschaften fördert, ohne authentische Interaktion zu verlieren.",
       },
     },
     {
-      h: { en: "Inclusive sustainability", nl: "Inclusieve duurzaamheid" },
+      h: { en: "Inclusive sustainability", nl: "Inclusieve duurzaamheid", de: "Inklusive Nachhaltigkeit" },
       p: {
-        // TODO(native-review): marketing tone
         en: "Helping businesses across every sector reach a broader audience in an environmentally friendly, inclusive way.",
         nl: "We helpen bedrijven in elke sector een breder publiek te bereiken op een milieuvriendelijke, inclusieve manier.",
+        de: "Wir helfen Unternehmen aus allen Branchen, ein breiteres Publikum auf umweltfreundliche und inklusive Weise zu erreichen.",
       },
     },
     {
-      h: { en: "Real people, real connections", nl: "Echte mensen, echte connecties" },
+      h: { en: "Real people, real connections", nl: "Echte mensen, echte connecties", de: "Echte Menschen, echte Verbindungen" },
       p: {
-        // TODO(native-review): marketing tone
         en: "A genuinely personal presence in virtual spaces, with technology as a complement to the human experience, never a replacement.",
         nl: "Een oprecht persoonlijke aanwezigheid in virtuele ruimtes, met technologie als aanvulling op de menselijke ervaring, nooit als vervanging.",
+        de: "Eine wahrhaft persönliche Präsenz in virtuellen Räumen, mit Technologie als Ergänzung des menschlichen Erlebnisses, niemals als Ersatz.",
       },
     },
   ],
 } as const;
 
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 ---
 
 <Base lang={lang} title={tl(copy.meta.title)} description={tl(copy.meta.description)}>

@@ -1,5 +1,5 @@
 ---
-// Product detail — single source for both locales. Render via the thin route
+// Product detail | single source for both locales. Render via the thin route
 // files src/pages/products/[slug].astro (en) and src/pages/nl/products/[slug].astro (nl).
 // Both routes own their own getStaticPaths and pass `product` + `lang`.
 import Base from "../../layouts/Base.astro";
@@ -14,38 +14,41 @@ interface Props {
 const { lang, product } = Astro.props;
 const others = products.filter((p) => p.slug !== product.slug).slice(0, 3);
 
-// Page copy. NL is a first-pass translation — see TODO(native-review) markers.
+// Page copy for all three locales (en / nl / de).
 const copy = {
   metaTitle: {
-    en: `${product.name} — Holographic Display | Holoconnects`,
-    nl: `${product.name} — Holografisch display | Holoconnects`,
+    en: `${product.name} | Holographic Display | Holoconnects`,
+    nl: `${product.name} | Holografisch display | Holoconnects`,
+    de: `${product.name} | Hologramm Display | Holoconnects`,
   },
   metaDescription: {
     en: `${t(product.summary, "en")} Used in 30+ countries for hospitality, retail and events.`,
-    // TODO(native-review): marketing tone
-    nl: `${t(product.summary, "nl")} Gebruikt in meer dan 30 landen voor hospitality, retail en evenementen.`,
+    nl: `${t(product.summary, "nl")} In meer dan 30 landen ingezet voor hospitality, retail en evenementen.`,
+    de: `${t(product.summary, "de")} In über 30 Ländern für Hospitality, Retail und Events im Einsatz.`,
   },
-  bookDemo: { en: "Book a demo", nl: "Boek een demo" },
-  viewCases: { en: "View cases", nl: "Bekijk cases" },
-  whyEyebrow: { en: "Why it works", nl: "Waarom het werkt" },
-  whyTitle: { en: "Designed for presence.", nl: "Ontworpen voor aanwezigheid." },
-  specEyebrow: { en: "Technical details", nl: "Technische details" },
-  specTitle: { en: "Specifications.", nl: "Specificaties." },
-  exploreEyebrow: { en: "Keep exploring", nl: "Blijf ontdekken" },
-  exploreTitle: { en: "More of the range.", nl: "Meer uit het gamma." },
+  bookDemo: { en: "Book a demo", nl: "Boek een demo", de: "Demo anfragen" },
+  viewCases: { en: "View cases", nl: "Bekijk cases", de: "Cases ansehen" },
+  whyEyebrow: { en: "Why it works", nl: "Waarom het werkt", de: "Warum es überzeugt" },
+  whyTitle: { en: "Designed for presence.", nl: "Ontworpen voor aanwezigheid.", de: "Gemacht für echte Präsenz." },
+  specEyebrow: { en: "Technical details", nl: "Technische details", de: "Technische Details" },
+  specTitle: { en: "Specifications.", nl: "Specificaties.", de: "Spezifikationen." },
+  exploreEyebrow: { en: "Keep exploring", nl: "Blijf ontdekken", de: "Weiter entdecken" },
+  exploreTitle: { en: "More of the range.", nl: "Meer uit het gamma.", de: "Mehr aus der Produktreihe." },
   ctaTitle: {
     en: `See the ${product.name} in action`,
     nl: `Zie de ${product.name} in actie`,
+    de: `Erleben Sie das ${product.name} in Aktion`,
   },
-  bcHome: { en: "Home", nl: "Home" },
-  bcProducts: { en: "Products", nl: "Producten" },
+  bcHome: { en: "Home", nl: "Home", de: "Startseite" },
+  bcProducts: { en: "Products", nl: "Producten", de: "Produkte" },
   imgAlt: {
     en: (name: string) => `${name} holographic display by Holoconnects`,
-    nl: (name: string) => `${name} holografisch display van Holoconnects`,
+    nl: (name: string) => `${name} hologram display van Holoconnects`,
+    de: (name: string) => `${name} Hologramm Display von Holoconnects`,
   },
 } as const;
 
-const tl = (v: { en: string; nl: string }) => t(v, lang);
+const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
 const site = Astro.site ?? new URL("https://www.holoconnects.com");
 const productUrl = new URL(localizePath(`/products/${product.slug}`, lang), site).href;
