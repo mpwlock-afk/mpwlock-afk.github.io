@@ -15,6 +15,51 @@ interface Props {
 const { lang } = Astro.props;
 const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
+// Ecosystem "Scroll the hologram range" cards: full size lineup + Hologrid, each
+// with a short story. `recolor` shows the white 22" cut-out as the black finish.
+const rangeCards = [
+  {
+    img: "/images/holobox-black.png", recolor: false, name: 'Holobox 86"', href: "/products/holobox",
+    story: {
+      en: "The life-size flagship. An 86\" transparent LCD that brings people and products to true human scale.",
+      nl: "Het levensgrote vlaggenschip. Een 86\"-transparant LCD dat mensen en producten op ware grootte tot leven brengt.",
+      de: "Das lebensgroße Flaggschiff. Ein 86\" transparentes LCD, das Menschen und Produkte in echter Lebensgröße zeigt.",
+    },
+  },
+  {
+    img: "/images/holobox-75-black.png", recolor: false, name: 'Holobox 75"', href: "/products/holobox",
+    story: {
+      en: "The same striking presence in a slightly smaller cabinet, ideal for lobbies and receptions.",
+      nl: "Dezelfde indrukwekkende aanwezigheid in een iets kleinere behuizing, ideaal voor lobby's en recepties.",
+      de: "Dieselbe eindrucksvolle Präsenz in einem etwas kleineren Gehäuse, ideal für Lobbys und Empfangsbereiche.",
+    },
+  },
+  {
+    img: "/images/holobox-43.png", recolor: false, name: "The 43", href: "/products/the-43",
+    story: {
+      en: "Compact 43\" holographic impact for booths, counters and tighter retail spaces.",
+      nl: "Compacte 43\"-holografische impact voor stands, toonbanken en krappere retailruimtes.",
+      de: "Kompakte 43\"-holografische Wirkung für Messestände, Theken und kleinere Retailflächen.",
+    },
+  },
+  {
+    img: "/images/holobox-mini-white.png", recolor: true, name: 'Holobox Mini 22"', href: "/products/holobox-mini",
+    story: {
+      en: "The desktop Mini. Product reveals and showcases with the same holographic depth on any counter.",
+      nl: "De desktop Mini. Productonthullingen en showcases met dezelfde holografische diepte op elke toonbank.",
+      de: "Der Desktop-Mini. Produktpräsentationen mit derselben holografischen Tiefe auf jeder Theke.",
+    },
+  },
+  {
+    img: "/images/holobox-hologrid.png", recolor: false, name: "Hologrid", href: "/products/hologrid",
+    story: {
+      en: "Up to five Holobox units combined into one modular holographic wall for events and flagship spaces.",
+      nl: "Tot vijf Holobox-units samengevoegd tot één modulaire holografische wand voor evenementen en flagship-ruimtes.",
+      de: "Bis zu fünf Holobox-Einheiten zu einer modularen holografischen Wand für Events und Flagship-Räume.",
+    },
+  },
+];
+
 // Brands Holoconnects has worked with, shown as a white monochrome "Trusted by"
 // wall. A logo file in /images/logos/ renders as an <img> forced to white by CSS;
 // a brand without a logo yet falls back to its name in white text. Drop official
@@ -262,16 +307,16 @@ const copy = {
           <span class="hpin__hint">{tl(copy.hpinHint)}</span>
         </div>
         {
-          products.map((p, i) => (
-            <a href={localizePath(`/products/${p.slug}`, lang)} class="hcard hoverable" data-tilt="5">
+          rangeCards.map((p, i) => (
+            <a href={localizePath(p.href, lang)} class="hcard hoverable" data-tilt="5">
               <span class="hcard__index">{String(i + 1).padStart(2, "0")}</span>
               <div class="hcard__media">
                 <div class="hcard__glow"></div>
-                <img src={p.image} alt={`${p.name} holographic display by Holoconnects`} loading="lazy" />
+                <img src={p.img} class={p.recolor ? "is-recolor-black" : ""} alt={`${p.name} holographic display by Holoconnects`} loading="lazy" />
               </div>
               <div class="hcard__body">
                 <h3>{p.name}</h3>
-                <p>{tl(p.tagline)}</p>
+                <p>{tl(p.story)}</p>
                 <span class="arrow-link">{tl(copy.cardExplore)}
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M8 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </span>
@@ -797,7 +842,8 @@ const copy = {
   }
   .hcard__media {
     position: relative;
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0; /* allow the image area to shrink so the story text always fits */
     display: grid;
     place-items: center;
     margin: 0.5rem 0 1rem;
@@ -814,6 +860,10 @@ const copy = {
     max-width: 100%;
     object-fit: contain;
     filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.5));
+  }
+  /* White 22" cut-out shown as the black finish, matching the rest of the range. */
+  .hcard__media img.is-recolor-black {
+    filter: invert(1) drop-shadow(0 24px 40px rgba(0, 0, 0, 0.5));
   }
   .hcard__body h3 {
     color: #fff;

@@ -400,6 +400,28 @@ const fullLangLabel: Record<Lang, string> = {
     });
   }
 
+  // The site uses Lenis smooth scroll, which drives scroll via rAF and does NOT
+  // reliably emit native `scroll` events — so the native listener alone left the
+  // header transparent over light sections (white logo + nav vanished). Hook
+  // Lenis's own scroll event; retry until the Lenis instance exists (it is
+  // created by motion.ts after this inline script runs).
+  function hookLenis() {
+    const l = (window as any).lenis;
+    if (l && typeof l.on === "function") {
+      if (!l.__hcHeaderHooked) {
+        l.__hcHeaderHooked = true;
+        l.on("scroll", applyHeaderState);
+        applyHeaderState();
+      }
+      return true;
+    }
+    return false;
+  }
+  function hookLenisWithRetry(tries = 0) {
+    if (hookLenis() || tries > 40) return;
+    setTimeout(() => hookLenisWithRetry(tries + 1), 50);
+  }
+
   if (!(window as any).__hcHeaderInit) {
     (window as any).__hcHeaderInit = true;
     window.addEventListener("scroll", applyHeaderState, { passive: true });
@@ -408,9 +430,11 @@ const fullLangLabel: Record<Lang, string> = {
       document.body.classList.remove("menu-open");
       wireMenuToggle();
       applyHeaderState();
+      hookLenisWithRetry();
     });
   }
 
   wireMenuToggle();
   applyHeaderState();
+  hookLenisWithRetry();
 </script>

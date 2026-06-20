@@ -49,14 +49,29 @@ const cfgStrings = {
   }[lang],
 };
 
-// Every model uses one clean transparent cut-out, all the same 3/4 left-facing
-// angle and shown whole (no rotation/translate that clipped the box, no mixed
-// straight-front vs angled views). 86/75/22 share the cabinet render; 43 its own.
+// Clean transparent cut-outs, shown whole. The 86" has the full studio matrix
+// (black/white x front/left/right). 75/43 have a black front only; the 22" Mini
+// uses the white transparent cut-out rendered black via CSS filter (`recolor`)
+// until a dedicated black render lands. Options degrade gracefully (disabled).
 const models = [
-  { id: "86", label: '86"', name: "Holobox", colors: { black: { front: "/images/holobox-black.png" } } },
-  { id: "75", label: '75"', name: "The 75", colors: { black: { front: "/images/holobox-black.png" } } },
+  {
+    id: "86", label: '86"', name: "Holobox",
+    colors: {
+      black: {
+        front: "/images/config/holobox86-black-front.png",
+        left: "/images/config/holobox86-black-left.png",
+        right: "/images/config/holobox86-black-right.png",
+      },
+      white: {
+        front: "/images/config/holobox86-white-front.png",
+        left: "/images/config/holobox86-white-left.png",
+        right: "/images/config/holobox86-white-right.png",
+      },
+    },
+  },
+  { id: "75", label: '75"', name: "The 75", colors: { black: { front: "/images/holobox-75-black.png" } } },
   { id: "43", label: '43"', name: "The 43", colors: { black: { front: "/images/holobox-43.png" } } },
-  { id: "22", label: '22"', name: "Mini", colors: { black: { front: "/images/holobox-mini-black.png" } } },
+  { id: "22", label: '22"', name: "Mini", recolor: true, colors: { black: { front: "/images/holobox-mini-white.png" } } },
 ];
 
 const start = models[0].colors.black.front;
@@ -157,9 +172,13 @@ const start = models[0].colors.black.front;
   }
   .cfg__img {
     position: relative;
-    height: 94%;
+    /* Constrain by BOTH axes so the whole cabinet always fits the stage and is
+       never cropped by overflow (percentage height resolved against the wrong
+       block and overflowed). object-fit:contain keeps the aspect ratio. */
+    max-height: 94%;
+    max-width: 88%;
     width: auto;
-    max-width: 100%;
+    height: auto;
     object-fit: contain;
     opacity: 1;
     transition: opacity 0.25s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
@@ -251,6 +270,8 @@ const start = models[0].colors.black.front;
           img.addEventListener("load", onload, { once: true });
           img.src = src;
           img.alt = `${m.name} ${m.label}, ${colorName(color)}, ${viewName(view)} ${cfgStrings.altView}`;
+          // White cut-out shown as the black finish via filter (22" Mini).
+          img.style.filter = m.recolor && color === "black" ? "invert(1)" : "";
           img.style.transform = `translateX(${shift})`;
           if (img.complete) { img.removeEventListener("load", onload); img.style.opacity = "1"; }
         }, 160);

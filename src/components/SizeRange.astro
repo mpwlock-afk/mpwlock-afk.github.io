@@ -20,11 +20,13 @@ interface Props {
 const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
 const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
 
+// `recolor` = render is a white cut-out shown as the black finish via a CSS
+// filter (we only have the white transparent render for the 22" Mini so far).
 const sizes = [
-  { label: '22"', ratio: 0.299, solid: false, img: { black: "/images/holobox-mini-black.png", white: "" } },
-  { label: '43"', ratio: 0.524, solid: false, img: { black: "/images/holobox-43.png", white: "" } },
-  { label: '75"', ratio: 0.874, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
-  { label: '86"', ratio: 1.0, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
+  { label: '22"', ratio: 0.299, solid: false, recolor: true, img: { black: "/images/holobox-mini-white.png", white: "/images/holobox-mini-white.png" } },
+  { label: '43"', ratio: 0.524, solid: false, recolor: false, img: { black: "/images/holobox-43.png", white: "" } },
+  { label: '75"', ratio: 0.874, solid: false, recolor: false, img: { black: "/images/holobox-75-black.png", white: "" } },
+  { label: '86"', ratio: 1.0, solid: false, recolor: false, img: { black: "/images/holobox-black.png", white: "" } },
 ];
 const hasSwitch = sizes.every((s) => s.img.white) && sizes.every((s) => s.img.black);
 
@@ -70,6 +72,7 @@ const copy = {
             <div class={`sizeunit__box ${s.solid ? "is-solid" : ""}`}>
               {s.img.black || s.img.white ? (
                 <img
+                  class={s.recolor ? "is-recolor-black" : ""}
                   src={s.img.black || s.img.white}
                   data-black={s.img.black}
                   data-white={s.img.white}
@@ -157,6 +160,8 @@ const copy = {
     -webkit-box-reflect: below 2px linear-gradient(transparent 62%, rgba(255, 255, 255, 0.12));
   }
   .sizeunit__box.is-solid img { -webkit-box-reflect: none; border-radius: 4px; }
+  /* White transparent cut-out rendered as the black finish to match the lineup. */
+  .sizeunit__box img.is-recolor-black { filter: invert(1); }
   .sizeunit__ph {
     height: 100%;
     aspect-ratio: 2 / 5;

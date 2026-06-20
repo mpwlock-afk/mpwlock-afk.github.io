@@ -15,10 +15,10 @@ const { lang } = Astro.props;
 // `img.black` / `img.white` get filled with the uniform renders; once both
 // colours exist for every size, the colour switch turns on automatically.
 const sizes = [
-  { label: '22"', name: "Mini", ratio: 0.3, solid: false, img: { black: "/images/holobox-mini-black.png", white: "" } },
-  { label: '43"', name: "The 43", ratio: 0.52, solid: false, img: { black: "/images/holobox-43.png", white: "" } },
-  { label: '75"', name: "The 75", ratio: 0.87, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
-  { label: '86"', name: "Flagship", ratio: 1.0, solid: false, img: { black: "/images/holobox-black.png", white: "" } },
+  { label: '22"', name: "Mini", ratio: 0.3, solid: false, recolor: true, img: { black: "/images/holobox-mini-white.png", white: "/images/holobox-mini-white.png" } },
+  { label: '43"', name: "The 43", ratio: 0.52, solid: false, recolor: false, img: { black: "/images/holobox-43.png", white: "" } },
+  { label: '75"', name: "The 75", ratio: 0.87, solid: false, recolor: false, img: { black: "/images/holobox-75-black.png", white: "" } },
+  { label: '86"', name: "Flagship", ratio: 1.0, solid: false, recolor: false, img: { black: "/images/holobox-black.png", white: "" } },
 ];
 const hasWhite = sizes.every((s) => s.img.white);
 const hasBlack = sizes.every((s) => s.img.black);
@@ -109,6 +109,7 @@ const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
               <div class={`sizeunit__box ${s.solid ? "is-solid" : ""}`}>
                 {s.img.black || s.img.white ? (
                   <img
+                    class={s.recolor ? "is-recolor-black" : ""}
                     src={s.img.black || s.img.white}
                     data-black={s.img.black}
                     data-white={s.img.white}
@@ -281,6 +282,7 @@ const tl = (v: { en: string; nl: string; de?: string }) => t(v, lang);
     object-position: bottom center;
     -webkit-box-reflect: below 2px linear-gradient(transparent 62%, rgba(255, 255, 255, 0.12));
   }
+  .sizeunit__box img.is-recolor-black { filter: invert(1); }
   .sizeunit__box.is-solid img {
     -webkit-box-reflect: none;
     border-radius: 4px;
