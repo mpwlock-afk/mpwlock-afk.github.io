@@ -45,11 +45,11 @@ Dit bepaalt de helft van het werk. Opties:
 | 2.8 | Homepage + productpagina's: unieke title/description | ✅ |
 | 2.9 | Alt-teksten (92/92) + 1 H1 per pagina geverifieerd | ✅ |
 | 2.10 | Sector-subpagina's `/sectors/[slug]` (anti-kannibalisatie) | ✅ |
-| 2.11 | **GSC + Bing Webmaster verifiëren, sitemap indienen** | ⬜ |
-| 2.12 | **301-redirectmap oude→nieuwe URL's** (zie noot) | ⬜ |
+| 2.11 | **GSC + Bing Webmaster verifiëren, sitemap indienen** (nu 3 talen) | ⬜ |
+| 2.12 | **301-redirectmap oude→nieuwe URL's** | 🟡 mechanisme live (stubs + `redirects.ts`); echte GSC-lijst + Cloudflare-301 nog |
 | 2.13 | `AggregateRating` via een échte review-bron (Trustpilot/Kiyoh), niet self-serving | ⬜ |
-| 2.14 | `FAQPage` schema op product/sector + nieuwe FAQ-sectie | ⬜ |
-| 2.15 | Self-referencing `hreflang` zodra taalstrategie bepaald is | ⬜ |
+| 2.14 | `FAQPage` schema op product/sector + nieuwe FAQ-sectie | ✅ (40 FAQ's, trilinguaal) |
+| 2.15 | Self-referencing `hreflang` (EN/NL/DE + x-default) | ✅ |
 
 **Noot 301's:** de site draait op **GitHub Pages**, dat geen server-side 301-redirects ondersteunt. Opties: (a) Cloudflare ervoor zetten voor echte 301's (aanbevolen), (b) Netlify/Vercel met `_redirects`/`vercel.json`, of (c) tijdelijk meta-refresh + canonical als noodoplossing. Haal de oude URL-lijst uit GSC (oude property) of Ahrefs "Best by links".
 
@@ -61,10 +61,10 @@ Concurrenten (Proto/Hypervsn/ARHT) splitsen wat wij in een handvol pagina's prop
 
 | # | Bouwen | Doelzoekwoord | Type | Prioriteit |
 |---|---|---|---|---|
-| 3.1 | **Pricing-/kostengids** | `hologram display price/cost` | transactioneel | 🔴 Hoog (0 dekking nu) |
-| 3.2 | **Rental-landingspagina** | `hologram display rental/huren` | transactioneel | 🔴 Hoog |
-| 3.3 | **Blog/Insights-sectie** (Astro content collection) | — | infra | 🔴 Hoog (randvoorwaarde) |
-| 3.4 | Pillar: **"What is a hologram display"** | `what is a hologram display` | informational | 🟡 |
+| 3.1 | **Pricing-/kostengids** | `hologram display price/cost` | transactioneel | ✅ `/news/hologram-display-cost/` |
+| 3.2 | **Rental-landingspagina** | `hologram display rental/huren` | transactioneel | ✅ `/news/hologram-display-rental/` |
+| 3.3 | **Blog/Insights-sectie** (Astro content collection) | — | infra | ✅ `/news/` |
+| 3.4 | Pillar: **"What is a hologram display"** | `what is a hologram display` | informational | ✅ `/news/holographic-displays/` |
 | 3.5 | Vergelijking **"Hologram vs LED/video wall"** | `hologram vs led display` | commercial investigation | 🟡 |
 | 3.6 | Vergelijking **"Holobox vs Proto vs Hypervsn"** | `proto/hypervsn alternative` | comparison | 🟡 |
 | 3.7 | **Individuele case-pagina's** `/cases/[slug]` (BMW, ING, Sheikh, Liège) | brand + proof | 🔴 Hoog (linkwaardig!) |

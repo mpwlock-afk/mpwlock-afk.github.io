@@ -1,7 +1,7 @@
 # Holoconnects SEO Dashboard
 
 > **Lees dit wekelijks.** Eén pagina met de stand van zaken: wat is gedaan, wat loopt, wat zijn de cijfers.
-> Laatste update: **2026-06-18** · Eigenaar: Marnix · Site: https://www.holoconnects.com
+> Laatste update: **2026-06-20** · Eigenaar: Marnix · Site: https://www.holoconnects.com
 
 ---
 
@@ -9,36 +9,42 @@
 
 | Pijler | Status | Toelichting |
 |---|---|---|
-| Technische SEO | 🟢 Sterk | Sitemap, canonical, JSON-LD, OG/Twitter, alt-teksten — allemaal live in de codebase |
-| Site-structuur | 🟡 In opbouw | Sector-subpagina's ✅ · blog/pricing/rental/case-pagina's nog te bouwen |
-| On-page content | 🟡 Redelijk | Marketing-copy aanwezig; diepgang + informational content ontbreekt |
-| Taal / markt | 🔴 Beslissing nodig | Oude site was NL, nieuwe is EN-only → Nederlandse rankings waarschijnlijk verloren |
+| Technische SEO | 🟢 Sterk | Sitemap (3 talen), canonical, hreflang, JSON-LD, OG/Twitter, alt-teksten — live |
+| Site-structuur | 🟢 Sterk | Sector-landingspagina's ✅ · blog/Insights ✅ · 3 cornerstone-artikelen ✅ · pricing/rental als artikel ✅ |
+| On-page content | 🟢 Goed | Trilinguale marketing-copy + 40 FAQ's met FAQPage-schema + cornerstone-guides |
+| Taal / markt | 🟢 Opgelost | **EN + NL + DE** live met hreflang/x-default. NL native-review verwerkt, DE SEO-titels |
 | Backlinks / autoriteit | 🔴 Nog niet gestart | Doellijst + outreach klaar (zie BACKLINK-PLAN.md), uitvoering moet beginnen |
-| Meten (GSC/Ahrefs) | 🔴 Nog niet gekoppeld | Search Console + Ahrefs verifiëren is randvoorwaarde voor alles |
+| Meten (GSC/Ahrefs) | 🔴 Nog niet gekoppeld | Search Console (3 talen) + Ahrefs verifiëren is randvoorwaarde voor alles |
 
 ---
 
-## ✅ Deze sessie afgerond (2026-06-18)
+## ✅ Sessie 2026-06-20 — multilingual + SEO afronding
 
-**Technische quick wins — live in de code, gaan mee bij volgende deploy:**
-- `@astrojs/sitemap` geïnstalleerd → `sitemap-index.xml` wordt nu gegenereerd (robots.txt verwees er al naar, maar hij bestond niet). **18 URL's** erin.
-- `Base.astro` uitgebreid: **canonical** tags, volledige **Open Graph** (incl. og:image, og:url, og:locale), **Twitter Cards**, **robots**-meta, **theme-color**.
-- **JSON-LD structured data**: `Organization` + `WebSite` sitebreed; `Product` + `BreadcrumbList` op elke productpagina.
-- Homepage kreeg een echte keyword-gerichte `<title>` + `description` (gebruikte eerst de generieke default).
-- Productpagina's: per-pagina title/description/og-image + product-schema.
-- Geverifieerd in build: 92/92 afbeeldingen met alt-tekst, 1 H1 per pagina.
-- Sector-subpagina's (`/sectors/[slug]`) — 6 aparte landingspagina's (lost keyword-kannibalisatie op).
+**Meertaligheid (EN/NL/DE):**
+- Derde taal **Duits (DE)** toegevoegd: zelfde 34→nu **55 indexeerbare URL's** × hreflang. Locale-registry, route-wrappers `/de/*`, taalswitcher (3-weg).
+- **NL native-review verwerkt**: alle `TODO(native-review)` markers weg; NL + DE sector-titles/descriptions/intro's SEO-geoptimaliseerd (niet letterlijk vertaald) op de keyword-clusters.
+- **2 kritieke i18n-bugs gefixt** (gevonden via build-verificatie): `localizePath()` en `stripLangPrefix()` waren hardcoded op `nl` → alle DE-links en DE-hreflang waren stuk. Nu generiek over de locales-lijst.
+
+**Schema / technisch:**
+- **FAQPage** JSON-LD + zichtbare FAQ-accordeons op alle product- én sectorpagina's (40 FAQ's, trilinguaal). Rich-results-kans.
+- Schema's geverifieerd over en/nl/de: Organization + WebSite (sitebreed), Product + BreadcrumbList (producten), Service + BreadcrumbList (sectoren), Article + BreadcrumbList (blog), OG + Twitter (overal).
+- **Legacy 301-redirectmap** (`src/data/redirects.ts`) → statische canonical+meta-refresh stubs via `[...legacy].astro`; sitemap-filter houdt noindex-stubs eruit. (GitHub Pages = geen echte 301 → Cloudflare-pad gedocumenteerd in `redirects.md`.)
+- Footer linkt nu naar **individuele sectorpagina's** (was alles → `/sectors`) + Insights-link.
+
+**Content:**
+- **Blog/Insights-sectie** (Astro content collection) op `/news/`.
+- **3 cornerstone-artikelen**: "What is a hologram display" (= herstel van de 404'de `/news/holographic-displays/`), "How much does a hologram display cost", "Hologram display rental". Interne links naar producten/sectoren, Article + FAQPage schema.
 
 ---
 
 ## 🔜 Volgende acties (prioriteit van boven naar beneden)
 
-1. **[BESLISSING] Taalstrategie bepalen** — NL-track + hreflang terug, of EN-only houden? Zie ACTION-PLAN §1. *Grootste herstelbare ranking-winst.*
-2. **Search Console + Ahrefs koppelen** en sitemap indienen. Zonder meetdata werken we blind.
-3. **301-redirectmap** oude → nieuwe URL's (backlinks van de oude site vangen). Let op: GitHub Pages kan geen echte 301's — zie ACTION-PLAN §2.
-4. **Pricing-gids** + **Rental-landingspagina** bouwen (hoogste commerciële intentie, nu 0 dekking).
-5. **Blog/Insights-sectie** opzetten + eerste pillar "What is a hologram display".
-6. **Backlinks**: eerste 5 starten (zie BACKLINK-PLAN.md — Sixteen:Nine, Invidis, Digital Signage Today, Hospitality Net, ISE-profiel).
+1. **Search Console + Bing verifiëren in 3 talen** en sitemap indienen (`sitemap-index.xml`). Zonder meetdata werken we blind.
+2. **Echte oude-URL-lijst uit GSC/Ahrefs** in `src/data/redirects.ts` zetten (nu high-confidence gok) + bij domeincutover Cloudflare ervoor voor echte 301's.
+3. **Backlinks**: eerste 5 starten (BACKLINK-PLAN.md — Sixteen:Nine, Invidis, Digital Signage Today, Hospitality Net, ISE-profiel).
+4. **Native marketing-review NL + DE body-copy** (titels/descriptions zijn SEO-klaar; lange teksten zijn AI-vertaling als basis).
+5. **Meer cornerstone-content**: "Hologram vs LED/video wall", "Holobox vs Proto vs Hypervsn", buyer's guide (zie KEYWORD-MAP §Aanbevolen content). Eventueel NL/DE-vertalingen van de bestaande 3 artikelen.
+6. **Page-speed feintuning**: afbeeldingen naar WebP/AVIF + `width/height`, en fonts zelf-hosten (nu render-blocking via Fontshare).
 
 ---
 
@@ -48,6 +54,7 @@
 |---|---|---|---|---|---|---|
 | Baseline (vul in) | — | — | — | — | — | — |
 | 2026-06-18 | _meten_ | _meten_ | _meten_ | 18 (sitemap) | _meten_ | 0 |
+| 2026-06-20 | _meten_ | _meten_ | _meten_ | 55 (sitemap, 3 talen) | _meten_ | 0 |
 
 **Kernzoekwoorden om posities van te volgen** (zie KEYWORD-MAP.md voor de volledige lijst):
 `hologram display` · `holographic display box` · `holobox` · `hologram display price` · `hologram display rental` · `hologram company europe` · `hologram telehealth` · `virtual concierge hologram` · `hologram display kopen` (NL) · `hologram huren` (NL)
