@@ -130,7 +130,13 @@ export type Product = {
   name: string; // brand name — identical in both languages
   tagline: Loc;
   summary: Loc;
-  image: string;
+  image: string; // transparent cut-out used in the hero/lineup/carousel
+  // Optional studio photography (solid-background JPGs with webp/avif variants).
+  // `heroImage` overrides the hero visual; `gallery` adds a framed photo strip;
+  // `ogImage` is the social-card image. Localized alt text per gallery entry.
+  heroImage?: string;
+  ogImage?: string;
+  gallery?: { src: string; alt: Loc }[];
   specs?: { label: Loc; value: Loc }[];
   features?: { title: Loc; body: Loc }[];
   faqs?: { q: Loc; a: Loc }[];
@@ -272,6 +278,34 @@ export const products: Product[] = [
       de: 'Ein 43" holografisches Display, das Holobox-Qualität in einer kleineren, flexibleren Stellfläche bietet.',
     },
     image: "/images/holobox-43.png",
+    heroImage: "/images/holobox-43-black-front.jpg",
+    ogImage: "/images/holobox-43-black-front.jpg",
+    gallery: [
+      {
+        src: "/images/holobox-43-black-front.jpg",
+        alt: {
+          en: 'The 43" Holobox holographic display in Midnight Black, front view with the screen lit',
+          nl: 'Het 43" Holobox holografisch display in Midnight Black, vooraanzicht met verlicht scherm',
+          de: 'Das 43" Holobox holografische Display in Midnight Black, Frontansicht mit beleuchtetem Bildschirm',
+        },
+      },
+      {
+        src: "/images/holobox-43-white-front.jpg",
+        alt: {
+          en: 'The 43" Holobox holographic display in Starlight White, front view',
+          nl: 'Het 43" Holobox holografisch display in Starlight White, vooraanzicht',
+          de: 'Das 43" Holobox holografische Display in Starlight White, Frontansicht',
+        },
+      },
+      {
+        src: "/images/holobox-43-white-angle.jpg",
+        alt: {
+          en: 'The 43" Holobox holographic display in Starlight White, three-quarter angle view',
+          nl: 'Het 43" Holobox holografisch display in Starlight White, driekwart zijaanzicht',
+          de: 'Das 43" Holobox holografische Display in Starlight White, Dreiviertel-Seitenansicht',
+        },
+      },
+    ],
     features: [
       { title: { en: "Flexible footprint", nl: "Flexibele voetafdruk", de: "Flexible Stellfläche" }, body: { en: "A smaller display that fits lobbies, booths and tighter retail environments.", nl: "Een kleiner display dat past in lobby's, stands en krappere retailomgevingen.", de: "Ein kleineres Display, das in Lobbys, Messestände und engere Retail-Umgebungen passt." } },
       { title: { en: "Holographic clarity", nl: "Holografische helderheid", de: "Holografische Klarheit" }, body: { en: "Sharp, lifelike holographic imagery in a more accessible size.", nl: "Scherpe, levensechte holografische beelden in een toegankelijker formaat.", de: "Scharfe, lebensechte holografische Bilder in einem zugänglicheren Format." } },
