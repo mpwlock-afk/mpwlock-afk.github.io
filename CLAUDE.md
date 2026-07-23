@@ -23,8 +23,12 @@ npm run build    # static output → dist/
   (GitHub Actions → Pages). Live: https://mpwlock-afk.github.io/
 - Served at **root**, so absolute paths (`/images/…`, `/demo`) are correct.
   Do NOT add an Astro `base` path — it would break every hardcoded link.
-- Custom domain (holoconnects.com) is **deferred** — old site still live on
-  Vercel; go-live = DNS cutover later. CNAME intentionally absent.
+- Custom domain (holoconnects.com) is **deferred** — CNAME intentionally absent.
+  ⚠️ 2026-07-23: the domain no longer serves the old WordPress site. It now runs
+  a heavily SEO-built **Next.js site behind Cloudflare** (186-URL sitemap, EN+NL,
+  comparison/pricing/case/question pages — likely André's "recovery" build).
+  A cutover to this rebuild as-is would 404 ~169 of those URLs. See
+  `docs/seo/LIVE-VS-REBUILD-ANALYSE.md` before touching go-live or redirects.
 - Contact form delivers via FormSubmit to `PUBLIC_CONTACT_INBOX`
   (local `.env`, CI = repo secret `CONTACT_INBOX`). Email is NOT in source.
 
